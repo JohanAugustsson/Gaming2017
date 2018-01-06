@@ -1,0 +1,67 @@
+.scoreBoard {
+    border: 1px solid white;
+    width: 80%;
+    height: 400px;
+    margin: 50px auto;
+    color: white;
+}
+
+.header {
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background-color: black;
+}
+
+.teamAway, .teamHome {
+    height: 150px;
+    background-color: #313841;
+    width: 100%;
+}
+
+.score {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 2.5em;
+}
+
+.player {
+    display: inline-block;
+    width: 49%;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    font-size: 2em;
+    color: #B2CB5B;
+}
+
+.playerName {
+    margin: 10px;
+}
+
+.player button {
+    width: 25px;
+    padding: 7px;
+    border-radius: 5px;
+    position: relative;
+    top: -7px;
+}
+
+.player span {
+    border: 0px solid rgba(236, 236, 236, 0.54);
+    padding: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.danger {
+    background-color: rgb(194, 41, 0);
+}
+.primary{
+    background-color: #B2CB5B;
+}
+
+.home, .away {
+    position: absolute;
+}
