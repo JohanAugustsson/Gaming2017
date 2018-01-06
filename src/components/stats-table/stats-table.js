@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import './css/history.css'
-export class ResultBoard extends React.Component{
+import './stats-table.css'
+export class StatsTable extends React.Component{
     constructor(props){
       super(props)
 
@@ -64,7 +64,7 @@ export class ResultBoard extends React.Component{
       <div>
 
         <table className="tbody">
-          <caption>History Talbe</caption>
+          <caption>Standings</caption>
           <thead>
             <tr>
               <th className="historyTable">Name</th>
@@ -92,7 +92,7 @@ export class ResultBoard extends React.Component{
   }
 }
 
-ResultBoard.propTypes={
+StatsTable.propTypes={
   players: PropTypes.array.isRequired
 
 };
