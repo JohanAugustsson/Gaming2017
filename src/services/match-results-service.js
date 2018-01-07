@@ -1,6 +1,6 @@
-import fire from "./fire";
+import firebase from "./fire";
 
-const rootRef = fire.database().ref();
+const rootRef = firebase.database().ref();
 
 export const MatchResultService = {
 

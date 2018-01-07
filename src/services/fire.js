@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import * as fire from 'firebase';
 
 let config = {
     apiKey: "AIzaSyCOr_NjNqNnL4IBkifBxXQzTePPBln3Px0",
@@ -9,5 +9,5 @@ let config = {
     messagingSenderId: "792512570655"
 };
 
-let fire = firebase.initializeApp(config);
-export default fire;
+let firebase = fire.initializeApp(config);
+export default firebase;
