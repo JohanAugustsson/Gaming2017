@@ -1,0 +1,66 @@
+{
+  "serie": {
+    "innebandy2018": {
+      "eventName": "innebandy2018",
+      "typeOfEvent": "innebandy",
+      "datum" : "2018-01-07",
+      "tid" : "11:57"
+    }
+  },
+  "matchResults": {
+    "innebandy2018": {
+      "1515324987485" : {
+        "spelad": {
+            "datum" : "2018-01-06",
+            "tid" : "12:04"
+          },
+        "players": {
+          "petersvensson": {
+            "score": 1,
+            "name": "peter",
+            "team": "1"
+          },
+          "johanjohansson": {
+            "score": 1,
+            "name": "johan",
+            "team": "1"
+          }
+        }
+      },
+      "1515325010505" : {
+        "spelad": {
+            "datum" : "2018-01-06",
+            "tid" : "12:04"
+          },
+        "players": {
+          "petersvensson": {
+            "score": 1,
+            "name": "peter",
+            "team": "1"
+          },
+          "johanjohansson": {
+            "score": 1,
+            "name": "johan",
+            "team": "1"
+          }
+        }
+      }
+
+    }
+
+  },
+  "players": {
+    "petersvensson": {
+      "name": "peter",
+      "lastname": "svensson"
+    },
+    "johanjohansson": {
+      "name": "johan",
+      "lastname": "johansson"
+    },
+    "kallebird": {
+      "name": "carl",
+      "lastname": "bird"
+    }
+  }
+}
