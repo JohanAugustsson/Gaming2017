@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://johanaugustsson.github.io/test2/",
   "dependencies": {
+    "firebase": "^4.8.1",
     "gh-pages": "^1.1.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
