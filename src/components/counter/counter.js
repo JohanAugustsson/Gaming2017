@@ -25,7 +25,7 @@ export class Counter extends React.Component {
     render() {
         return (
             <div className="player">
-                <span classname="playerName">{this.props.player.name}</span>
+                <span className="playerName">{this.props.player.name}</span>
                 <button className="danger" onClick={this.decrementScore}>-</button>
                 <span>{this.props.player.score}</span>
                 <button className="primary" onClick={this.incrementScore}>+</button>
