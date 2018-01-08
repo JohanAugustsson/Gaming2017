@@ -1,4 +1,5 @@
 import React from "react";
+import {MatchResultService} from "../../services/match-results-service";
 import "./scoreboard.css";
 import {Counter} from "../counter/counter";
 
@@ -6,16 +7,18 @@ export class ScoreBoard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            players: [{name: "Johan", score: 0}, {name: "Peter", score: 0}, {name: "Niklas", score: 0}, {
-                name: "Carl",
-                score: 0
-            }],
+            players: [
+            {assist:0, isHomeTeam: true, name: "Johan",  penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:1},
+            {assist:0, isHomeTeam: true, name: "Peter",  penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:1},
+            {assist:0, isHomeTeam: false, name: "Niklas", penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:2},
+            {assist:0, isHomeTeam: false, name: "Carl",   penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:2},
+          ],
             homeGoal: 0,
             awayGoal: 0
-
         };
         this.goal = this.goal.bind(this);
         this.handleReset = this.handleReset.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     addPlayer() {
@@ -31,6 +34,20 @@ export class ScoreBoard extends React.Component {
             homeGoal: 0,
             awayGoal: 0
         })
+    }
+
+
+    handleSave(event,){
+      MatchResultService.getMatchResults().then(response =>{
+        console.log(response);
+      });
+
+      let playersList = this.state.players;
+      let obj = {};
+      playersList.map(x => obj[x.name]=x); //gör om lista till object-träd. Detta för att ej använda listor i databasen.
+
+      MatchResultService.setMatchResults(obj);
+
     }
 
     goal(changedScore, playerId) {
@@ -77,6 +94,7 @@ export class ScoreBoard extends React.Component {
 
                     <div>
                         <button onClick={this.handleReset}>Reset</button>
+                        <button onClick={this.handleSave}>Save</button>
                     </div>
                 </div>
             </div>
