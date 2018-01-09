@@ -11,17 +11,6 @@ let playerList = require('./mocks/player-list.json');
 
 
 
-/*let pl1 ={
-Johan: {assist:0, isHomeTeam: true, name: "Johan",  penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:1},
-Peter: {assist:0, isHomeTeam: true, name: "Peter",  penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:1},
-Niklas: {assist:0, isHomeTeam: false, name: "Niklas", penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:2},
-Carl: {assist:0, isHomeTeam: false, name: "Carl",   penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:2},
-
-};
-*/
-let pl1 ={
-
-}
 class App extends React.Component {
   constructor(props) {
         super(props);
@@ -32,6 +21,7 @@ class App extends React.Component {
         this.saveMatchResults = this.saveMatchResults.bind(this);
         this.addPlayerForMatch = this.addPlayerForMatch.bind(this);
         this.resetPlayerForMatch = this.resetPlayerForMatch.bind(this);
+        this.getPlayerHistory = this.getPlayerHistory.bind(this);
     }
 
     componentDidMount() {
@@ -72,16 +62,29 @@ class App extends React.Component {
       })
     }
 
+    getPlayerHistory(){
+      MatchResultService.getMatchResults().then(response => {
+          console.log(response)
+
+
+
+
+      });
+    }
     render() {
         return (
             <div>
-                <StatsTable players={playerList} add={this.addPlayerForMatch}/>
+                <StatsTable matchResult={this.state.matchResults} players={playerList} add={this.addPlayerForMatch}/>
                 <ScoreBoard
                   players={this.state.players}
                   saveMatch={this.saveMatchResults}
                   resetMatch={this.resetPlayerForMatch}
                   serie="innebandy2018"
                 />
+
+
+                <button onClick={this.getPlayerHistory}>Test</button>
+
             </div>
         );
     }

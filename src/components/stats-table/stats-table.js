@@ -9,22 +9,25 @@ export class StatsTable extends React.Component{
       this.handleClickAway = this.handleClickAway.bind(this);
     }
   handleClickHome(e){
-    let isHomeTeam = true;
     let name = e.target.name;
     this.props.add(name,true);
-    let bgColor = e.target.style.backgroundColor != "chartreuse" ? "chartreuse" : "darkslategray";
+    let bgColor = e.target.style.backgroundColor !== "chartreuse" ? "chartreuse" : "darkslategray";
      e.target.style.backgroundColor = bgColor;
   }
   handleClickAway(e){
-    let isHomeTeam = false;
     let name = e.target.name;
     this.props.add(name,false);
-    let bgColor = e.target.style.backgroundColor != "red" ? "red" : "grey";
-    e.target.style.backgroundColor = bgColor;
+    let bgColor = e.target.style.backgroundColor !== "red" ? "red" : "grey";
+     e.target.style.backgroundColor = bgColor;
   }
 
   render(){
       let playersAll = this.props.players.map(player=>{
+
+
+
+
+
       return(
         <tr key={player.id}>
           <td className="playerName historyTable">
@@ -71,7 +74,6 @@ export class StatsTable extends React.Component{
 
             <button id="btnAway" name={player.name} onClick={this.handleClickAway}>Play Away</button>
           </td>
-
         </tr>
 
         )

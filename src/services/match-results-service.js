@@ -5,8 +5,9 @@ const rootRef = firebase.database().ref();
 export const MatchResultService = {
 
     getMatchResults()  {
-        return rootRef.child('matchResults').once('value').then(function (snapshot) {
-            return snapshot.val();
+        return rootRef.child('matchResults/innebandy2018').once('value').then(snap=> {
+
+            return snap.val();
         });
     },
 
