@@ -13,13 +13,15 @@ export class Counter extends React.Component {
     }
 
     incrementScore(event) {
-        let playerId = this.props.id;
+        let playerId = this.props.player;
         this.props.goal(1, playerId);
+
     }
 
     decrementScore(event) {
-        let player = this.props.id;
+        let player = this.props.player;
         this.props.goal(-1, player);
+      
     }
 
     render() {

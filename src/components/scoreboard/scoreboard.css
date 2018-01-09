@@ -1,7 +1,7 @@
 .scoreBoard {
     border: 1px solid white;
     width: 80%;
-    height: 400px;
+    height: auto;
     margin: 50px auto;
     color: white;
 }
@@ -14,7 +14,7 @@
 }
 
 .teamAway, .teamHome {
-    height: 150px;
+    height: auto;
     background-color: #313841;
     width: 100%;
 }

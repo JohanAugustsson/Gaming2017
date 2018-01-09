@@ -27,6 +27,11 @@ td:nth-child(1){
   padding: 2px;
   margin-left: 3px;
   border-radius: 5px;
-  background-color: #2F3841;
+  background-color: darkslategray ;
+
   color: white;
+}
+
+#btnAway{
+  background-color:rgb(125,125,125);
 }
