@@ -5,10 +5,22 @@ export class StatsTable extends React.Component{
     constructor(props){
       super(props)
 
-      this.handleClick = this.handleClick.bind(this);
+      this.handleClickHome = this.handleClickHome.bind(this);
+      this.handleClickAway = this.handleClickAway.bind(this);
     }
-  handleClick(e){
-    console.log(e.target.name);
+  handleClickHome(e){
+    let isHomeTeam = true;
+    let name = e.target.name;
+    this.props.add(name,true);
+    let bgColor = e.target.style.backgroundColor != "chartreuse" ? "chartreuse" : "darkslategray";
+     e.target.style.backgroundColor = bgColor;
+  }
+  handleClickAway(e){
+    let isHomeTeam = false;
+    let name = e.target.name;
+    this.props.add(name,false);
+    let bgColor = e.target.style.backgroundColor != "red" ? "red" : "grey";
+    e.target.style.backgroundColor = bgColor;
   }
 
   render(){
@@ -52,7 +64,12 @@ export class StatsTable extends React.Component{
             {player.goalFor - player.goalAgainst}
           </td>
           <td className="historyTable">
-            <button name={player.name} onClick={this.handleClick}>Play</button>
+            <button id="btnHome" name={player.name} onClick={this.handleClickHome}>Play Home</button>
+
+          </td>
+          <td className="historyTable">
+
+            <button id="btnAway" name={player.name} onClick={this.handleClickAway}>Play Away</button>
           </td>
 
         </tr>

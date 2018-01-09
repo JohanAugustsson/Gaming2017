@@ -17,11 +17,9 @@ export const MatchResultService = {
     },
 
     //setMatchResults({serie="innebandy2018",isOvertime=false,isPenaltyShootout=false,players="0"){
-    setMatchResults(players){
+    setMatchResults(players,serie){
       let d = new Date();
       let n = d.getTime();
-      let serie = "innebandy2018";
-
 
       return rootRef.child(`matchResults/${serie}/${n}/`).set({
           isOvertime: false,

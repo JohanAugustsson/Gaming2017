@@ -1,71 +1,52 @@
 import React from "react";
-import {MatchResultService} from "../../services/match-results-service";
 import "./scoreboard.css";
 import {Counter} from "../counter/counter";
+
+
 
 export class ScoreBoard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            players: [
-            {assist:0, isHomeTeam: true, name: "Johan",  penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:1},
-            {assist:0, isHomeTeam: true, name: "Peter",  penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:1},
-            {assist:0, isHomeTeam: false, name: "Niklas", penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:2},
-            {assist:0, isHomeTeam: false, name: "Carl",   penalty:0, penaltyShootOutScore:0, penaltyShot:0, penaltyShotScore:0, score: 0, team:2},
-          ],
+            players: {},
             homeGoal: 0,
-            awayGoal: 0
+            awayGoal: 0,
+            serie: "innebandy2018"
         };
         this.goal = this.goal.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        console.log(this.props)
     }
 
-    addPlayer() {
 
-    }
 
     handleReset() {
-        this.setState({
-            players: [{name: "none", score: 0}, {name: "none", score: 0}, {name: "none", score: 0}, {
-                name: "none",
-                score: 0
-            }],
-            homeGoal: 0,
-            awayGoal: 0
-        })
+      this.props.resetMatch();
     }
 
 
-    handleSave(event,){
-      MatchResultService.getMatchResults().then(response =>{
-        console.log(response);
-      });
-
-      let playersList = this.state.players;
-      let obj = {};
-      playersList.map(x => obj[x.name]=x); //gör om lista till object-träd. Detta för att ej använda listor i databasen.
-
-      MatchResultService.setMatchResults(obj);
+    handleSave(event){
+      let playersList = this.props.players;
+      let serie = this.props.serie;
+      this.props.saveMatch(playersList,serie);
 
     }
 
-    goal(changedScore, playerId) {
-        let newPlayList = this.state.players.slice();
+    goal(changedScore, player) {
+        let list = this.props.players;
+        list[player.name].score +=changedScore;
 
-
-        newPlayList[playerId].score = newPlayList[playerId].score + changedScore;
-
-        if (playerId < 2) {
+        if (player.isHomeTeam) {
             let homeGoal = this.state.homeGoal + changedScore;
             this.setState({
-                players: newPlayList,
+                players: list,
                 homeGoal: homeGoal
             })
         } else {
             let awayGoal = this.state.awayGoal + changedScore;
             this.setState({
-                players: newPlayList,
+                players: list,
                 awayGoal: awayGoal
             })
         }
@@ -73,6 +54,21 @@ export class ScoreBoard extends React.Component {
     }
 
     render() {
+        let names = Object.keys(this.props.players)
+        let obj = this.props.players
+        let listPlay = names.map(x=> {
+          return obj[x];
+        });
+
+        let homeTeam = listPlay.filter(x=>x.isHomeTeam);
+        let awayTeam = listPlay.filter(x=>!x.isHomeTeam);
+
+        homeTeam = homeTeam.map( (x,index) =>{
+          return <Counter key={index} id={index} goal={this.goal} player={x} />;
+        })
+        awayTeam = awayTeam.map( (x,index) =>{
+          return <Counter key={index} id={index} goal={this.goal} player={x} />;
+        })
 
         return (
             <div>
@@ -80,16 +76,14 @@ export class ScoreBoard extends React.Component {
                     <div className="header"> SCOREBOARD</div>
                     <div className="home">Home</div>
                     <div className="teamHome">
-                        <Counter goal={this.goal} id={0} player={this.state.players[0]}/>
-                        <Counter goal={this.goal} id={1} player={this.state.players[1]}/>
+                        {homeTeam}
                     </div>
                     <div className="score">
                         {this.state.homeGoal} - {this.state.awayGoal}
                     </div>
                     <div className="away">Away</div>
                     <div className="teamAway">
-                        <Counter goal={this.goal} id={2} player={this.state.players[2]}/>
-                        <Counter goal={this.goal} id={3} player={this.state.players[3]}/>
+                        {awayTeam}
                     </div>
 
                     <div>
