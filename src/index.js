@@ -1,11 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import "semantic-ui-css/semantic.min.css";
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
 
-import registerServiceWorker from './registerServiceWorker';
-import {StatsTable} from './components/stats-table/stats-table.js'
-import {ScoreBoard} from './components/scoreboard/scoreboard.js'
+import registerServiceWorker from "./registerServiceWorker";
 import {MatchResultService} from "./services/match-results-service";
+import {StatsTable} from "./components/stats-table/stats-table";
+import {ScoreBoard} from "./components/scoreboard/scoreboard";
+import StepGameplay from "./components/select-player-in-teams/step-gameplay";
 
 let playerList = require('./mocks/player-list.json');
 
@@ -82,7 +84,7 @@ class App extends React.Component {
                   serie="innebandy2018"
                 />
 
-
+                <StepGameplay />
                 <button onClick={this.getPlayerHistory}>Test</button>
 
             </div>
