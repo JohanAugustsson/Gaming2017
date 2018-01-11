@@ -22,57 +22,58 @@ export class StatsTable extends React.Component{
   }
 
   render(){
-      let playersAll = this.props.players.map(player=>{
+      let x = Object.keys(this.props.players)
+      let players = this.props.players;
 
-
-
-
-
+      //let playersAll = this.props.players.map(player=>{
+      let playersAll = x.map(player=>{
       return(
-        <tr key={player.id}>
+        <tr key={players[player].id}>
           <td className="playerName historyTable">
-            {player.name}
+            {players[player].name}
           </td>
           <td className="playerMatch historyTable">
-            {player.matches}
+            {players[player].matches}
           </td>
           <td className="playerMatch historyTable">
-            {player.matchesHome}
+            {players[player].matchesHome}
           </td>
           <td className="playerMatch historyTable">
-            {player.matchesAway}
+            {players[player].matchesAway}
           </td>
           <td className="playerWins historyTable">
-            {player.wins}
+            {players[player].wins}
           </td>
           <td className="historyTable">
-            {player.matches>0 ? player.matches / player.wins: "0"}
+            {(players[player].matches > 0 ?  players[player].wins / players[player].matches : "0")*100 +"%"}
           </td>
           <td className="playerGt historyTable">
-            {player.gt}
+            {players[player].gt}
           </td>
           <td className="playerGh historyTable">
-            {player.gh}
+            {players[player].gh}
           </td>
           <td className="playerGa historyTable">
-            {player.ga}
+            {players[player].ga}
           </td>
           <td className="playerGoalsFor historyTable">
-            {player.goalFor}
+            {players[player].goalFor}
           </td>
           <td className="playerGoalsAgainst historyTable">
-            {player.goalAgainst}
+            {players[player].goalAgainst}
           </td>
           <td className="historyTable">
-            {player.goalFor - player.goalAgainst}
+            {players[player].goalFor - players[player].goalAgainst}
           </td>
+
+
           <td className="historyTable">
-            <button id="btnHome" name={player.name} onClick={this.handleClickHome}>Play Home</button>
+            <button id="btnHome" name={players[player].name} onClick={this.handleClickHome}>Play Home</button>
 
           </td>
           <td className="historyTable">
 
-            <button id="btnAway" name={player.name} onClick={this.handleClickAway}>Play Away</button>
+            <button id="btnAway" name={players[player].name} onClick={this.handleClickAway}>Play Away</button>
           </td>
         </tr>
 
@@ -90,7 +91,7 @@ export class StatsTable extends React.Component{
               <th className="historyTable">Home</th>
               <th className="historyTable">Away</th>
               <th className="historyTable">Wins</th>
-              <th className="historyTable">WR%</th>
+              <th className="historyTable">WR</th>
               <th className="historyTable">GT</th>
               <th className="historyTable">GH</th>
               <th className="historyTable">GA</th>
@@ -109,8 +110,9 @@ export class StatsTable extends React.Component{
     )
   }
 }
-
+/*
 StatsTable.propTypes={
-  players: PropTypes.array.isRequired
+  players: PropTypes.obj.isRequired
 
 };
+*/
