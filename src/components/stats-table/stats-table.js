@@ -45,7 +45,7 @@ export class StatsTable extends React.Component{
             {players[player].wins}
           </td>
           <td className="historyTable">
-            {(players[player].matches > 0 ?  players[player].wins / players[player].matches : "0")*100 +"%"}
+            {Math.floor((players[player].matches > 0 ?  players[player].wins / players[player].matches : "0")*100) +"%"}
           </td>
           <td className="playerGt historyTable">
             {players[player].gt}

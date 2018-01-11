@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import {StatsTable} from './components/stats-table/stats-table.js'
 import {ScoreBoard} from './components/scoreboard/scoreboard.js'
 import {MatchResultService} from "./services/match-results-service";
-
+import {StatsPlayedMatches} from "./components/stats-played-matches/stats-played-matches.js"
 let playerList = require('./mocks/player-list.json');
 
 
@@ -143,6 +143,7 @@ class App extends React.Component {
                 />
 
 
+                <StatsPlayedMatches />
                 <button onClick={this.getPlayerHistory}>Test</button>
 
             </div>
