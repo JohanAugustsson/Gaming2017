@@ -1,5 +1,5 @@
-[
-  {
+{
+  "Johan":{
     "id": 1,
     "name": "Johan",
     "matches": 0,
@@ -12,7 +12,7 @@
     "goalFor": 0,
     "goalAgainst": 0
   },
-  {
+  "Carl":{
     "id": 2,
     "name": "Carl",
     "matches": 0,
@@ -25,7 +25,7 @@
     "goalFor": 0,
     "goalAgainst": 0
   },
-  {
+  "Peter":{
     "id": 3,
     "name": "Peter",
     "matches": 0,
@@ -38,7 +38,7 @@
     "goalFor": 0,
     "goalAgainst": 0
   },
-  {
+  "Niklas":{
     "id": 4,
     "name": "Niklas",
     "matches": 0,
@@ -51,7 +51,7 @@
     "goalFor": 0,
     "goalAgainst": 0
   },
-  {
+  "Magnus":{
     "id": 5,
     "name": "Magnus",
     "matches": 0,
@@ -64,7 +64,7 @@
     "goalFor": 0,
     "goalAgainst": 0
   },
-  {
+  "Wille":{
     "id": 6,
     "name": "Wille",
     "matches": 0,
@@ -77,7 +77,7 @@
     "goalFor": 0,
     "goalAgainst": 0
   },
-  {
+  "Niklas":{
     "id": 7,
     "name": "Niklas",
     "matches": 0,
@@ -90,7 +90,7 @@
     "goalFor": 0,
     "goalAgainst": 0
   },
-  {
+  "Martin":{
     "id": 8,
     "name": "Martin",
     "matches": 0,
@@ -103,4 +103,4 @@
     "goalFor": 0,
     "goalAgainst": 0
   }
-]
+}
