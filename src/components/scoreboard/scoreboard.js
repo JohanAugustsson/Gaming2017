@@ -16,7 +16,7 @@ export class ScoreBoard extends React.Component {
         this.goal = this.goal.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        
+
     }
 
 
