@@ -12,6 +12,8 @@ import Table from "semantic-ui-react/dist/es/collections/Table/Table";
 import {StepGameplay} from "./components/step-gameplay/step-gameplay";
 import Segment from "semantic-ui-react/dist/es/elements/Segment/Segment";
 import {GPC} from "./lib/gameplay-constants";
+import Icon from "semantic-ui-react/dist/es/elements/Icon/Icon";
+import Grid from "semantic-ui-react/dist/es/collections/Grid/Grid";
 
 let playerList = require('./mocks/player-list.json');
 
@@ -88,57 +90,170 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Segment>
-                    <StepGameplay currentStep={this.state.currentStep} onChange={this.onChangeStep2}/>
-                    <Table>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell width={1}>Name</Table.HeaderCell>
-                                <Table.HeaderCell width={2}>Team</Table.HeaderCell>
 
-                            </Table.Row>
-                        </Table.Header>
+                <StepGameplay currentStep={this.state.currentStep} onChange={this.onChangeStep2}/>
+                <Segment attached>
 
-                        <Table.Body>
-                            <Table.Row>
-                                <Table.Cell>Johan</Table.Cell>
-                                <Table.Cell> <Button.Group>
-                                    <Button>Home</Button>
-                                    <Button.Or />
-                                    <Button >Away</Button>
-                                </Button.Group></Table.Cell>
+                    {this.state.currentStep === GPC.STEP_GAMEPLAY.TEAM_UP ?
+                        <Table unstackable collapsing>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell>Name</Table.HeaderCell>
+                                    <Table.HeaderCell>Team</Table.HeaderCell>
 
-                            </Table.Row>
-                            <Table.Row>
-                                <Table.Cell>Peter</Table.Cell>
-                                <Table.Cell> <Button.Group>
-                                    <Button>Home</Button>
-                                    <Button.Or />
-                                    <Button>Away</Button>
-                                </Button.Group></Table.Cell>
+                                </Table.Row>
+                            </Table.Header>
 
-                            </Table.Row>
-                            <Table.Row>
-                                <Table.Cell>Carl</Table.Cell>
-                                <Table.Cell> <Button.Group>
-                                    <Button>Home</Button>
-                                    <Button.Or />
-                                    <Button>Away</Button>
-                                </Button.Group></Table.Cell>
+                            <Table.Body>
+                                <Table.Row>
+                                    <Table.Cell>Johan</Table.Cell>
+                                    <Table.Cell> <Button.Group>
+                                        <Button>Home</Button>
+                                        <Button.Or />
+                                        <Button >Away</Button>
+                                    </Button.Group></Table.Cell>
 
-                            </Table.Row>
-                            <Table.Row>
-                                <Table.Cell>Magnus</Table.Cell>
-                                <Table.Cell> <Button.Group>
-                                    <Button>Home</Button>
-                                    <Button.Or />
-                                    <Button>Away</Button>
-                                </Button.Group></Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>Peter</Table.Cell>
+                                    <Table.Cell> <Button.Group>
+                                        <Button>Home</Button>
+                                        <Button.Or />
+                                        <Button>Away</Button>
+                                    </Button.Group></Table.Cell>
 
-                            </Table.Row>
-                        </Table.Body>
-                    </Table>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>Carl</Table.Cell>
+                                    <Table.Cell> <Button.Group>
+                                        <Button>Home</Button>
+                                        <Button.Or />
+                                        <Button>Away</Button>
+                                    </Button.Group></Table.Cell>
 
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>Magnus</Table.Cell>
+                                    <Table.Cell> <Button.Group>
+                                        <Button>Home</Button>
+                                        <Button.Or />
+                                        <Button>Away</Button>
+                                    </Button.Group></Table.Cell>
+
+                                </Table.Row>
+                            </Table.Body>
+                        </Table>
+                        :
+                        <div>
+                            <Grid centered>
+                                <Grid.Column mobile={16} tablet={8} computer={4}>
+                                    1 - 0 should be be sticky
+                                </Grid.Column>
+                            </Grid>
+                            <Grid stackable columns={2}>
+                                <Grid.Column>
+                                    <Table unstackable collapsing>
+                                        <Table.Header>
+                                            <Table.Row>
+                                                <Table.HeaderCell >Name</Table.HeaderCell>
+                                                <Table.HeaderCell >Score</Table.HeaderCell>
+
+                                            </Table.Row>
+                                        </Table.Header>
+
+                                        <Table.Body>
+                                            <Table.Row>
+                                                <Table.Cell>Johan</Table.Cell>
+                                                <Table.Cell> <Button.Group>
+                                                    <Button><Icon name='minus'/></Button>
+                                                    <Button.Or text="1"/>
+                                                    <Button><Icon name='plus'/></Button>
+                                                </Button.Group></Table.Cell>
+
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>Peter</Table.Cell>
+                                                <Table.Cell> <Button.Group>
+                                                    <Button><Icon name='minus'/></Button>
+                                                    <Button.Or text="0"/>
+                                                    <Button><Icon name='plus'/></Button>
+                                                </Button.Group></Table.Cell>
+
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>Carl</Table.Cell>
+                                                <Table.Cell> <Button.Group>
+                                                    <Button><Icon name='minus'/></Button>
+                                                    <Button.Or text="0"/>
+                                                    <Button><Icon name='plus'/></Button>
+                                                </Button.Group></Table.Cell>
+
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>Magnus</Table.Cell>
+                                                <Table.Cell> <Button.Group>
+                                                    <Button><Icon name='minus'/></Button>
+                                                    <Button.Or text="0"/>
+                                                    <Button><Icon name='plus'/></Button>
+                                                </Button.Group></Table.Cell>
+
+                                            </Table.Row>
+                                        </Table.Body>
+                                    </Table>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Table unstackable collapsing>
+                                        <Table.Header>
+                                            <Table.Row>
+                                                <Table.HeaderCell >Name</Table.HeaderCell>
+                                                <Table.HeaderCell >Score</Table.HeaderCell>
+
+                                            </Table.Row>
+                                        </Table.Header>
+
+                                        <Table.Body>
+                                            <Table.Row>
+                                                <Table.Cell>Johan</Table.Cell>
+                                                <Table.Cell> <Button.Group>
+                                                    <Button><Icon name='minus'/></Button>
+                                                    <Button.Or text="1"/>
+                                                    <Button><Icon name='plus'/></Button>
+                                                </Button.Group></Table.Cell>
+
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>Peter</Table.Cell>
+                                                <Table.Cell> <Button.Group>
+                                                    <Button><Icon name='minus'/></Button>
+                                                    <Button.Or text="0"/>
+                                                    <Button><Icon name='plus'/></Button>
+                                                </Button.Group></Table.Cell>
+
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>Carl</Table.Cell>
+                                                <Table.Cell> <Button.Group>
+                                                    <Button><Icon name='minus'/></Button>
+                                                    <Button.Or text="0"/>
+                                                    <Button><Icon name='plus'/></Button>
+                                                </Button.Group></Table.Cell>
+
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell>Magnus</Table.Cell>
+                                                <Table.Cell> <Button.Group>
+                                                    <Button><Icon name='minus'/></Button>
+                                                    <Button.Or text="0"/>
+                                                    <Button><Icon name='plus'/></Button>
+                                                </Button.Group></Table.Cell>
+
+                                            </Table.Row>
+                                        </Table.Body>
+                                    </Table>
+                                </Grid.Column>
+                            </Grid>
+                        </div>
+                    }
                 </Segment>
                 <StatsTable matchResult={this.state.matchResults} players={playerList} add={this.addPlayerForMatch}/>
 
