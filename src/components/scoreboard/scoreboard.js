@@ -16,7 +16,7 @@ export class ScoreBoard extends React.Component {
         this.goal = this.goal.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        
+
     }
 
 
@@ -35,7 +35,7 @@ export class ScoreBoard extends React.Component {
 
     goal(changedScore, player) {
         let list = this.props.players;
-        list[player.name].score +=changedScore;
+        list[player.name].goalTotal +=changedScore;
 
         if (player.isHomeTeam) {
             let homeGoal = this.state.homeGoal + changedScore;
@@ -63,11 +63,11 @@ export class ScoreBoard extends React.Component {
         let homeTeam = listPlay.filter(x=>x.isHomeTeam);
         let awayTeam = listPlay.filter(x=>!x.isHomeTeam);
 
-        homeTeam = homeTeam.map( (x,index) =>{
-          return <Counter key={index} id={index} goal={this.goal} player={x} />;
+        homeTeam = homeTeam.map( (name,index) =>{
+          return <Counter key={index} id={index} goal={this.goal} player={name} />;
         })
-        awayTeam = awayTeam.map( (x,index) =>{
-          return <Counter key={index} id={index} goal={this.goal} player={x} />;
+        awayTeam = awayTeam.map( (name,index) =>{
+          return <Counter key={index} id={index} goal={this.goal} player={name} />;
         })
 
         return (
