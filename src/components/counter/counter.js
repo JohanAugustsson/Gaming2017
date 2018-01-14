@@ -21,7 +21,7 @@ export class Counter extends React.Component {
     decrementScore(event) {
         let player = this.props.player;
         this.props.goal(-1, player);
-      
+
     }
 
     render() {
@@ -29,7 +29,7 @@ export class Counter extends React.Component {
             <div className="player">
                 <span className="playerName">{this.props.player.name}</span>
                 <button className="danger" onClick={this.decrementScore}>-</button>
-                <span>{this.props.player.score}</span>
+                <span>{this.props.player.goalTotal}</span>
                 <button className="primary" onClick={this.incrementScore}>+</button>
             </div>
         );

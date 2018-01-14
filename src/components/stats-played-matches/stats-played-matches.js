@@ -8,6 +8,31 @@ export class StatsPlayedMatches extends React.Component{
 
   render(){
 
+    let games = this.props.matchResults;
+    console.log("Nu är vi i stats");
+    console.log(this.props.matchResults);
+
+    let gamesKeys = Object.keys(games);
+
+    let showMatchesPlayed ="hej"
+    /*
+    let showMatchesPlayed = gamesKeys.map(gameId =>{
+        let playerHome= games[gameId].homePlayers
+        //console.log(games[gameId])
+        return(
+          <Table.Row key={games[gameId].matchId}>
+            <Table.Cell>
+              {games[gameId].matchId}
+            </Table.Cell>
+            <Table.Cell>
+              {}
+            </Table.Cell>
+          </Table.Row>
+
+        )
+
+    })
+    */
     return(
       <div>
         <Button primary>Primary</Button>
@@ -38,7 +63,9 @@ export class StatsPlayedMatches extends React.Component{
           <Table.Cell>Denied</Table.Cell>
           <Table.Cell textAlign='right'>None</Table.Cell>
         </Table.Row>
+        {showMatchesPlayed}
       </Table.Body>
+
     </Table>
 
 
