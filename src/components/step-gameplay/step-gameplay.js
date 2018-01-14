@@ -4,7 +4,7 @@ import {GPC} from "../../lib/gameplay-constants";
 
 export const StepGameplay = (props) => {
     return (
-        <Step.Group attached='top' size="tiny" unstackable>
+        <Step.Group unstackable>
             <Step
                 active={props.currentStep === GPC.STEP_GAMEPLAY.TEAM_UP}
                 icon='users'
@@ -19,7 +19,7 @@ export const StepGameplay = (props) => {
                 link
                 onClick={(event) => props.onChange(GPC.STEP_GAMEPLAY.GAMEPLAY, event)}
                 title={GPC.STEP_GAMEPLAY.GAMEPLAY}
-                description='Enter your match scores'
+                description='Enter points in match'
             />
         </Step.Group>
     )
