@@ -4,7 +4,7 @@ import {GPC} from "../../lib/gameplay-constants";
 
 export const StepGameplay = (props) => {
     return (
-        <Step.Group unstackable>
+        <Step.Group attached='top' unstackable>
             <Step
                 active={props.currentStep === GPC.STEP_GAMEPLAY.TEAM_UP}
                 icon='users'
