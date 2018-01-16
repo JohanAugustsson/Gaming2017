@@ -114,13 +114,9 @@ export class StatsPlayerScore extends React.Component{
 
   }
 
-
-
     render(){
-
       //console.log(this.props.match);
       //console.log(this.props.playerScore);
-
 
       return(
 

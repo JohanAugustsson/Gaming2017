@@ -6,21 +6,8 @@ export class StatsTable extends React.Component{
     constructor(props){
       super(props)
 
-      this.handleClickHome = this.handleClickHome.bind(this);
-      this.handleClickAway = this.handleClickAway.bind(this);
     }
-  handleClickHome(e){
-    let name = e.target.name;
-    this.props.add(name,true);
-    let bgColor = e.target.style.backgroundColor !== "chartreuse" ? "chartreuse" : "darkslategray";
-     e.target.style.backgroundColor = bgColor;
-  }
-  handleClickAway(e){
-    let name = e.target.name;
-    this.props.add(name,false);
-    let bgColor = e.target.style.backgroundColor !== "red" ? "red" : "grey";
-     e.target.style.backgroundColor = bgColor;
-  }
+
 
   render(){
       let x = Object.keys(this.props.players)
@@ -67,15 +54,6 @@ export class StatsTable extends React.Component{
             {players[player].goalFor - players[player].goalAgainst}
           </td>
 
-
-          <td className="historyTable">
-            <button id="btnHome" name={players[player].name} onClick={this.handleClickHome}>Play Home</button>
-
-          </td>
-          <td className="historyTable">
-
-            <button id="btnAway" name={players[player].name} onClick={this.handleClickAway}>Play Away</button>
-          </td>
         </tr>
 
         )

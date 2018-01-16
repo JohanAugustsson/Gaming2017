@@ -18,14 +18,14 @@ class App extends React.Component {
         super(props);
         this.state = {
             matchResults: [], // Alla matcher som är spelade
-            players: {},       // lista med nuvarande spelare..
-            scoreOfPlayer: playerList, // Lista med alla som spelat.. lägg till scores
+            selectedMatchStream: {},  //
+
+            scoreOfPlayer: playerList // Används i Statstable för lista på spelare
 
         };
         this.saveMatchResults = this.saveMatchResults.bind(this);
-        this.addPlayerForMatch = this.addPlayerForMatch.bind(this);
-        this.resetPlayerForMatch = this.resetPlayerForMatch.bind(this);
         this.setScoreOfPlayers = this.setScoreOfPlayers.bind(this);
+        this.getSelectedMatchStreamOn = this.getSelectedMatchStreamOn.bind(this);
     }
 
     componentDidMount() {
@@ -37,36 +37,28 @@ class App extends React.Component {
     }
 
 
-    saveMatchResults(playersList,serie){
+    saveMatchResults(playersList,serie,matchId){
+        console.log(matchId);
+      MatchResultService.setMatchResults(playersList,serie,matchId);
 
-      MatchResultService.setMatchResults(playersList,serie);
+    }
+
+    getSelectedMatchStreamOn(){
+      let match = 1515849665586   //skall skicka in match till denna.. nu är den satt fast
+      let matchObj = {};
+        MatchResultService.getSelectedMatchStream(match).then(response => {
+        matchObj[match] = response;
+
+        this.setState({
+          selectedMatchStream : matchObj
+        })
+
+      });
 
     }
 
-    resetPlayerForMatch(){
-      this.setState({
-        players: {}
-      })
-    }
 
-    addPlayerForMatch(name,isHomeTeam){
 
-      let playerObj = this.state.players;
-      var player = {
-        name: name,
-        team: "the one",
-        isHomeTeam: isHomeTeam,
-        game: "Innebandy",
-        serie: "innebandy2018"
-      }
-
-      let addPlayer = new PlayerForMatch(player);
-      playerObj[name] = addPlayer[name];
-      this.setState({
-        players: playerObj
-      })
-
-    }
 
     setScoreOfPlayers(scoreOfPlayer){
       this.setState({
@@ -86,7 +78,8 @@ class App extends React.Component {
             <div>
                 <StatsTable players={this.state.scoreOfPlayer} add={this.addPlayerForMatch}/>
                 <ScoreBoard
-                  players={this.state.players}
+                  //players={this.state.players}
+                  match={this.state.selectedMatchStream}
                   saveMatch={this.saveMatchResults}
                   resetMatch={this.resetPlayerForMatch}
                   serie="innebandy2018"
@@ -100,7 +93,7 @@ class App extends React.Component {
                 />
 
 
-
+                <button onClick={this.getSelectedMatchStreamOn}>click to update selectedMatchStream</button>
             </div>
         );
     }

@@ -5,7 +5,7 @@ const rootRef = firebase.database().ref();
 export const MatchResultService = {
 
     getMatchResults()  {
-        return rootRef.child('matchResults/innebandy2018').once('value').then(snap=> {
+        return rootRef.child('matchResults/innebandy/innebandy2018').once('value').then(snap=> {
 
             return snap.val();
         });
@@ -17,13 +17,22 @@ export const MatchResultService = {
         })
     },
 
+    getSelectedMatchStream(match)  {
+        return rootRef.child(`matchResults/innebandy/innebandy2018/${match}`).once('value').then(snap=>{
+          return snap.val();
+        });
+    },
+
     //setMatchResults({serie="innebandy2018",isOvertime=false,isPenaltyShootout=false,players="0"){
-    setMatchResults(players,serie){
+    setMatchResults(players,serie,matchId){
       let d = new Date();
       let n = d.getTime();
+      let typ = "innebandy";
 
-      return rootRef.child(`matchResults/${serie}/${n}/`).set({
+      return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/`).set({
           isOvertime: false,
+          serie: serie,
+          typ: "innebandy",
           isPenaltyShootout: false,
           players : players
       });
