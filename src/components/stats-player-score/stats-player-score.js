@@ -31,7 +31,6 @@ export class StatsPlayerScore extends React.Component{
 
     playerKeys.map(selectedPlayer => {
       let onePlayer = match[selectedMatch].players[selectedPlayer]
-      //console.log(onePlayer);
 
       if(onePlayer.isHomeTeam){
         homeTeam.push(onePlayer)
@@ -58,7 +57,6 @@ export class StatsPlayerScore extends React.Component{
 
       homeTeam.map(selectedPlayer => {
         let playerScore = this.props.playerScore[selectedPlayer.name];
-        //console.log(playerScore);
 
         playerScore = {
           assist: playerScore.assist + selectedPlayer.assist ,
@@ -82,7 +80,6 @@ export class StatsPlayerScore extends React.Component{
 
       awayTeam.map(selectedPlayer => {
         let playerScore = this.props.playerScore[selectedPlayer.name];
-        //console.log(playerScore);
 
         playerScore = {
           assist: playerScore.assist + selectedPlayer.assist ,
@@ -99,26 +96,18 @@ export class StatsPlayerScore extends React.Component{
           goalAgainst: playerScore.goalAgainst + homeTeamScore,
         }
 
-        console.log(playerScore);
         this.props.playerScore[selectedPlayer.name] = playerScore;
       })
     let score = this.props.playerScore;
-
-    //this.props.setScore(score);
   }
 
   handelClickUpdateScore(){
     let playerScore= {};
     this.calculateScores(this.props.match,this.props.playerScore);
-    console.log(this.props.playerScore);
     this.props.setScore(this.props.playerScore);
-    console.log("nu kommer playerScore");
-    console.log(playerScore);
   }
 
     render(){
-      //console.log(this.props.match);
-      //console.log(this.props.playerScore);
 
       return(
 
