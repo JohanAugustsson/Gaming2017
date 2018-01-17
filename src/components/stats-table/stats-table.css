@@ -1,7 +1,11 @@
 
 .tbody{
+  display: block;
+  /*overflow-x: auto;    används för att få en scrollbar tabell.
+  white-space: nowrap; */
   color: white;
   background-color: #1E252D;
+
 }
 .historyTable{
   display: inline-block;
@@ -11,7 +15,7 @@
   color: #C4C4C4;
 }
 .historyTable:nth-child(1){
-  width: 150px;
+  width: 70px;
   text-align: left;
 
 }

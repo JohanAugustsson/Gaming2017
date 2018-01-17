@@ -14,7 +14,7 @@ export class StatsPlayerScore extends React.Component{
 
 
 
-  calculateScores(match,playerScore){                               // Väljer match för match  - STEG 1
+  calculateScores(match){                               // Väljer match för match  - STEG 1
     let matchKeys = Object.keys(match);
     matchKeys.map(selectedMatch =>{
       let playerKeys = Object.keys(match[selectedMatch].players);
@@ -53,7 +53,7 @@ export class StatsPlayerScore extends React.Component{
         homeWinner = 0;
       }
 
-      let playerScore = this.props.playerScore;
+      //let playerScore = this.props.playerScore;
 
 
       homeTeam.map(selectedPlayer => {
@@ -77,6 +77,7 @@ export class StatsPlayerScore extends React.Component{
 
 
         this.props.playerScore[selectedPlayer.name] = playerScore;
+
       })
 
       awayTeam.map(selectedPlayer => {
@@ -98,7 +99,7 @@ export class StatsPlayerScore extends React.Component{
           goalAgainst: playerScore.goalAgainst + homeTeamScore,
         }
 
-        //console.log(playerScore);
+        console.log(playerScore);
         this.props.playerScore[selectedPlayer.name] = playerScore;
       })
     let score = this.props.playerScore;
@@ -107,20 +108,17 @@ export class StatsPlayerScore extends React.Component{
   }
 
   handelClickUpdateScore(){
-
+    let playerScore= {};
     this.calculateScores(this.props.match,this.props.playerScore);
     console.log(this.props.playerScore);
     this.props.setScore(this.props.playerScore);
-
+    console.log("nu kommer playerScore");
+    console.log(playerScore);
   }
 
-
-
     render(){
-
       //console.log(this.props.match);
       //console.log(this.props.playerScore);
-
 
       return(
 

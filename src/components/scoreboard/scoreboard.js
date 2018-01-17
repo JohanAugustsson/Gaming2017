@@ -1,7 +1,7 @@
 import React from "react";
 import "./scoreboard.css";
 import {Counter} from "../counter/counter";
-
+import { Menu, } from 'semantic-ui-react';
 
 
 export class ScoreBoard extends React.Component {
@@ -9,89 +9,101 @@ export class ScoreBoard extends React.Component {
         super(props);
         this.state = {
             players: {},
-            homeGoal: 0,
-            awayGoal: 0,
-            serie: "innebandy2018"
+            serie: "innebandy2018",
+            activeItem: 'Home'
         };
         this.goal = this.goal.bind(this);
-        this.handleReset = this.handleReset.bind(this);
         this.handleSave = this.handleSave.bind(this);
-
+        this.handleClickHome = this.handleClickHome.bind(this);
     }
 
 
-
-    handleReset() {
-      this.props.resetMatch();
-    }
-
-
-    handleSave(event){
-      let playersList = this.props.players;
-      let serie = this.props.serie;
-      this.props.saveMatch(playersList,serie);
+    handleSave(list){
+      let lista = this.state.serie;
+      console.log(lista);
+      let matchId = Object.keys(this.props.match)[0];
+      let serie = "innebandy2018"
+      this.props.saveMatch(list,serie,matchId);
 
     }
 
     goal(changedScore, player) {
-        let list = this.props.players;
+        let matchId = Object.keys(this.props.match)[0];
+        let list = this.props.match[matchId].players;
         list[player.name].goalTotal +=changedScore;
+        console.log(list);
+        this.setState({
+            players: list
+        })
+        console.log(this.state.players);
 
-        if (player.isHomeTeam) {
-            let homeGoal = this.state.homeGoal + changedScore;
-            this.setState({
-                players: list,
-                homeGoal: homeGoal
-            })
-        } else {
-            let awayGoal = this.state.awayGoal + changedScore;
-            this.setState({
-                players: list,
-                awayGoal: awayGoal
-            })
-        }
-
+        this.handleSave(list);  // SPARAR DATA TILL DATABAS
     }
 
+
+
+    handleClickHome(event, {name}){
+      this.setState({
+        activeItem: name
+      })
+    }
+
+
+
     render() {
-        let names = Object.keys(this.props.players)
-        let obj = this.props.players
-        let listPlay = names.map(x=> {
-          return obj[x];
-        });
+        let homeTeam ="";
+        let awayTeam ="";
+        let goalHome=0;
+        let goalAway=0;
+        let matchId = Object.keys(this.props.match)[0];
 
-        let homeTeam = listPlay.filter(x=>x.isHomeTeam);
-        let awayTeam = listPlay.filter(x=>!x.isHomeTeam);
+        if(matchId){
+          let matchId = Object.keys(this.props.match)
+          let names = Object.keys(this.props.match[matchId].players)
+          let obj = this.props.match[matchId].players
+          let listPlay = names.map(x=> {
+            return obj[x];
+          });
 
-        homeTeam = homeTeam.map( (name,index) =>{
-          return <Counter key={index} id={index} goal={this.goal} player={name} />;
-        })
-        awayTeam = awayTeam.map( (name,index) =>{
-          return <Counter key={index} id={index} goal={this.goal} player={name} />;
-        })
+          homeTeam = listPlay.filter(x=>x.isHomeTeam);
+          awayTeam = listPlay.filter(x=>!x.isHomeTeam);
+          homeTeam = homeTeam.map( (name,index) =>{
+            goalHome+=name.goalTotal;
+            return <Counter key={index} id={index} goal={this.goal} player={name} />;
+          })
+          awayTeam = awayTeam.map( (name,index) =>{
+            goalAway+=name.goalTotal;
+            return <Counter key={index} id={index} goal={this.goal} player={name} />;
+          })
+        }
+        let whichTeam = "";
+        if(this.state.activeItem==="Home"){
+          whichTeam = homeTeam;
+        }else{
+          whichTeam = awayTeam;
+        }
 
         return (
+          <div>
             <div>
-                <div className="scoreBoard">
-                    <div className="header"> SCOREBOARD</div>
-                    <div className="home">Home</div>
-                    <div className="teamHome">
-                        {homeTeam}
-                    </div>
-                    <div className="score">
-                        {this.state.homeGoal} - {this.state.awayGoal}
-                    </div>
-                    <div className="away">Away</div>
-                    <div className="teamAway">
-                        {awayTeam}
-                    </div>
-
-                    <div>
-                        <button onClick={this.handleReset}>Reset</button>
-                        <button onClick={this.handleSave}>Save</button>
-                    </div>
-                </div>
+              MatchId: {matchId}
             </div>
+            <div className="score">
+                {goalHome} - {goalAway}
+            </div>
+            <Menu pointing>
+              <Menu.Item name='Home' active={this.state.activeItem==="Home"} onClick={this.handleClickHome} />
+              <Menu.Item name='Away' active={this.state.activeItem === 'Away'} onClick={this.handleClickHome} />
+
+            </Menu>
+              {whichTeam}
+
+
+
+
+
+
+          </div>
         );
     }
 
