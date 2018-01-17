@@ -57,10 +57,6 @@ export class Counter extends React.Component {
 }
 
 
-Counter.propTypes = {
-    player: PropTypes.object.isRequired
-};
-
 
 
 /* skall vara under List.Item om man vil ha bild

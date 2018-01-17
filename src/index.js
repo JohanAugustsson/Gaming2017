@@ -9,7 +9,7 @@ import {ScoreBoard} from './components/scoreboard/scoreboard.js'
 import {MatchResultService} from "./services/match-results-service";
 import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js"
 let playerList = require('./mocks/player-list.json');
-let playerList2 = require('./mocks/player-list0.json');
+
 
 
 
@@ -19,7 +19,7 @@ class App extends React.Component {
         this.state = {
             matchResults: [], // Alla matcher som är spelade
             selectedMatchStream: {},  //
-
+            playerList : {},
             scoreOfPlayer: playerList // Används i Statstable för lista på spelare
 
         };
@@ -32,6 +32,11 @@ class App extends React.Component {
         MatchResultService.getMatchResults().then(response => {
             this.setState({
                 matchResults: response
+            });
+        });
+        MatchResultService.getPlayerList().then(response => {
+            this.setState({
+                playerList: response
             });
         });
     }
@@ -72,8 +77,8 @@ class App extends React.Component {
     render() {
         console.log(this.state.players);
         console.log(this.state.scoreOfPlayer);
-
-
+        console.log("MatchResultsAll:");
+        console.log(this.state.matchResults);
         return (
             <div>
                 <StatsTable players={this.state.scoreOfPlayer} add={this.addPlayerForMatch}/>
@@ -87,7 +92,7 @@ class App extends React.Component {
 
                 <StatsPlayerScore
                   match={this.state.matchResults}
-                  playerScore={playerList}
+                  playerScore={this.state.playerList}
                   setScore = {this.setScoreOfPlayers}
 
                 />
@@ -104,7 +109,7 @@ registerServiceWorker();
 
 
 
-
+/*
 
 class PlayerForMatch{
   constructor(player){
@@ -124,3 +129,4 @@ class PlayerForMatch{
     }
   }
 }
+*/

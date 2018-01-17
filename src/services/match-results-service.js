@@ -11,6 +11,13 @@ export const MatchResultService = {
         });
     },
 
+    getPlayerList()  {
+        return rootRef.child('players/').once('value').then(snap=> {
+
+            return snap.val();
+        });
+    },
+
     getMatchResultsStream()  {
         return rootRef.child('matchResults').on('value',snap => {
           return snap.val();

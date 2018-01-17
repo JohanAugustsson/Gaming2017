@@ -1,7 +1,7 @@
 import React from "react";
 import "./scoreboard.css";
 import {Counter} from "../counter/counter";
-import { Input, Menu, Segment, Label } from 'semantic-ui-react';
+import { Menu, } from 'semantic-ui-react';
 
 
 export class ScoreBoard extends React.Component {
@@ -18,11 +18,12 @@ export class ScoreBoard extends React.Component {
     }
 
 
-    handleSave(event){
+    handleSave(list){
+      let lista = this.state.serie;
+      console.log(lista);
       let matchId = Object.keys(this.props.match)[0];
-      let playersList = this.props.match[matchId].players;
       let serie = "innebandy2018"
-      this.props.saveMatch(playersList,serie,matchId);
+      this.props.saveMatch(list,serie,matchId);
 
     }
 
@@ -30,11 +31,13 @@ export class ScoreBoard extends React.Component {
         let matchId = Object.keys(this.props.match)[0];
         let list = this.props.match[matchId].players;
         list[player.name].goalTotal +=changedScore;
-
+        console.log(list);
         this.setState({
             players: list
         })
-        this.handleSave();  // SPARAR DATA TILL DATABAS
+        console.log(this.state.players);
+
+        this.handleSave(list);  // SPARAR DATA TILL DATABAS
     }
 
 
@@ -82,6 +85,9 @@ export class ScoreBoard extends React.Component {
 
         return (
           <div>
+            <div>
+              MatchId: {matchId}
+            </div>
             <div className="score">
                 {goalHome} - {goalAway}
             </div>
