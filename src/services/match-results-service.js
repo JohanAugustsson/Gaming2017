@@ -32,8 +32,8 @@ export const MatchResultService = {
 
     //setMatchResults({serie="innebandy2018",isOvertime=false,isPenaltyShootout=false,players="0"){
     setMatchResults(players,serie,matchId){
-      let d = new Date();
-      let n = d.getTime();
+      /*let d = new Date();   sätter match id.. används ej för tillfälligt
+      let n = d.getTime();*/
       let typ = "innebandy";
 
       return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/`).set({

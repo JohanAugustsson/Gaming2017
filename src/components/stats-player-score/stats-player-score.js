@@ -14,24 +14,25 @@ export class StatsPlayerScore extends React.Component{
 
 
 
-  calculateScores(match){                               // Väljer match för match  - STEG 1
+  calculateScores(match,scoreHolder){                               // Väljer match för match  - STEG 1
+
     let matchKeys = Object.keys(match);
-    matchKeys.map(selectedMatch =>{
+    matchKeys.forEach(selectedMatch =>{
       let playerKeys = Object.keys(match[selectedMatch].players);
-      this.calculateSelectedPlayer(selectedMatch,playerKeys);
+      this.calculateSelectedPlayer(selectedMatch,playerKeys,scoreHolder);
     })
   }
 
-  calculateSelectedPlayer(selectedMatch,playerKeys){                 // Väljer Spelare för spelare   - STEG 2
+  calculateSelectedPlayer(selectedMatch,playerKeys,scoreHolder){                 // Väljer Spelare för spelare   - STEG 2
     let match = (this.props.match);
     let homeTeam  = [];
     let awayTeam = [];
     let homeTeamScore = 0;
     let awayTeamScore = 0;
 
-    playerKeys.map(selectedPlayer => {
+    playerKeys.forEach(selectedPlayer => {
       let onePlayer = match[selectedMatch].players[selectedPlayer]
-      //console.log(onePlayer);
+
 
       if(onePlayer.isHomeTeam){
         homeTeam.push(onePlayer)
@@ -42,24 +43,44 @@ export class StatsPlayerScore extends React.Component{
       }
     })
 
-    this.calculateTeamScores(homeTeam,awayTeam,homeTeamScore,awayTeamScore);
+    this.calculateTeamScores(homeTeam,awayTeam,homeTeamScore,awayTeamScore,scoreHolder);
   }
 
-  calculateTeamScores(homeTeam,awayTeam,homeTeamScore,awayTeamScore){        // Behandlar och uppdaterar score för lag  - STEG 3
+  calculateTeamScores(homeTeam,awayTeam,homeTeamScore,awayTeamScore,scoreHolder){        // Behandlar och uppdaterar score för lag  - STEG 3
       let awayWinner = 0;
-      let homeWinner = 1;
-      if(homeTeamScore<awayTeamScore){
+      let homeWinner = 0;
+      let draw = 0;
+
+      if(homeTeamScore>awayTeamScore){
+        homeWinner = 1;
+      }else if (homeTeamScore<awayTeamScore) {
         awayWinner = 1;
-        homeWinner = 0;
+      }else{
+        draw = 1;
       }
 
-      //let playerScore = this.props.playerScore;
 
 
-      homeTeam.map(selectedPlayer => {
-        let playerScore = this.props.playerScore[selectedPlayer.name];
-        //console.log(playerScore);
 
+      homeTeam.forEach(selectedPlayer => {  //Poäng för hemmalag
+        let playerScore = scoreHolder[selectedPlayer.name];
+
+
+        scoreHolder[selectedPlayer.name].assist = playerScore.assist + selectedPlayer.assist;
+        scoreHolder[selectedPlayer.name].isHomeTeam = playerScore.isHomeTeam;
+        scoreHolder[selectedPlayer.name].name = playerScore.name;
+        scoreHolder[selectedPlayer.name].matchesPlayed = playerScore.matchesPlayed + 1;
+        scoreHolder[selectedPlayer.name].matchesHome = playerScore.matchesHome + 1;
+        scoreHolder[selectedPlayer.name].matchesAway = playerScore.matchesAway;
+        scoreHolder[selectedPlayer.name].matchesWins = playerScore.matchesWins + homeWinner;
+        scoreHolder[selectedPlayer.name].matchesDraw = playerScore.matchesDraw + draw;
+        scoreHolder[selectedPlayer.name].goalTotal = playerScore.goalTotal + selectedPlayer.goalTotal;
+        scoreHolder[selectedPlayer.name].goalHome =  playerScore.goalHome + selectedPlayer.goalHome;
+        scoreHolder[selectedPlayer.name].goalAway =  playerScore.goalAway;
+        scoreHolder[selectedPlayer.name].goalFor =  playerScore.goalFor + homeTeamScore;
+        scoreHolder[selectedPlayer.name].goalAgainst =  playerScore.goalAgainst + awayTeamScore;
+
+        /*
         playerScore = {
           assist: playerScore.assist + selectedPlayer.assist ,
           isHomeTeam : playerScore.isHomeTeam,
@@ -74,15 +95,33 @@ export class StatsPlayerScore extends React.Component{
           goalFor: playerScore.goalFor + homeTeamScore,
           goalAgainst: playerScore.goalAgainst + awayTeamScore,
         }
+        scoreHolder[selectedPlayer.name] = playerScore;
+        */
 
 
-        this.props.playerScore[selectedPlayer.name] = playerScore;
+
 
       })
 
-      awayTeam.map(selectedPlayer => {
+      awayTeam.forEach(selectedPlayer => {  //Poäng för bortalag
         let playerScore = this.props.playerScore[selectedPlayer.name];
-        //console.log(playerScore);
+
+
+        scoreHolder[selectedPlayer.name].assist = playerScore.assist + selectedPlayer.assist;
+        scoreHolder[selectedPlayer.name].isHomeTeam = playerScore.isHomeTeam;
+        scoreHolder[selectedPlayer.name].name = playerScore.name;
+        scoreHolder[selectedPlayer.name].matchesPlayed = playerScore.matchesPlayed + 1;
+        scoreHolder[selectedPlayer.name].matchesHome = playerScore.matchesHome;
+        scoreHolder[selectedPlayer.name].matchesAway = playerScore.matchesAway + 1;
+        scoreHolder[selectedPlayer.name].matchesWins = playerScore.matchesWins + awayWinner;
+        scoreHolder[selectedPlayer.name].matchesDraw = playerScore.matchesDraw + draw;
+        scoreHolder[selectedPlayer.name].goalTotal = playerScore.goalTotal + selectedPlayer.goalTotal;
+        scoreHolder[selectedPlayer.name].goalHome =  playerScore.goalHome;
+        scoreHolder[selectedPlayer.name].goalAway = playerScore.goalAway + selectedPlayer.goalAway;
+        scoreHolder[selectedPlayer.name].goalFor =  playerScore.goalFor + awayTeamScore;
+        scoreHolder[selectedPlayer.name].goalAgainst =  playerScore.goalAgainst + homeTeamScore;
+
+        /*
 
         playerScore = {
           assist: playerScore.assist + selectedPlayer.assist ,
@@ -99,26 +138,26 @@ export class StatsPlayerScore extends React.Component{
           goalAgainst: playerScore.goalAgainst + homeTeamScore,
         }
 
-        console.log(playerScore);
-        this.props.playerScore[selectedPlayer.name] = playerScore;
-      })
-    let score = this.props.playerScore;
+        */
 
-    //this.props.setScore(score);
+
+
+      })
+
+
+
   }
 
   handelClickUpdateScore(){
-    let playerScore= {};
-    this.calculateScores(this.props.match,this.props.playerScore);
-    console.log(this.props.playerScore);
-    this.props.setScore(this.props.playerScore);
-    console.log("nu kommer playerScore");
-    console.log(playerScore);
+    let scoreHolder= this.props.playerScore;
+    this.calculateScores(this.props.match,scoreHolder);
+    this.props.setScore(scoreHolder);
+
+
   }
 
     render(){
-      //console.log(this.props.match);
-      //console.log(this.props.playerScore);
+
 
       return(
 
