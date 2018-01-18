@@ -1,8 +1,8 @@
 
 .tbody{
   display: block;
-  /*overflow-x: auto;    används för att få en scrollbar tabell.
-  white-space: nowrap; */
+  overflow-x: auto;    
+  white-space: nowrap;
   color: white;
   background-color: #1E252D;
 

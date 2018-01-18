@@ -8,7 +8,7 @@ import {StatsTable} from './components/stats-table/stats-table.js'
 import {ScoreBoard} from './components/scoreboard/scoreboard.js'
 import {MatchResultService} from "./services/match-results-service";
 import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js"
-let playerList = require('./mocks/player-list.json');
+
 
 
 
@@ -19,8 +19,8 @@ class App extends React.Component {
         this.state = {
             matchResults: [], // Alla matcher som är spelade
             selectedMatchStream: {},  //
-            playerList : {},
-            scoreOfPlayer: playerList // Används i Statstable för lista på spelare
+            playerList : {},   // Används för att hämta spel lista.
+            scoreOfPlayer: {} // Används i Statstable för lista på spelare.
 
         };
         this.saveMatchResults = this.saveMatchResults.bind(this);
@@ -36,10 +36,12 @@ class App extends React.Component {
         });
         MatchResultService.getPlayerList().then(response => {
             this.setState({
-                playerList: response
+                playerList: response,
+                scoreOfPlayer: response
             });
         });
     }
+
 
 
     saveMatchResults(playersList,serie,matchId){
@@ -66,19 +68,26 @@ class App extends React.Component {
 
 
     setScoreOfPlayers(scoreOfPlayer){
+
+      MatchResultService.getPlayerList().then(response => {  // Nollställer playerList
+          this.setState({
+              playerList: response
+          });
+      });
+      MatchResultService.getMatchResults().then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
+          this.setState({
+              matchResults: response
+          });
+      });
+
+
       this.setState({
         scoreOfPlayer : scoreOfPlayer
       })
     }
 
-
-
-
     render() {
-        console.log(this.state.players);
-        console.log(this.state.scoreOfPlayer);
-        console.log("MatchResultsAll:");
-        console.log(this.state.matchResults);
+
         return (
             <div>
                 <StatsTable players={this.state.scoreOfPlayer} add={this.addPlayerForMatch}/>

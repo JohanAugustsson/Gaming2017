@@ -1,6 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { List, Image, Button } from 'semantic-ui-react';
+
+import { List, Button } from 'semantic-ui-react';
 import './counter.css'
 
 export class Counter extends React.Component {
