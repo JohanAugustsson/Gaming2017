@@ -9,6 +9,7 @@ export const SelectPlayersInTeams = (props) => {
                 <SwitchTeam key={props.players[player].id}
                             id={props.players[player].id}
                             changeTeam={props.changeTeam}
+                            removePlayerFromTeam={props.removePlayerFromTeam}
                             player={props.players[player]} />)
             }
         </div>

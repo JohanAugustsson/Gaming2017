@@ -61,8 +61,8 @@ export class ScoreBoard extends React.Component {
             return obj[x];
           });
 
-          homeTeam = listPlay.filter(x=>x.isHomeTeam);
-          awayTeam = listPlay.filter(x=>!x.isHomeTeam);
+          homeTeam = listPlay.filter(x=>x.playsForTeam === 1);
+          awayTeam = listPlay.filter(x=>!x.playsForTeam === 2);
           homeTeam = homeTeam.map( (name,index) =>{
             goalHome+=name.goalTotal;
             return <Counter key={index} id={index} goal={this.goal} player={name} />;

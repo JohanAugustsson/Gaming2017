@@ -15,9 +15,9 @@ export const SwitchTeam= (props) => {
                     </span>
 
                             <Button.Group size='small' >
-                                <Button className="btn-score" onClick={(event) => props.changeTeam({name: props.player.name,playsForTeam:1},event)}>Home</Button>
-                                <Button onClick={(event) => props.changeTeam({name: props.player.name,playsForTeam:0},event)}>Not Participating</Button>
-                                <Button onClick={(event) => props.changeTeam({name: props.player.name,playsForTeam:2},event)}>Away</Button>
+                                <Button active={props.player.playsForTeam === 1} className="btn-score" onClick={(event) => props.changeTeam({player: props.player, playsForTeam:{teamNr:1, id: "playsForTeam"}})}>Home</Button>
+                                <Button onClick={(event) => props.removePlayerFromTeam({name: props.player.name})}>Not Participating</Button>
+                                <Button onClick={(event) => props.changeTeam({player: props.player, playsForTeam:{teamNr:2, id: "playsForTeam"}})}>Away</Button>
                             </Button.Group>
 
                         </List.Content>
@@ -27,4 +27,4 @@ export const SwitchTeam= (props) => {
 
         </div>
     )
-}
+};

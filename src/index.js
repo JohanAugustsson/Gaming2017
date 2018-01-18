@@ -27,6 +27,7 @@ class App extends React.Component {
         this.setScoreOfPlayers = this.setScoreOfPlayers.bind(this);
         this.getSelectedMatchStreamOn = this.getSelectedMatchStreamOn.bind(this);
         this.changeTeam = this.changeTeam.bind(this);
+        this.removePlayerFromTeam = this.removePlayerFromTeam.bind(this);
     }
 
     componentDidMount() {
@@ -40,7 +41,7 @@ class App extends React.Component {
                 playerList: response
             });
         });
-       this.getSelectedMatchStreamOn();
+        this.getSelectedMatchStreamOn();
     }
 
 
@@ -52,6 +53,7 @@ class App extends React.Component {
     getSelectedMatchStreamOn() {
         let match = 1515849665586   //skall skicka in match till denna.. nu är den satt fast
         let matchObj = {};
+
         MatchResultService.getSelectedMatchStream(match).then(response => {
             matchObj[match] = response;
 
@@ -71,8 +73,24 @@ class App extends React.Component {
         })
     }
 
-    changeTeam(player, event) {
-       let uppdateradMatch = switchTeam(this.state.selectedMatchStream,player);
+
+
+    changeTeam(player) {
+        this.setState({selectedMatchStream: switchTeam(this.state.selectedMatchStream, player.player, player.playsForTeam)},
+            function () {
+                MatchResultService.setMatchResults(this.state.selectedMatchStream[1515849665586].players, "innebandy2018", 1515849665586)
+            });
+    }
+
+    /**
+     * Tar bort spelare från match
+     * Todo: skicka in parametrar för match och event.
+     * @param player player att ta bort
+     */
+    removePlayerFromTeam(player) {
+        MatchResultService.removePlayerFromMatch("innebandy", "innebandy2018", 1515849665586, player.name).then(
+            this.getSelectedMatchStreamOn()
+        );
     }
 
 
@@ -81,21 +99,22 @@ class App extends React.Component {
         return (
             <div>
 
-                <SelectPlayersInTeams players={playerList} changeTeam={this.changeTeam}/>
+                <SelectPlayersInTeams players={playerList} changeTeam={this.changeTeam}
+                                      removePlayerFromTeam={this.removePlayerFromTeam}/>
 
                 <StatsTable players={this.state.scoreOfPlayer} add={this.addPlayerForMatch}/>
                 <ScoreBoard
-                    //players={this.state.players}
-                    match={this.state.selectedMatchStream}
-                    saveMatch={this.saveMatchResults}
-                    resetMatch={this.resetPlayerForMatch}
-                    serie="innebandy2018"
+                //players={this.state.players}
+                match={this.state.selectedMatchStream}
+                saveMatch={this.saveMatchResults}
+                resetMatch={this.resetPlayerForMatch}
+                serie="innebandy2018"
                 />
 
                 <StatsPlayerScore
-                    match={this.state.matchResults}
-                    playerScore={this.state.playerList}
-                    setScore={this.setScoreOfPlayers}
+                match={this.state.matchResults}
+                playerScore={this.state.playerList}
+                setScore={this.setScoreOfPlayers}
 
                 />
 
