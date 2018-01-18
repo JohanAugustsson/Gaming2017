@@ -32,8 +32,6 @@ export class Counter extends React.Component {
           <div>
             <div className="teams">
 
-
-
             <List divided verticalAlign='middle'>
                 <List.Item>
                   <List.Content >
@@ -55,20 +53,3 @@ export class Counter extends React.Component {
         );
     }
 }
-
-
-
-
-/* skall vara under List.Item om man vil ha bild
-<Image avatar src='/assets/images/avatar/small/daniel.jpg' />
-*/
-
-
-/*
-<div className="player">
-    <span className="playerName">{this.props.player.name}</span>
-    <button className="danger" onClick={this.decrementScore}>-</button>
-    <span>{this.props.player.goalTotal}</span>
-    <button className="primary" onClick={this.incrementScore}>+</button>
-</div>
-*/
