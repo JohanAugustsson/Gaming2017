@@ -9,7 +9,8 @@ import {ScoreBoard} from './components/scoreboard/scoreboard.js'
 import {MatchResultService} from "./services/match-results-service";
 import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js"
 import {SelectPlayersInTeams} from "./components/select-players-in-teams/select-players-in-teams";
-import {switchTeam} from "./lib/teamHelper";
+import {getPlayers, switchTeam} from "./lib/teamHelper";
+import {sortByKey} from "./lib/utils";
 let playerList = require('./mocks/player-list.json');
 
 
@@ -17,6 +18,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: true,
             matchResults: [], // Alla matcher som är spelade
             selectedMatchStream: {},  //
             playerList: {},
@@ -58,7 +60,8 @@ class App extends React.Component {
             matchObj[match] = response;
 
             this.setState({
-                selectedMatchStream: matchObj
+                selectedMatchStream: matchObj,
+                loading: false
             })
 
         });
@@ -72,7 +75,6 @@ class App extends React.Component {
             scoreOfPlayer: scoreOfPlayer
         })
     }
-
 
 
     changeTeam(player) {
@@ -95,33 +97,42 @@ class App extends React.Component {
 
 
     render() {
+        if (this.state.loading) {
+            return (<div>loading</div>)
 
-        return (
-            <div>
+        } else {
+            return (
+                <div>
 
-                <SelectPlayersInTeams players={playerList} changeTeam={this.changeTeam}
-                                      removePlayerFromTeam={this.removePlayerFromTeam}/>
+                    <StatsTable players={this.state.scoreOfPlayer} add={this.addPlayerForMatch}/>
 
-                <StatsTable players={this.state.scoreOfPlayer} add={this.addPlayerForMatch}/>
-                <ScoreBoard
-                //players={this.state.players}
-                match={this.state.selectedMatchStream}
-                saveMatch={this.saveMatchResults}
-                resetMatch={this.resetPlayerForMatch}
-                serie="innebandy2018"
-                />
+                    <SelectPlayersInTeams
+                        players={getPlayers(this.state.selectedMatchStream[1515849665586].players, playerList)}
+                        changeTeam={this.changeTeam}
+                        removePlayerFromTeam={this.removePlayerFromTeam}/>
 
-                <StatsPlayerScore
-                match={this.state.matchResults}
-                playerScore={this.state.playerList}
-                setScore={this.setScoreOfPlayers}
+                    <ScoreBoard
+                        //players={this.state.players}
+                        match={this.state.selectedMatchStream}
+                        saveMatch={this.saveMatchResults}
+                        resetMatch={this.resetPlayerForMatch}
+                        serie="innebandy2018"
+                    />
 
-                />
+                    <StatsPlayerScore
+                        match={this.state.matchResults}
+                        playerScore={this.state.playerList}
+                        setScore={this.setScoreOfPlayers}
+
+                    />
 
 
-                <button onClick={this.getSelectedMatchStreamOn}>click to update selectedMatchStream</button>
-            </div>
-        );
+                    <button onClick={this.getSelectedMatchStreamOn}>click to update selectedMatchStream</button>
+
+
+                </div>
+            );
+        }
     }
 }
 
