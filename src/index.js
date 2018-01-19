@@ -9,8 +9,8 @@ import {ScoreBoard} from './components/scoreboard/scoreboard.js'
 import {MatchResultService} from "./services/match-results-service";
 import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js"
 import {SelectPlayersInTeams} from "./components/select-players-in-teams/select-players-in-teams";
-import {getPlayers, switchTeam} from "./lib/teamHelper";
-import {sortByKey} from "./lib/utils";
+import {getAvailablePlayers, switchTeam} from "./lib/teamHelper";
+import {sortByKeyName} from "./lib/utils";
 let playerList = require('./mocks/player-list.json');
 
 
@@ -30,6 +30,7 @@ class App extends React.Component {
         this.getSelectedMatchStreamOn = this.getSelectedMatchStreamOn.bind(this);
         this.changeTeam = this.changeTeam.bind(this);
         this.removePlayerFromTeam = this.removePlayerFromTeam.bind(this);
+        this.getAvailablePlayersAndPlayersInMatch = this.getAvailablePlayersAndPlayersInMatch.bind(this);
     }
 
     componentDidMount() {
@@ -95,6 +96,10 @@ class App extends React.Component {
         );
     }
 
+    getAvailablePlayersAndPlayersInMatch(playersInMatch, availablePlayers) {
+        return sortByKeyName(getAvailablePlayers(playersInMatch, availablePlayers))
+    };
+
 
     render() {
         if (this.state.loading) {
@@ -107,7 +112,7 @@ class App extends React.Component {
                     <StatsTable players={this.state.scoreOfPlayer} add={this.addPlayerForMatch}/>
 
                     <SelectPlayersInTeams
-                        players={getPlayers(this.state.selectedMatchStream[1515849665586].players, playerList)}
+                        players={this.getAvailablePlayersAndPlayersInMatch(this.state.selectedMatchStream[1515849665586].players, playerList)}
                         changeTeam={this.changeTeam}
                         removePlayerFromTeam={this.removePlayerFromTeam}/>
 
