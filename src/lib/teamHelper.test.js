@@ -1,4 +1,17 @@
 import {getAvailablePlayers, switchTeam} from "./teamHelper";
+import {getPropertyValueFromObjectsInObject, removeObjectsThatContainsInList} from './utils';
+
+jest.mock('./utils', () => ({
+    getPropertyValueFromObjectsInObject: jest.fn(),
+    removeObjectsThatContainsInList: jest.fn()
+}));
+
+//noinspection JSAnnotator
+// utils.getPropertyValueFromObjectsInObject = jest.fn();
+
+//noinspection JSAnnotator
+// utils.removeObjectsThatContainsInList = jest.fn();
+
 const startMatch = {
     "1515849665586": {
         "players": {
@@ -122,6 +135,22 @@ test('switchTeam should add player with properties and update changed property w
 
 test('getAvailablePlayers should add new players to list of players', () => {
     //Arrange
+    const playersInMatch = ["Johan", "Peter"];
+    const playersToAdd = {
+        "Pontus": {
+            "playsForTeam": 0,
+            "name": "Pontus",
+            "another": 1
+        },
+        "Rickard": {
+            "playsForTeam": 0,
+            "name": "Rickard",
+            "five": "hi"
+
+    }};
+   getPropertyValueFromObjectsInObject.mockImplementation(()=> playersInMatch);
+   removeObjectsThatContainsInList.mockImplementation(()=> playersToAdd);
+
     const expected = {
         "Johan": {
             "playsForTeam": 0,
@@ -149,6 +178,9 @@ test('getAvailablePlayers should add new players to list of players', () => {
     const result = getAvailablePlayers(startMatch[1515849665586].players, availablePlayers);
 
     //Assert
+    expect(getPropertyValueFromObjectsInObject).toBeCalledWith(startMatch[1515849665586].players, 'name');
+    expect(removeObjectsThatContainsInList).toBeCalledWith(playersInMatch, availablePlayers);
     expect(result).toEqual(expected);
     expect(result["Johan"].playsForTeam).toEqual(expected["Johan"].playsForTeam);
+    expect(getPropertyValueFromObjectsInObject).toHaveBeenCalled();
 });

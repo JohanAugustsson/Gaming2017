@@ -1,4 +1,4 @@
-import {sortByKeyName} from "./utils";
+import {getPropertyValueFromObjectsInObject, removeObjectsThatContainsInList} from "./utils";
 
 /**
  * Lägger till spelare med dess properties samt ny property i en match
@@ -42,30 +42,6 @@ export const getAvailablePlayers = (playersInMatch, availablePlayers) => {
     }
 };
 
-/**
- * Hämtar angivet property värde i varje objekt enligt: object[key][nameOfProperty]
- * @param objectsInObject objekt som värdena ska extraheras ur
- * @param nameOfProperty namn på den property som ska hämtas ur varje objekt
- * @returns {Array} värde
- */
-const getPropertyValueFromObjectsInObject = (objectsInObject, nameOfProperty) => {
-    return Object.keys(objectsInObject).map(key => objectsInObject[key][nameOfProperty]);
-};
 
-/**
- * Tar bort objekt från availableObjects som förekommer i inskickad lista.
- * @param keyNameList namn på de objekt som skall sorteras bort
- * @param availableObjects .
- * @returns {{}} filtrerat objekt
- */
-const removeObjectsThatContainsInList = (keyNameList, availableObjects) => {
-    let keyNamesToKeep = Object.keys(availableObjects).filter(key => {
-        return (keyNameList.indexOf(key) === -1);
-    });
 
-    let temp = {};
-    keyNamesToKeep.map(key => temp = {...temp, [key]: availableObjects[key]});
-
-    return temp;
-};
 
