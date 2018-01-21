@@ -1,7 +1,7 @@
 import React from "react";
 import "./scoreboard.css";
 import {Counter} from "../counter/counter";
-import { Menu, } from 'semantic-ui-react';
+import {Menu} from "semantic-ui-react";
 
 
 export class ScoreBoard extends React.Component {
@@ -21,7 +21,7 @@ export class ScoreBoard extends React.Component {
     handleSave(list){
       let lista = this.state.serie;
       let matchId = Object.keys(this.props.match)[0];
-      let serie = "innebandy2018"
+      let serie = "innebandy2018";
       this.props.saveMatch(list,serie,matchId);
 
     }
@@ -32,7 +32,7 @@ export class ScoreBoard extends React.Component {
         list[player.name].goalTotal +=changedScore;
         this.setState({
             players: list
-        })
+        });
         this.handleSave(list);  // SPARAR DATA TILL DATABAS
     }
 
@@ -54,19 +54,19 @@ export class ScoreBoard extends React.Component {
         let matchId = Object.keys(this.props.match)[0];
 
         if(matchId){
-          let matchId = Object.keys(this.props.match)
-          let names = Object.keys(this.props.match[matchId].players)
-          let obj = this.props.match[matchId].players
+          let matchId = Object.keys(this.props.match);
+          let names = Object.keys(this.props.match[matchId].players);
+          let obj = this.props.match[matchId].players;
           let listPlay = names.map(x=> {
             return obj[x];
           });
 
-          homeTeam = listPlay.filter(x=>x.playsForTeam === 1);
-          awayTeam = listPlay.filter(x=>!x.playsForTeam === 2);
+          homeTeam = listPlay.filter(x=>x.isHomeTeam === true);
+          awayTeam = listPlay.filter(x=>x.isHomeTeam === false);
           homeTeam = homeTeam.map( (name,index) =>{
             goalHome+=name.goalTotal;
             return <Counter key={index} id={index} goal={this.goal} player={name} />;
-          })
+          });
           awayTeam = awayTeam.map( (name,index) =>{
             goalAway+=name.goalTotal;
             return <Counter key={index} id={index} goal={this.goal} player={name} />;
