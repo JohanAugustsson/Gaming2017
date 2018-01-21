@@ -93,7 +93,7 @@ class App extends React.Component {
 
 
     changeTeam(player) {
-        this.setState({selectedMatchStream: switchTeam(this.state.selectedMatchStream, player.player, player.playsForTeam)},
+        this.setState({selectedMatchStream: switchTeam(this.state.selectedMatchStream, player.player, player.isHomeTeam)},
             function () {
                 MatchResultService.setMatchResults(this.state.selectedMatchStream[1515849665586].players, "innebandy2018", 1515849665586)
             });

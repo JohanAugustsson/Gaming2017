@@ -6,22 +6,16 @@ jest.mock('./utils', () => ({
     removeObjectsThatContainsInList: jest.fn()
 }));
 
-//noinspection JSAnnotator
-// utils.getPropertyValueFromObjectsInObject = jest.fn();
-
-//noinspection JSAnnotator
-// utils.removeObjectsThatContainsInList = jest.fn();
-
 const startMatch = {
     "1515849665586": {
         "players": {
             "Johan": {
-                "playsForTeam": 0,
+                "isHomeTeam": true,
                 "name": "Johan",
                 "another": 1
             },
             "Peter": {
-                "playsForTeam": 0,
+                "isHomeTeam": true,
                 "name": "Peter",
                 "five": "what"
             }
@@ -41,22 +35,22 @@ const startMatchEmptyPlayer = {
 
 const availablePlayers = {
     "Johan": {
-        "playsForTeam": 1,
+        "isHomeTeam": true,
         "name": "Johan",
         "another": 12
     },
     "Peter": {
-        "playsForTeam": 123,
+        "isHomeTeam": true,
         "name": "Peter",
         "five": "should"
     },
     "Pontus": {
-        "playsForTeam": 0,
+        "isHomeTeam": false,
         "name": "Pontus",
         "another": 1
     },
     "Rickard": {
-        "playsForTeam": 0,
+        "isHomeTeam": false,
         "name": "Rickard",
         "five": "hi"
     }
@@ -66,23 +60,23 @@ test('switchTeam should switch to team 1', () => {
     //Arrange
     const changedPlayer = {
         name: "Johan",
-        playsForTeam: 1,
+        isHomeTeam: true,
         third: 3
     };
 
-    const changedProperty = {"playsForTeam": 1};
+    const changedProperty = {"isHomeTeam": true};
 
     const expected = {
         "1515849665586": {
             "players": {
                 "Johan": {
-                    "playsForTeam": 1,
+                    "isHomeTeam": true,
                     "name": "Johan",
                     "another": 1,
                     "third": 3
                 },
                 "Peter": {
-                    "playsForTeam": 0,
+                    "isHomeTeam": true,
                     "name": "Peter",
                     "five": "what"
                 }
@@ -105,18 +99,18 @@ test('switchTeam should add player with properties and update changed property w
     //Arrange
     const changedPlayer = {
         name: "Johan",
-        playsForTeam: 1,
+        isHomeTeam: true,
         third: 3
     };
 
-    const changedProperty = {"playsForTeam": 2};
+    const changedProperty = {"isHomeTeam": false};
 
     const expected = {
         "1515849665586": {
             "players": {
                 "Johan": {
                     "name": "Johan",
-                    "playsForTeam": 2,
+                    "isHomeTeam": false,
                     "third": 3
                 }
             },
@@ -138,12 +132,12 @@ test('getAvailablePlayers should add new players to list of players', () => {
     const playersInMatch = ["Johan", "Peter"];
     const playersToAdd = {
         "Pontus": {
-            "playsForTeam": 0,
+            "isHomeTeam": false,
             "name": "Pontus",
             "another": 1
         },
         "Rickard": {
-            "playsForTeam": 0,
+            "isHomeTeam": false,
             "name": "Rickard",
             "five": "hi"
 
@@ -153,22 +147,22 @@ test('getAvailablePlayers should add new players to list of players', () => {
 
     const expected = {
         "Johan": {
-            "playsForTeam": 0,
+            "isHomeTeam": true,
             "name": "Johan",
             "another": 1
         },
         "Peter": {
-            "playsForTeam": 0,
+            "isHomeTeam": true,
             "name": "Peter",
             "five": "what"
         },
         "Pontus": {
-            "playsForTeam": 0,
+            "isHomeTeam": false,
             "name": "Pontus",
             "another": 1
         },
         "Rickard": {
-            "playsForTeam": 0,
+            "isHomeTeam": false,
             "name": "Rickard",
             "five": "hi"
         }
@@ -181,6 +175,6 @@ test('getAvailablePlayers should add new players to list of players', () => {
     expect(getPropertyValueFromObjectsInObject).toBeCalledWith(startMatch[1515849665586].players, 'name');
     expect(removeObjectsThatContainsInList).toBeCalledWith(playersInMatch, availablePlayers);
     expect(result).toEqual(expected);
-    expect(result["Johan"].playsForTeam).toEqual(expected["Johan"].playsForTeam);
+    expect(result["Johan"].isHomeTeam).toEqual(expected["Johan"].isHomeTeam);
     expect(getPropertyValueFromObjectsInObject).toHaveBeenCalled();
 });

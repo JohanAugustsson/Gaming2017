@@ -2,23 +2,23 @@ import {getPropertyValueFromObjectsInObject, removeObjectsThatContainsInList, so
 
 const players = {
     "Petter": {
-        "playsForTeam": 0,
+        "isHomeTeam": false,
         "name": "Petter",
         "five": "what"
     },
     "Johan": {
-        "playsForTeam": 1,
+        "isHomeTeam": true,
         "name": "Johan",
         "another": 1,
         "third": 3
     },
     "Peter": {
-        "playsForTeam": 0,
+        "isHomeTeam": false,
         "name": "Peter",
         "five": "what"
     },
     "Ost": {
-        "playsForTeam": 0,
+        "isHomeTeam": false,
         "name": "Ost",
         "five": "what"
     }
@@ -28,23 +28,23 @@ test('sortByKeyName should sort object in alphabetical order ', () => {
     // Arrange
     const expected = {
         "Johan": {
-            "playsForTeam": 1,
+            "isHomeTeam": true,
             "name": "Johan",
             "another": 1,
             "third": 3
         },
         "Ost": {
-            "playsForTeam": 0,
+            "isHomeTeam": false,
             "name": "Ost",
             "five": "what"
         },
         "Peter": {
-            "playsForTeam": 0,
+            "isHomeTeam": false,
             "name": "Peter",
             "five": "what"
         },
         "Petter": {
-            "playsForTeam": 0,
+            "isHomeTeam": false,
             "name": "Petter",
             "five": "what"
         }
@@ -76,7 +76,7 @@ test('removeObjectsThatContainsInList should remove object specified in another 
 
     const expected = {
         "Petter": {
-            "playsForTeam": 0,
+            "isHomeTeam": false,
             "name": "Petter",
             "five": "what"
         }

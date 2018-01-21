@@ -10,31 +10,37 @@ export const SwitchTeam = (props) => {
                 <List divided verticalAlign='middle'>
                     <List.Item>
                         <List.Content >
-                    <span className="nameStyle">
-                      {props.player.name}
-                    </span>
-
+                            <span className="nameStyle">
+                              {props.player.name}
+                            </span>
                             <Button.Group size='small'>
-                                <Button active={props.player.playsForTeam === 1} className="btn-score"
+
+                                <Button active={props.player.isHomeTeam === true}
+                                        className="btn-score"
                                         onClick={(event) => props.changeTeam({
                                             player: props.player,
-                                            playsForTeam: {playsForTeam: 1, id: "playsForTeam"}
+                                            isHomeTeam: {isHomeTeam: true, id: "isHomeTeam"}
                                         })}>Home
                                 </Button>
-                                <Button active={props.player.playsForTeam === 0}
-                                        onClick={(event) => props.removePlayerFromTeam({name: props.player.name})}>Not
-                                    Participating</Button>
-                                <Button active={props.player.playsForTeam === 2} onClick={(event) => props.changeTeam({
-                                    player: props.player,
-                                    playsForTeam: {playsForTeam: 2, id: "playsForTeam"}
-                                })}>Away</Button>
-                            </Button.Group>
 
+                                <Button active={props.player.isHomeTeam === null}
+                                        onClick={(event) => props.removePlayerFromTeam({
+                                            name: props.player.name
+                                        })}>Not Participating
+                                </Button>
+
+                                <Button active={props.player.isHomeTeam === false}
+                                        onClick={(event) => props.changeTeam({
+                                            player: props.player,
+                                            isHomeTeam: {isHomeTeam: false, id: "isHomeTeam"}
+                                        })}>Away
+                                </Button>
+
+                            </Button.Group>
                         </List.Content>
                     </List.Item>
                 </List>
             </div>
-
         </div>
     )
 };
