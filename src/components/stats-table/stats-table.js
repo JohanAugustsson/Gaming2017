@@ -1,12 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
 import "./stats-table.css";
 
 export class StatsTable extends React.Component{
-    constructor(props){
-      super(props)
 
-    }
 
 
   render(){
@@ -31,6 +27,9 @@ export class StatsTable extends React.Component{
           </td>
           <td className="playerWins historyTable">
             {players[player].matchesWins}
+          </td>
+          <td className="playerWins historyTable">
+            {players[player].matchesDraw}
           </td>
           <td className="historyTable">
             {Math.floor((players[player].matchesPlayed > 0 ?  players[player].matchesWins / players[player].matchesPlayed : "0")*100) +"%"}
@@ -70,6 +69,7 @@ export class StatsTable extends React.Component{
               <th className="historyTable">Home</th>
               <th className="historyTable">Away</th>
               <th className="historyTable">Wins</th>
+              <th className="historyTable">Draw</th>
               <th className="historyTable">WR</th>
               <th className="historyTable">GT</th>
               <th className="historyTable">GH</th>
