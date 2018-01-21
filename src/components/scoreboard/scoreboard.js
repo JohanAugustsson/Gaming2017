@@ -20,7 +20,6 @@ export class ScoreBoard extends React.Component {
 
     handleSave(list){
       let lista = this.state.serie;
-      console.log(lista);
       let matchId = Object.keys(this.props.match)[0];
       let serie = "innebandy2018"
       this.props.saveMatch(list,serie,matchId);
@@ -31,12 +30,9 @@ export class ScoreBoard extends React.Component {
         let matchId = Object.keys(this.props.match)[0];
         let list = this.props.match[matchId].players;
         list[player.name].goalTotal +=changedScore;
-        console.log(list);
         this.setState({
             players: list
         })
-        console.log(this.state.players);
-
         this.handleSave(list);  // SPARAR DATA TILL DATABAS
     }
 
@@ -65,8 +61,8 @@ export class ScoreBoard extends React.Component {
             return obj[x];
           });
 
-          homeTeam = listPlay.filter(x=>x.isHomeTeam);
-          awayTeam = listPlay.filter(x=>!x.isHomeTeam);
+          homeTeam = listPlay.filter(x=>x.playsForTeam === 1);
+          awayTeam = listPlay.filter(x=>!x.playsForTeam === 2);
           homeTeam = homeTeam.map( (name,index) =>{
             goalHome+=name.goalTotal;
             return <Counter key={index} id={index} goal={this.goal} player={name} />;

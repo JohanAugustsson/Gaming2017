@@ -43,5 +43,17 @@ export const MatchResultService = {
           isPenaltyShootout: false,
           players : players
       });
+    },
+
+    /**
+     * Tar bort spelare från en match.
+     * @param typ typ av spel
+     * @param serie en serie där matcher ingår
+     * @param matchId matchId för matchen
+     * @param name namn på spelare som ska tas bort
+     * @returns {!firebase.Promise.<void>}
+     */
+    removePlayerFromMatch(typ, serie, matchId, name){
+        return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/players/${name}`).remove();
     }
 };
