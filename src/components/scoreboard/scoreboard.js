@@ -53,8 +53,8 @@ export class ScoreBoard extends React.Component {
         let goalAway=0;
         let matchId = Object.keys(this.props.match)[0];
 
-        if(matchId){
-          let matchId = Object.keys(this.props.match);
+        if(this.props.match[matchId] && this.props.match[matchId].players ){
+          let matchId = Object.keys(this.props.match)[0];
           let names = Object.keys(this.props.match[matchId].players);
           let obj = this.props.match[matchId].players;
           let listPlay = names.map(x=> {

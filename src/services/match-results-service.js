@@ -5,44 +5,44 @@ const rootRef = firebase.database().ref();
 export const MatchResultService = {
 
     getMatchResults()  {
-        return rootRef.child('matchResults/innebandy/innebandy2018').once('value').then(snap=> {
+        return rootRef.child('matchResults/innebandy/innebandy2018').once('value').then(snap => {
 
             return snap.val();
         });
     },
 
     getPlayerList()  {
-        return rootRef.child('players/').once('value').then(snap=> {
+        return rootRef.child('players/').once('value').then(snap => {
 
             return snap.val();
         });
     },
 
     getMatchResultsStream()  {
-        return rootRef.child('matchResults').on('value',snap => {
-          return snap.val();
+        return rootRef.child('matchResults').on('value', snap => {
+            return snap.val();
         })
     },
 
     getSelectedMatchStream(match)  {
-        return rootRef.child(`matchResults/innebandy/innebandy2018/${match}`).once('value').then(snap=>{
-          return snap.val();
+        return rootRef.child(`matchResults/${match.typ}/${match.serie}/${match.id}`).once('value').then(snap => {
+            return snap.val();
         });
     },
 
     //setMatchResults({serie="innebandy2018",isOvertime=false,isPenaltyShootout=false,players="0"){
-    setMatchResults(players,serie,matchId){
-      /*let d = new Date();   sätter match id.. används ej för tillfälligt
-      let n = d.getTime();*/
-      let typ = "innebandy";
+    setMatchResults(players, serie, matchId){
+        /*let d = new Date();   sätter match id.. används ej för tillfälligt
+         let n = d.getTime();*/
+        let typ = "innebandy";
 
-      return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/`).set({
-          isOvertime: false,
-          serie: serie,
-          typ: "innebandy",
-          isPenaltyShootout: false,
-          players : players
-      });
+        return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/`).set({
+            isOvertime: false,
+            serie: serie,
+            typ: "innebandy",
+            isPenaltyShootout: false,
+            players: players
+        });
     },
 
     /**
@@ -55,5 +55,21 @@ export const MatchResultService = {
      */
     removePlayerFromMatch(typ, serie, matchId, name){
         return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/players/${name}`).remove();
+    },
+
+    /**
+     * Skapar en ny match
+     * @param typ typ av spel
+     * @param serie en serie där matcher ingår
+     * @returns {!firebase.Promise.<void>}
+     */
+    createMatch(typ, serie){
+        return rootRef.child(`matchResults/${typ}/${serie}/`).push({
+            isOvertime: false,
+            isPenaltyShootout: false,
+            players: {},
+            serie: serie,
+            typ: typ
+        });
     }
 };
