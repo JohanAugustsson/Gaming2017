@@ -5,7 +5,7 @@
  */
 export const sortByKeyName = (unsorted) => {
     if(unsorted) {
-        return Object.keys(unsorted).sort().reduce((value, key) => (value[key] = unsorted[key] , value), {});
+        return Object.keys(unsorted).sort().reduce((value, key) => {value[key] = unsorted[key]; return value}, {});
     }else return {};
 };
 

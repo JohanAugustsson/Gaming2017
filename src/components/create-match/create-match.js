@@ -1,6 +1,4 @@
 import React from "react";
-import Dropdown from "semantic-ui-react/dist/es/modules/Dropdown/Dropdown";
-import Button from "semantic-ui-react/dist/es/elements/Button/Button";
 import Form from "semantic-ui-react/dist/es/collections/Form/Form";
 
 export const CreateMatch = (props) => {
