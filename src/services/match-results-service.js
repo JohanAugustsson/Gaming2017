@@ -4,8 +4,8 @@ const rootRef = firebase.database().ref();
 
 export const MatchResultService = {
 
-    getMatchResults()  {
-        return rootRef.child('matchResults/innebandy/innebandy2018').once('value').then(snap => {
+    getMatchResults(typ, serie)  {
+        return rootRef.child(`matchResults/${typ}/${serie}`).once('value').then(snap => {
 
             return snap.val();
         });
@@ -31,17 +31,15 @@ export const MatchResultService = {
     },
 
     //setMatchResults({serie="innebandy2018",isOvertime=false,isPenaltyShootout=false,players="0"){
-    setMatchResults(players, serie, matchId){
+    setMatchResults(typ, serie, matchId, players){
         /*let d = new Date();   sätter match id.. används ej för tillfälligt
          let n = d.getTime();*/
-        let typ = "innebandy";
-
         return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/`).set({
-            isOvertime: false,
+            typ: typ,
             serie: serie,
-            typ: "innebandy",
-            isPenaltyShootout: false,
-            players: players
+            players: players,
+            isOvertime: false,
+            isPenaltyShootout: false
         });
     },
 

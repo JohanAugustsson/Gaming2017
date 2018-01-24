@@ -45,7 +45,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        MatchResultService.getMatchResults().then(response => {
+        MatchResultService.getMatchResults("innebandy", "innebandy2018").then(response => {
             this.setState({
                 matchResults: response
             });
@@ -62,7 +62,7 @@ class App extends React.Component {
 
 
     saveMatchResults(playersList, serie, matchId) {
-        MatchResultService.setMatchResults(playersList, serie, matchId);
+        MatchResultService.setMatchResults("innebandy", serie, matchId, playersList);
 
     }
 
@@ -92,7 +92,7 @@ class App extends React.Component {
                 playerList: response
             });
         });
-        MatchResultService.getMatchResults().then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
+        MatchResultService.getMatchResults("innebandy", "innebandy2018").then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
             this.setState({
                 matchResults: response
             });
@@ -106,9 +106,10 @@ class App extends React.Component {
 
 
     changeTeam(player) {
+
         this.setState({selectedMatchStream: switchTeam(this.state.selectedMatchStream, player.player, player.isHomeTeam)},
             function () {
-                MatchResultService.setMatchResults(this.state.selectedMatchStream[this.state.currentMatch.id].players, this.state.currentMatch.serie, this.state.currentMatch.id)
+                MatchResultService.setMatchResults(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, this.state.selectedMatchStream[this.state.currentMatch.id].players)
             });
     }
 
@@ -118,7 +119,7 @@ class App extends React.Component {
      * @param player player att ta bort
      */
     removePlayerFromTeam(player) {
-        MatchResultService.removePlayerFromMatch("innebandy", "innebandy2018", this.state.currentMatch.id, player.name).then(
+        MatchResultService.removePlayerFromMatch(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, player.name).then(
             this.getSelectedMatchStreamOn()
         );
     }
