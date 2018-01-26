@@ -1,17 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'semantic-ui-css/semantic.min.css';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "semantic-ui-css/semantic.min.css";
+import "./index.css";
 
-import registerServiceWorker from './registerServiceWorker';
-import {StatsTable} from './components/stats-table/stats-table.js'
-import {ScoreBoard} from './components/scoreboard/scoreboard.js'
+import registerServiceWorker from "./registerServiceWorker";
+import {StatsTable} from "./components/stats-table/stats-table.js";
+import {ScoreBoard} from "./components/scoreboard/scoreboard.js";
 import {MatchResultService} from "./services/match-results-service";
-import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js"
+import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js";
 import {SelectPlayersInTeams} from "./components/select-players-in-teams/select-players-in-teams";
 import {getAvailablePlayers, switchTeam} from "./lib/teamHelper";
 import {sortByKeyName} from "./lib/utils";
 import {CreateMatch} from "./components/create-match/create-match";
+
+
 let playerList = require('./mocks/player-list.json');
 let gametypes = [{key: "innebandy", value: "innebandy", text: "innebandy"}, {key: "nhl", value: "nhl", text: "nhl"}];
 let serie = [{key: "innebandy2018", value: "innebandy2018", text: "innebandy2018"}, {
@@ -45,6 +47,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+
         MatchResultService.getMatchResults("innebandy", "innebandy2018").then(response => {
             this.setState({
                 matchResults: response
@@ -66,22 +69,20 @@ class App extends React.Component {
 
     }
 
+    /**
+     * Hämtar specifik match från db och sätter en lyssnare p
+     */
     getSelectedMatchStreamOn() {
-        // let match = this.state.currentMatch.id;   //skall skicka in match till denna.. nu är den satt fast
-
         let matchObj = {};
 
-        MatchResultService.getSelectedMatchStream(this.state.currentMatch).then(response => {
-
-            matchObj[this.state.currentMatch.id] = response;
+        MatchResultService.getMatchStream(this.state.currentMatch).on('value', (snapshot) => {
+            matchObj[this.state.currentMatch.id] = snapshot.val();
 
             this.setState({
                 selectedMatchStream: matchObj,
                 loading: false,
             })
         });
-
-
     }
 
 

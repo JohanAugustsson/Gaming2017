@@ -30,6 +30,13 @@ export const MatchResultService = {
         });
     },
 
+    getMatchStream(match)  {
+      //  rootRef.child(`matchResults/${match.typ}/${match.serie}/${match.id}`).on('value', (snapshot) => {
+        //   return snapshot.val();
+       // });
+        return  rootRef.child(`matchResults/${match.typ}/${match.serie}/${match.id}`);
+    },
+
     //setMatchResults({serie="innebandy2018",isOvertime=false,isPenaltyShootout=false,players="0"){
     setMatchResults(typ, serie, matchId, players){
         /*let d = new Date();   sätter match id.. används ej för tillfälligt
