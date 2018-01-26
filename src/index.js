@@ -3,18 +3,13 @@ import ReactDOM from "react-dom";
 import "semantic-ui-css/semantic.min.css";
 import "./index.css";
 
+import {StatsTable,ScoreBoard,StatsPlayerScore,SelectPlayersInTeams,CreateMatch, MenuAtBott} from './components/'
 import registerServiceWorker from "./registerServiceWorker";
-import {StatsTable} from "./components/stats-table/stats-table.js";
-import {ScoreBoard} from "./components/scoreboard/scoreboard.js";
 import {MatchResultService} from "./services/match-results-service";
-import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js";
-import {SelectPlayersInTeams} from "./components/select-players-in-teams/select-players-in-teams";
 import {getAvailablePlayers, switchTeam} from "./lib/teamHelper";
 import {sortByKeyName} from "./lib/utils";
-import {CreateMatch} from "./components/create-match/create-match";
 
 
-let playerList = require('./mocks/player-list.json');
 let gametypes = [{key: "innebandy", value: "innebandy", text: "innebandy"}, {key: "nhl", value: "nhl", text: "nhl"}];
 let serie = [{key: "innebandy2018", value: "innebandy2018", text: "innebandy2018"}, {
     key: "nhl2018",
@@ -27,12 +22,13 @@ class App extends React.Component {
         super(props);
         this.state = {
             loading: true,
-            matchResults: [], // Alla matcher som är spelade
+            matchResults: [],         // Alla matcher som är spelade
             selectedMatchStream: {},  //
-            playerList: {},   // Används för att hämta spel lista.
-            scoreOfPlayer: {}, // Används i Statstable för lista på spelare.
+            playerList: {},           // Lista med alla spelare med från firebase.
+            scoreOfPlayer: {},        // Lista med spelare och poäng.. används i Statstable.
             newMatch: {},
-            currentMatch: {id: null, typ: null, serie: null}
+            currentMatch: {id: null, typ: null, serie: null},
+            currentPage: "Home"
         };
         this.saveMatchResults = this.saveMatchResults.bind(this);
         this.setScoreOfPlayers = this.setScoreOfPlayers.bind(this);
@@ -44,6 +40,7 @@ class App extends React.Component {
         this.onChangeGameType = this.onChangeGameType.bind(this);
         this.newGame = this.newGame.bind(this);
         this.getPlayersInCurrentMatch = this.getPlayersInCurrentMatch.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
 
     componentDidMount() {
@@ -131,7 +128,7 @@ class App extends React.Component {
 
     getPlayersInCurrentMatch() {
         if (this.state.selectedMatchStream[this.state.currentMatch.id] != null) {
-            return this.getAvailablePlayersAndPlayersInMatch(this.state.selectedMatchStream[this.state.currentMatch.id].players, playerList)
+            return this.getAvailablePlayersAndPlayersInMatch(this.state.selectedMatchStream[this.state.currentMatch.id].players, this.state.playerList)
         } else return {};
     }
 
@@ -164,45 +161,77 @@ class App extends React.Component {
         });
     }
 
+    changePage(page){
+      this.setState({
+        currentPage: page
+      })
+    }
 
     render() {
         if (this.state.loading) {
             return (<div>loading</div>)
 
         } else {
-            return (
+
+          let page = this.state.currentPage;
+          let show = "";
+
+          switch(page){
+            case "Table" :
+            show= (
+              <div>
+                <StatsTable
+                   players={this.state.scoreOfPlayer}
+                   add={this.addPlayerForMatch}
+                 />
+
+               <StatsPlayerScore
+                   match={this.state.matchResults}
+                   playerScore={this.state.playerList}
+                   setScore={this.setScoreOfPlayers} />
+              </div>
+
+             );
+              break;
+            case "Games" :
+              show = (
                 <div>
-
-
-                    <StatsTable players={this.state.scoreOfPlayer} add={this.addPlayerForMatch}/>
-
-                    <CreateMatch gametypes={gametypes} serie={serie} newGame={this.newGame}
-                                 onChangeGameType={this.onChangeGameType} onChangeSerie={this.onChangeSerie}/>
+                  <CreateMatch
+                    gametypes={gametypes}
+                    serie={serie}
+                    newGame={this.newGame}
+                    onChangeGameType={this.onChangeGameType}
+                    onChangeSerie={this.onChangeSerie} />
 
                     <SelectPlayersInTeams
                         players={this.getPlayersInCurrentMatch()}
                         changeTeam={this.changeTeam}
-                        removePlayerFromTeam={this.removePlayerFromTeam}/>
+                        removePlayerFromTeam={this.removePlayerFromTeam} />
 
                     <ScoreBoard
-                        //players={this.state.players}
                         match={this.state.selectedMatchStream}
                         saveMatch={this.saveMatchResults}
                         resetMatch={this.resetPlayerForMatch}
-                        serie={this.state.currentMatch.serie}
-                    />
-
-                    <StatsPlayerScore
-                        match={this.state.matchResults}
-                        playerScore={this.state.playerList}
-                        setScore={this.setScoreOfPlayers}
-
-                    />
+                        serie={this.state.currentMatch.serie} />
 
 
-                    <button onClick={this.getSelectedMatchStreamOn}>click to update selectedMatchStream</button>
-
-
+                    <button
+                      onClick={this.getSelectedMatchStreamOn}>
+                      click to update selectedMatchStream
+                    </button>
+                  </div>
+                )
+                break;
+            case "Info" :
+              console.log("info");
+              break;
+            default:
+              console.log("default");
+          }
+            return (
+                <div>
+                    {show}
+                    <MenuAtBott changePage={this.changePage} currentPage={this.state.currentPage} />
                 </div>
             );
         }
@@ -211,26 +240,3 @@ class App extends React.Component {
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
-
-
-/*
-
- class PlayerForMatch{
- constructor(player){
- this[player.name] = {
- assist:0,
- isHomeTeam : player.isHomeTeam,
- name : player.name,
- matchesPlayed: 0,
- matchesHome: 0,
- matchesAway: 0,
- matchesWins: 0,
- goalTotal: 0,
- goalHome: 0,
- goalAway: 0,
- goalFor: 0,
- goalAgainst: 0
- }
- }
- }
- */
