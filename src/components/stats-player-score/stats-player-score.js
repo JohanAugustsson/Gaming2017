@@ -18,8 +18,14 @@ export class StatsPlayerScore extends React.Component{
 
     let matchKeys = Object.keys(match);
     matchKeys.forEach(selectedMatch =>{
-      let playerKeys = Object.keys(match[selectedMatch].players);
-      this.calculateSelectedPlayer(selectedMatch,playerKeys,scoreHolder);
+
+      if(match[selectedMatch].players){                               // kontrollerar så att de finns spelare i matchen
+        let playerKeys = Object.keys(match[selectedMatch].players);
+        this.calculateSelectedPlayer(selectedMatch,playerKeys,scoreHolder);
+      }else{
+        console.log("gubbar saknas");
+      }
+
     })
   }
 
@@ -80,27 +86,6 @@ export class StatsPlayerScore extends React.Component{
         scoreHolder[selectedPlayer.name].goalFor =  playerScore.goalFor + homeTeamScore;
         scoreHolder[selectedPlayer.name].goalAgainst =  playerScore.goalAgainst + awayTeamScore;
 
-        /*
-        playerScore = {
-          assist: playerScore.assist + selectedPlayer.assist ,
-          isHomeTeam : playerScore.isHomeTeam,
-          name : playerScore.name,
-          matchesPlayed: playerScore.matchesPlayed + 1,
-          matchesHome: playerScore.matchesHome + 1,
-          matchesAway: playerScore.matchesAway,
-          matchesWins: playerScore.matchesWins + homeWinner,
-          goalTotal: playerScore.goalTotal + selectedPlayer.goalTotal,
-          goalHome:  playerScore.goalHome + selectedPlayer.goalHome,
-          goalAway: playerScore.goalAway,
-          goalFor: playerScore.goalFor + homeTeamScore,
-          goalAgainst: playerScore.goalAgainst + awayTeamScore,
-        }
-        scoreHolder[selectedPlayer.name] = playerScore;
-        */
-
-
-
-
       })
 
       awayTeam.forEach(selectedPlayer => {  //Poäng för bortalag
@@ -120,27 +105,6 @@ export class StatsPlayerScore extends React.Component{
         scoreHolder[selectedPlayer.name].goalAway = playerScore.goalAway + selectedPlayer.goalAway;
         scoreHolder[selectedPlayer.name].goalFor =  playerScore.goalFor + awayTeamScore;
         scoreHolder[selectedPlayer.name].goalAgainst =  playerScore.goalAgainst + homeTeamScore;
-
-        /*
-
-        playerScore = {
-          assist: playerScore.assist + selectedPlayer.assist ,
-          isHomeTeam : playerScore.isHomeTeam,
-          name : playerScore.name,
-          matchesPlayed: playerScore.matchesPlayed + 1,
-          matchesHome: playerScore.matchesHome,
-          matchesAway: playerScore.matchesAway + 1,
-          matchesWins: playerScore.matchesWins + awayWinner,
-          goalTotal: playerScore.goalTotal + selectedPlayer.goalTotal,
-          goalHome:  playerScore.goalHome,
-          goalAway: playerScore.goalAway + selectedPlayer.goalAway,
-          goalFor: playerScore.goalFor + awayTeamScore,
-          goalAgainst: playerScore.goalAgainst + homeTeamScore,
-        }
-
-        */
-
-
 
       })
 
