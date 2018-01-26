@@ -9,48 +9,57 @@ export class StatsTable extends React.Component{
       let x = Object.keys(this.props.players)
       let players = this.props.players;
 
+      //sorterar listan med vinst högst upp
+      let list = x.map(player=> players[player]);
+      list.sort((a,b)=> b.matchesWins-a.matchesWins)
+
+
+
+
       //let playersAll = this.props.players.map(player=>{
-      let playersAll = x.map(player=>{
+      let playersAll = list.map(player=>{
       return(
-        <tr key={players[player].id}>
-          <td className="playerName historyTable">
-            {players[player].name}
+
+        <tr key={player.id}>
+
+          <td className="playerNames historyTable">
+            {player.name}
           </td>
           <td className="playerMatch historyTable">
-            {players[player].matchesPlayed}
+            {player.matchesPlayed}
           </td>
           <td className="playerMatch historyTable">
-            {players[player].matchesHome}
+            {player.matchesHome}
           </td>
           <td className="playerMatch historyTable">
-            {players[player].matchesAway}
+            {player.matchesAway}
           </td>
           <td className="playerWins historyTable">
-            {players[player].matchesWins}
+            {player.matchesWins}
           </td>
           <td className="playerWins historyTable">
-            {players[player].matchesDraw}
+            {player.matchesDraw}
           </td>
           <td className="historyTable">
-            {Math.floor((players[player].matchesPlayed > 0 ?  players[player].matchesWins / players[player].matchesPlayed : "0")*100) +"%"}
+            {Math.floor((player.matchesPlayed > 0 ?  player.matchesWins / player.matchesPlayed : "0")*100) +"%"}
           </td>
           <td className="playerGt historyTable">
-            {players[player].goalTotal}
+            {player.goalTotal}
           </td>
           <td className="playerGh historyTable">
-            {players[player].goalHome}
+            {player.goalHome}
           </td>
           <td className="playerGa historyTable">
-            {players[player].goalAway}
+            {player.goalAway}
           </td>
           <td className="playerGoalsFor historyTable">
-            {players[player].goalFor}
+            {player.goalFor}
           </td>
           <td className="playerGoalsAgainst historyTable">
-            {players[player].goalAgainst}
+            {player.goalAgainst}
           </td>
           <td className="historyTable">
-            {players[player].goalFor - players[player].goalAgainst}
+            {player.goalFor - player.goalAgainst}
           </td>
 
         </tr>

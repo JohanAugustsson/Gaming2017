@@ -21,19 +21,19 @@ export class MenuAtBott extends Component {
 
     return (
       <Menu icon="labeled" inverted fixed="bottom" widths="4">
-        <Menu.Item name="Home" active={activeItem==='home'} onClick={this.handelItemClick}>
+        <Menu.Item name="Home" active={activeItem==='Home'} onClick={this.handelItemClick}>
           <Icon name="h" />
           Home
         </Menu.Item>
-        <Menu.Item name="Games" active={activeItem==='gamepad'} onClick={this.handelItemClick}>
+        <Menu.Item name="Games" active={activeItem==='Games'} onClick={this.handelItemClick}>
           <Icon name="gamepad" />
           Games
         </Menu.Item>
-        <Menu.Item name="Table" active={activeItem==='table'} onClick={this.handelItemClick}>
+        <Menu.Item name="Table" active={activeItem==='Table'} onClick={this.handelItemClick}>
           <Icon name="table" />
           Scores
         </Menu.Item>
-        <Menu.Item name="Info" active={activeItem==='info'} onClick={this.handelItemClick}>
+        <Menu.Item name="Info" active={activeItem==='Info'} onClick={this.handelItemClick}>
           <Icon name="info" />
           Info
         </Menu.Item>

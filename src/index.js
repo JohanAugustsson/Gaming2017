@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "semantic-ui-css/semantic.min.css";
 import "./index.css";
 
-import {StatsTable,ScoreBoard,StatsPlayerScore,SelectPlayersInTeams,CreateMatch, MenuAtBott} from './components/'
+import {StatsTable,ScoreBoard,StatsPlayerScore,SelectPlayersInTeams,CreateMatch,StatsPlayedMatches , MenuAtBott} from './components/'
 import registerServiceWorker from "./registerServiceWorker";
 import {MatchResultService} from "./services/match-results-service";
 import {getAvailablePlayers, switchTeam} from "./lib/teamHelper";
@@ -182,7 +182,7 @@ class App extends React.Component {
               <div>
                 <StatsTable
                    players={this.state.scoreOfPlayer}
-                   add={this.addPlayerForMatch}
+                   //add={this.addPlayerForMatch}
                  />
 
                <StatsPlayerScore
@@ -231,6 +231,7 @@ class App extends React.Component {
             return (
                 <div>
                     {show}
+
                     <MenuAtBott changePage={this.changePage} currentPage={this.state.currentPage} />
                 </div>
             );

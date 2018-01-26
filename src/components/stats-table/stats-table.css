@@ -1,41 +1,29 @@
 
 .tbody{
   display: block;
-  overflow-x: auto;    
+  overflow-x: auto;
   white-space: nowrap;
   color: white;
   background-color: #1E252D;
 
 }
+
 .historyTable{
   display: inline-block;
   width: 50px;
-
+  height: 30px;
   text-align: center;
   color: #C4C4C4;
 }
 .historyTable:nth-child(1){
   width: 70px;
   text-align: left;
-
 }
+
 tr:nth-child(odd){
   background-color: #2F3841;
-
 }
+
 td:nth-child(1){
   color: #AECD51;
-}
-
-.historyTable button{
-  padding: 2px;
-  margin-left: 3px;
-  border-radius: 5px;
-  background-color: darkslategray ;
-
-  color: white;
-}
-
-#btnAway{
-  background-color:rgb(125,125,125);
 }

@@ -22,8 +22,6 @@ export class StatsPlayerScore extends React.Component{
       if(match[selectedMatch].players){                               // kontrollerar så att de finns spelare i matchen
         let playerKeys = Object.keys(match[selectedMatch].players);
         this.calculateSelectedPlayer(selectedMatch,playerKeys,scoreHolder);
-      }else{
-        console.log("gubbar saknas");
       }
 
     })

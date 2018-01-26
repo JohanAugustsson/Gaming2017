@@ -8,9 +8,9 @@ export class StatsPlayedMatches extends React.Component{
 
   render(){
 
-    let games = this.props.matchResults;
+    let games = this.props.scores;
     let gamesKeys = Object.keys(games);
-
+    console.log(games);
     return(
       <div>
         <Button primary>Primary</Button>
@@ -22,6 +22,8 @@ export class StatsPlayedMatches extends React.Component{
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Status</Table.HeaderCell>
             <Table.HeaderCell>Notes</Table.HeaderCell>
+            <Table.HeaderCell>Notes</Table.HeaderCell>
+            <Table.HeaderCell>Notes</Table.HeaderCell>
           </Table.Row>
       </Table.Header>
 
@@ -29,6 +31,7 @@ export class StatsPlayedMatches extends React.Component{
         <Table.Row>
           <Table.Cell>John</Table.Cell>
           <Table.Cell>Approved</Table.Cell>
+          <Table.Cell>helloo</Table.Cell>
           <Table.Cell textAlign='right'>None</Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -41,7 +44,7 @@ export class StatsPlayedMatches extends React.Component{
           <Table.Cell>Denied</Table.Cell>
           <Table.Cell textAlign='right'>None</Table.Cell>
         </Table.Row>
-        {showMatchesPlayed}
+
       </Table.Body>
 
     </Table>
