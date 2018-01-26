@@ -1,17 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'semantic-ui-css/semantic.min.css';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "semantic-ui-css/semantic.min.css";
+import "./index.css";
 
-import registerServiceWorker from './registerServiceWorker';
-import {StatsTable} from './components/stats-table/stats-table.js'
-import {ScoreBoard} from './components/scoreboard/scoreboard.js'
+import registerServiceWorker from "./registerServiceWorker";
+import {StatsTable} from "./components/stats-table/stats-table.js";
+import {ScoreBoard} from "./components/scoreboard/scoreboard.js";
 import {MatchResultService} from "./services/match-results-service";
-import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js"
+import {StatsPlayerScore} from "./components/stats-player-score/stats-player-score.js";
 import {SelectPlayersInTeams} from "./components/select-players-in-teams/select-players-in-teams";
 import {getAvailablePlayers, switchTeam} from "./lib/teamHelper";
 import {sortByKeyName} from "./lib/utils";
 import {CreateMatch} from "./components/create-match/create-match";
+
+
 let playerList = require('./mocks/player-list.json');
 let gametypes = [{key: "innebandy", value: "innebandy", text: "innebandy"}, {key: "nhl", value: "nhl", text: "nhl"}];
 let serie = [{key: "innebandy2018", value: "innebandy2018", text: "innebandy2018"}, {
@@ -45,7 +47,8 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        MatchResultService.getMatchResults().then(response => {
+
+        MatchResultService.getMatchResults("innebandy", "innebandy2018").then(response => {
             this.setState({
                 matchResults: response
             });
@@ -62,26 +65,24 @@ class App extends React.Component {
 
 
     saveMatchResults(playersList, serie, matchId) {
-        MatchResultService.setMatchResults(playersList, serie, matchId);
+        MatchResultService.setMatchResults("innebandy", serie, matchId, playersList);
 
     }
 
+    /**
+     * Hämtar specifik match från db och sätter en lyssnare p
+     */
     getSelectedMatchStreamOn() {
-        // let match = this.state.currentMatch.id;   //skall skicka in match till denna.. nu är den satt fast
-
         let matchObj = {};
 
-        MatchResultService.getSelectedMatchStream(this.state.currentMatch).then(response => {
-
-            matchObj[this.state.currentMatch.id] = response;
+        MatchResultService.getMatchStream(this.state.currentMatch).on('value', (snapshot) => {
+            matchObj[this.state.currentMatch.id] = snapshot.val();
 
             this.setState({
                 selectedMatchStream: matchObj,
                 loading: false,
             })
         });
-
-
     }
 
 
@@ -92,7 +93,7 @@ class App extends React.Component {
                 playerList: response
             });
         });
-        MatchResultService.getMatchResults().then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
+        MatchResultService.getMatchResults("innebandy", "innebandy2018").then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
             this.setState({
                 matchResults: response
             });
@@ -106,9 +107,10 @@ class App extends React.Component {
 
 
     changeTeam(player) {
+
         this.setState({selectedMatchStream: switchTeam(this.state.selectedMatchStream, player.player, player.isHomeTeam)},
             function () {
-                MatchResultService.setMatchResults(this.state.selectedMatchStream[this.state.currentMatch.id].players, this.state.currentMatch.serie, this.state.currentMatch.id)
+                MatchResultService.setMatchResults(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, this.state.selectedMatchStream[this.state.currentMatch.id].players)
             });
     }
 
@@ -118,7 +120,7 @@ class App extends React.Component {
      * @param player player att ta bort
      */
     removePlayerFromTeam(player) {
-        MatchResultService.removePlayerFromMatch("innebandy", "innebandy2018", this.state.currentMatch.id, player.name).then(
+        MatchResultService.removePlayerFromMatch(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, player.name).then(
             this.getSelectedMatchStreamOn()
         );
     }
