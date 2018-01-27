@@ -225,10 +225,10 @@ class App extends React.Component {
                 )
                 break;
             case "/Info" :
-              console.log("info");
+              //console.log("info");
               break;
             default:
-              console.log("default");
+              //console.log("default");
           }
             return (
                 <div>

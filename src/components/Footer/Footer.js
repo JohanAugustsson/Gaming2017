@@ -4,7 +4,7 @@ import { Icon, Menu} from 'semantic-ui-react';
 import './Footer.css';
 
 export const Footer = (props) =>{
-  console.log(props.active);
+
 
   return (
 
