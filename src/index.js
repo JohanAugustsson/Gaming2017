@@ -5,7 +5,7 @@ import "./index.css";
 import PropTypes from 'prop-types';
 
 import {StatsTable,ScoreBoard,StatsPlayerScore,SelectPlayersInTeams,CreateMatch,
-  StatsPlayedMatches , Footer, Router} from './components/'
+  Footer, Router} from './components/'
 import registerServiceWorker from "./registerServiceWorker";
 import {MatchResultService} from "./services/match-results-service";
 import {getAvailablePlayers, switchTeam} from "./lib/teamHelper";
@@ -30,7 +30,7 @@ class App extends React.Component {
             scoreOfPlayer: {},        // Lista med spelare och poäng.. används i Statstable.
             newMatch: {},
             currentMatch: {id: null, typ: null, serie: null},
-            currentPage: "Home"
+
         };
         this.saveMatchResults = this.saveMatchResults.bind(this);
         this.setScoreOfPlayers = this.setScoreOfPlayers.bind(this);
@@ -42,7 +42,7 @@ class App extends React.Component {
         this.onChangeGameType = this.onChangeGameType.bind(this);
         this.newGame = this.newGame.bind(this);
         this.getPlayersInCurrentMatch = this.getPlayersInCurrentMatch.bind(this);
-        this.changePage = this.changePage.bind(this);
+
     }
 
     static contextTypes = {
@@ -167,11 +167,6 @@ class App extends React.Component {
         });
     }
 
-    changePage(page){
-      this.setState({
-        currentPage: page
-      })
-    }
 
     render() {
 
@@ -182,7 +177,7 @@ class App extends React.Component {
 
           //let page = this.state.currentPage;
           let page = this.context.route;
-          console.log(page);
+
           let show = "";
 
           switch(page){
@@ -238,8 +233,8 @@ class App extends React.Component {
             return (
                 <div>
                     {show}
-                    
-                    <Footer />
+
+                    <Footer active={this.context.route}/>
 
                 </div>
             );

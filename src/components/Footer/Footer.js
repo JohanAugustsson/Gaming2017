@@ -3,9 +3,8 @@ import {Link} from '../router';
 import { Icon, Menu} from 'semantic-ui-react';
 import './Footer.css';
 
-export const Footer = () =>{
-
-
+export const Footer = (props) =>{
+  console.log(props.active);
 
   return (
 
@@ -14,7 +13,7 @@ export const Footer = () =>{
         <Link to="/Home">
 
           <Menu.Item >
-            <Icon name="h" color="red" />
+            <Icon name="h" className={props.active==="/Home" ? "active":""}/>
             Home
           </Menu.Item>
 
@@ -22,21 +21,21 @@ export const Footer = () =>{
 
         <Link to="/Games">
           <Menu.Item>
-            <Icon name="gamepad" />
+            <Icon name="gamepad" className={props.active==="/Games" ? "active":""} />
             Games
           </Menu.Item>
         </Link>
 
         <Link to="/Score">
           <Menu.Item>
-            <Icon name="table" />
+            <Icon name="table" className={props.active==="/Score" ? "active":""} />
             Scores
           </Menu.Item>
         </Link>
 
         <Link to="/Info">
           <Menu.Item>
-            <Icon name="info" />
+            <Icon name="info" className={props.active==="/Info" ? "active":""} />
             Info
           </Menu.Item>
         </Link>
