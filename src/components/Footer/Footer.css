@@ -1,0 +1,10 @@
+
+.Footer a,div{
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.Footer> .active{
+  font-weight: bold;
+  color: red;
+
+}

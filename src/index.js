@@ -2,8 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "semantic-ui-css/semantic.min.css";
 import "./index.css";
+import PropTypes from 'prop-types';
 
-import {StatsTable,ScoreBoard,StatsPlayerScore,SelectPlayersInTeams,CreateMatch,StatsPlayedMatches , MenuAtBott} from './components/'
+import {StatsTable,ScoreBoard,StatsPlayerScore,SelectPlayersInTeams,CreateMatch,
+  StatsPlayedMatches , Footer, Router} from './components/'
 import registerServiceWorker from "./registerServiceWorker";
 import {MatchResultService} from "./services/match-results-service";
 import {getAvailablePlayers, switchTeam} from "./lib/teamHelper";
@@ -42,6 +44,10 @@ class App extends React.Component {
         this.getPlayersInCurrentMatch = this.getPlayersInCurrentMatch.bind(this);
         this.changePage = this.changePage.bind(this);
     }
+
+    static contextTypes = {
+      route: PropTypes.string
+    } //kommer nu åt vald sida med hjälp av this.context.route
 
     componentDidMount() {
 
@@ -168,22 +174,23 @@ class App extends React.Component {
     }
 
     render() {
+
         if (this.state.loading) {
             return (<div>loading</div>)
 
         } else {
 
-          let page = this.state.currentPage;
+          //let page = this.state.currentPage;
+          let page = this.context.route;
+          console.log(page);
           let show = "";
 
           switch(page){
-            case "Table" :
+            case "/Score" :
             show= (
               <div>
                 <StatsTable
-                   players={this.state.scoreOfPlayer}
-                   //add={this.addPlayerForMatch}
-                 />
+                   players={this.state.scoreOfPlayer} />
 
                <StatsPlayerScore
                    match={this.state.matchResults}
@@ -193,7 +200,7 @@ class App extends React.Component {
 
              );
               break;
-            case "Games" :
+            case "/Games" :
               show = (
                 <div>
                   <CreateMatch
@@ -222,7 +229,7 @@ class App extends React.Component {
                   </div>
                 )
                 break;
-            case "Info" :
+            case "/Info" :
               console.log("info");
               break;
             default:
@@ -231,13 +238,20 @@ class App extends React.Component {
             return (
                 <div>
                     {show}
+                    
+                    <Footer />
 
-                    <MenuAtBott changePage={this.changePage} currentPage={this.state.currentPage} />
                 </div>
             );
         }
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Router><App /></Router>, document.getElementById('root'));
 registerServiceWorker();
+
+
+
+/*
+  <MenuAtBott changePage={this.changePage} currentPage={this.state.currentPage} />
+ */
