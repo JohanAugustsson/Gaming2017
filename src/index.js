@@ -45,7 +45,7 @@ class App extends React.Component {
 
     componentDidMount() {
 
-        MatchResultService.getMatchResults("innebandy", "innebandy2018").then(response => {
+        MatchResultService.getMatchResults("nhl", "nhl2018").then(response => {
             this.setState({
                 matchResults: response
             });
@@ -61,8 +61,8 @@ class App extends React.Component {
     }
 
 
-    saveMatchResults(playersList, serie, matchId) {
-        MatchResultService.setMatchResults("innebandy", serie, matchId, playersList);
+    saveMatchResults(playersList, serie, matchId,typ) {
+        MatchResultService.setMatchResults(typ, serie, matchId, playersList);
 
     }
 
@@ -90,7 +90,7 @@ class App extends React.Component {
                 playerList: response
             });
         });
-        MatchResultService.getMatchResults("innebandy", "innebandy2018").then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
+        MatchResultService.getMatchResults("nhl", "nhl2018").then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
             this.setState({
                 matchResults: response
             });

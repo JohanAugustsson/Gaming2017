@@ -19,10 +19,11 @@ export class ScoreBoard extends React.Component {
 
 
     handleSave(list){
-      let lista = this.state.serie;
+      //let lista = this.state.serie;
       let matchId = Object.keys(this.props.match)[0];
-      let serie = "innebandy2018";
-      this.props.saveMatch(list,serie,matchId);
+      let serie = this.props.match[matchId].serie;
+      let typ = this.props.match[matchId].typ;
+      this.props.saveMatch(list,serie,matchId,typ);
 
     }
 

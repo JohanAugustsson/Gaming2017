@@ -16,15 +16,19 @@ export class StatsPlayerScore extends React.Component{
 
   calculateScores(match,scoreHolder){                               // Väljer match för match  - STEG 1
 
-    let matchKeys = Object.keys(match);
-    matchKeys.forEach(selectedMatch =>{
+    if(match){                                                          //kontrollerar så att det någon match att räkna på
 
-      if(match[selectedMatch].players){                               // kontrollerar så att de finns spelare i matchen
-        let playerKeys = Object.keys(match[selectedMatch].players);
-        this.calculateSelectedPlayer(selectedMatch,playerKeys,scoreHolder);
-      }
+      let matchKeys = Object.keys(match);
+      matchKeys.forEach(selectedMatch =>{
 
-    })
+        if(match[selectedMatch].players){                               // kontrollerar så att de finns spelare i matchen
+          let playerKeys = Object.keys(match[selectedMatch].players);
+          this.calculateSelectedPlayer(selectedMatch,playerKeys,scoreHolder);
+        }
+
+      })
+
+    }
   }
 
   calculateSelectedPlayer(selectedMatch,playerKeys,scoreHolder){                 // Väljer Spelare för spelare   - STEG 2
@@ -79,7 +83,7 @@ export class StatsPlayerScore extends React.Component{
         scoreHolder[selectedPlayer.name].matchesWins = playerScore.matchesWins + homeWinner;
         scoreHolder[selectedPlayer.name].matchesDraw = playerScore.matchesDraw + draw;
         scoreHolder[selectedPlayer.name].goalTotal = playerScore.goalTotal + selectedPlayer.goalTotal;
-        scoreHolder[selectedPlayer.name].goalHome =  playerScore.goalHome + selectedPlayer.goalHome;
+        scoreHolder[selectedPlayer.name].goalHome =  playerScore.goalHome + selectedPlayer.goalTotal;
         scoreHolder[selectedPlayer.name].goalAway =  playerScore.goalAway;
         scoreHolder[selectedPlayer.name].goalFor =  playerScore.goalFor + homeTeamScore;
         scoreHolder[selectedPlayer.name].goalAgainst =  playerScore.goalAgainst + awayTeamScore;
@@ -100,7 +104,7 @@ export class StatsPlayerScore extends React.Component{
         scoreHolder[selectedPlayer.name].matchesDraw = playerScore.matchesDraw + draw;
         scoreHolder[selectedPlayer.name].goalTotal = playerScore.goalTotal + selectedPlayer.goalTotal;
         scoreHolder[selectedPlayer.name].goalHome =  playerScore.goalHome;
-        scoreHolder[selectedPlayer.name].goalAway = playerScore.goalAway + selectedPlayer.goalAway;
+        scoreHolder[selectedPlayer.name].goalAway = playerScore.goalAway + selectedPlayer.goalTotal;
         scoreHolder[selectedPlayer.name].goalFor =  playerScore.goalFor + awayTeamScore;
         scoreHolder[selectedPlayer.name].goalAgainst =  playerScore.goalAgainst + homeTeamScore;
 
