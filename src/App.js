@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import {Footer} from './components/'
 //import {MatchResultService} from "./services/match-results-service";
-import { Games,Scores } from './containers/'
+import { Games, Scores, Info} from './containers/'
 
 export class App extends React.Component {
     constructor(props) {
@@ -27,7 +27,7 @@ export class App extends React.Component {
                 <div>
                     {page==="/Score"? <div><Scores /></div> : ""}
                     {page==="/Games"? <div><Games /></div> : ""}
-                    {page==="/Info"? <div>Info</div> : ""}
+                    {page==="/Info"? <div><Info /></div> : ""}
                     {page==="/Home"? <div>Home</div> : ""}
 
                     <Footer active={this.context.route}/>

@@ -5,3 +5,4 @@ export {SelectPlayersInTeams} from "./select-players-in-teams/select-players-in-
 export {CreateMatch} from "./create-match/create-match";
 export {Footer} from './Footer/Footer'
 export {Router} from './router'
+export { CreatePlayer } from './create-player/create-player.js'
