@@ -5,10 +5,7 @@ const rootRef = firebase.database().ref();
 export const MatchResultService = {
 
     getMatchResults(typ, serie)  {
-        return rootRef.child(`matchResults/${typ}/${serie}`).once('value').then(snap => {
-
-            return snap.val();
-        });
+        return  rootRef.child(`matchResults/${typ}/${serie}`);
     },
 
     getPlayerList()  {
@@ -44,7 +41,7 @@ export const MatchResultService = {
         return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/`).set({
             typ: typ,
             serie: serie,
-            players: players,
+            players: players != null ? players : [],
             isOvertime: false,
             isPenaltyShootout: false
         });

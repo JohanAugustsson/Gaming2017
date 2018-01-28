@@ -36,13 +36,11 @@ class App extends React.Component {
             selectedMatchStream: {},  //
             playerList: {},           // Lista med alla spelare med från firebase.
             scoreOfPlayer: {},        // Lista med spelare och poäng.. används i Statstable.
-            newMatch: {},
             currentMatch: {id: null, typ: null, serie: null},
 
         };
         this.saveMatchResults = this.saveMatchResults.bind(this);
         this.setScoreOfPlayers = this.setScoreOfPlayers.bind(this);
-        this.getSelectedMatchStreamOn = this.getSelectedMatchStreamOn.bind(this);
         this.changeTeam = this.changeTeam.bind(this);
         this.removePlayerFromTeam = this.removePlayerFromTeam.bind(this);
         this.getAvailablePlayersAndPlayersInMatch = this.getAvailablePlayersAndPlayersInMatch.bind(this);
@@ -59,20 +57,12 @@ class App extends React.Component {
     } //kommer nu åt vald sida med hjälp av this.context.route
 
     componentDidMount() {
-
-        MatchResultService.getMatchResults("nhl", "nhl2018").then(response => {
-            this.setState({
-                matchResults: response
-            });
-        });
         MatchResultService.getPlayerList().then(response => {
             this.setState({
                 playerList: response,
                 scoreOfPlayer: response
             });
         });
-        this.getSelectedMatchStreamOn();
-
     }
 
 
@@ -81,19 +71,11 @@ class App extends React.Component {
 
     }
 
-    /**
-     * Hämtar specifik match från db och sätter en lyssnare p
-     */
-    getSelectedMatchStreamOn() {
-        let matchObj = {};
-
-        MatchResultService.getMatchStream(this.state.currentMatch).on('value', (snapshot) => {
-            matchObj[this.state.currentMatch.id] = snapshot.val();
-
+    getMatchStream(){
+        MatchResultService.getMatchResults(this.state.currentMatch.typ, this.state.currentMatch.serie).on('value', (snapshot) => {
             this.setState({
-                selectedMatchStream: matchObj,
-                loading: false,
-            })
+                matchResults: snapshot.val() != null ? snapshot.val() : {}
+            });
         });
     }
 
@@ -105,12 +87,6 @@ class App extends React.Component {
                 playerList: response
             });
         });
-        MatchResultService.getMatchResults("nhl", "nhl2018").then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
-            this.setState({
-                matchResults: response
-            });
-        });
-
 
         this.setState({
             scoreOfPlayer: scoreOfPlayer
@@ -119,10 +95,10 @@ class App extends React.Component {
 
 
     changeTeam(player) {
-
-        this.setState({selectedMatchStream: switchTeam(this.state.selectedMatchStream, player.player, player.isHomeTeam)},
+        let changedMatch = switchTeam({[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}, player.player, player.isHomeTeam);
+        this.setState({matchResults: {...this.state.matchResults, ...changedMatch}},
             function () {
-                MatchResultService.setMatchResults(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, this.state.selectedMatchStream[this.state.currentMatch.id].players)
+                MatchResultService.setMatchResults(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, this.state.matchResults[this.state.currentMatch.id].players)
             });
     }
 
@@ -132,9 +108,7 @@ class App extends React.Component {
      * @param player player att ta bort
      */
     removePlayerFromTeam(player) {
-        MatchResultService.removePlayerFromMatch(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, player.name).then(
-            this.getSelectedMatchStreamOn()
-        );
+        MatchResultService.removePlayerFromMatch(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, player.name);
     }
 
     getAvailablePlayersAndPlayersInMatch(playersInMatch, availablePlayers) {
@@ -142,39 +116,41 @@ class App extends React.Component {
     };
 
     getPlayersInCurrentMatch() {
-        if (this.state.selectedMatchStream[this.state.currentMatch.id] != null) {
-            return this.getAvailablePlayersAndPlayersInMatch(this.state.selectedMatchStream[this.state.currentMatch.id].players, this.state.playerList)
+        if (this.state.matchResults[this.state.currentMatch.id] != null) {
+            return this.getAvailablePlayersAndPlayersInMatch(this.state.matchResults[this.state.currentMatch.id].players, this.state.playerList)
         } else return {};
     }
 
     newGame(event) {
-        MatchResultService.createMatch(this.state.newMatch.typ, this.state.newMatch.serie).then(response => {
+        MatchResultService.createMatch(this.state.currentMatch.typ, this.state.currentMatch.serie).then(response => {
             this.setState({
-                newMatch: {...this.state.newMatch, ...{matchId: response.key}},
                 currentMatch: {
                     ...this.state.currentMatch, ...{
                         id: response.key,
-                        typ: this.state.newMatch.typ,
-                        serie: this.state.newMatch.serie
+                        typ: this.state.currentMatch.typ,
+                        serie: this.state.currentMatch.serie
                     }
                 }
             }, function () {
-                this.getSelectedMatchStreamOn();
+                this.getMatchStream();
             });
         });
     }
 
     onChangeGameType(data) {
         this.setState({
-            newMatch: {...this.state.newMatch, ...{typ: data.value}}
+            matchResults: {},
+            currentMatch: {...this.state.currentMatch, ...{typ: data.value, serie: "", id: ""}}
         })
     }
 
     onChangeSerie(data) {
         this.setState({
-            newMatch: {
-                ...this.state.newMatch, ...{serie: data.value}
+            currentMatch: {
+                ...this.state.currentMatch, ...{serie: data.value}
             }
+        }, function () {
+            this.getMatchStream();
         })
     }
 
@@ -191,19 +167,11 @@ class App extends React.Component {
                     serie: match.serie
                 }
             }
-        }, function () {
-            this.getSelectedMatchStreamOn();
         });
     }
 
 
     render() {
-
-        if (this.state.loading) {
-            return (<div>loading</div>)
-
-        } else {
-
             //let page = this.state.currentPage;
             let page = this.context.route;
 
@@ -230,6 +198,7 @@ class App extends React.Component {
                             <CreateMatch
                                 gametypes={gametypes}
                                 serie={serie}
+                                currentVal={this.state.currentMatch.serie}
                                 newGame={this.newGame}
                                 onChangeGameType={this.onChangeGameType}
                                 onChangeSerie={this.onChangeSerie}/>
@@ -242,14 +211,14 @@ class App extends React.Component {
                                 removePlayerFromTeam={this.removePlayerFromTeam}/>
 
                             <ScoreBoard
-                                match={this.state.selectedMatchStream}
+                                match={{[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}}
                                 saveMatch={this.saveMatchResults}
                                 resetMatch={this.resetPlayerForMatch}
                                 serie={this.state.currentMatch.serie}/>
 
 
                             <button
-                                onClick={this.getSelectedMatchStreamOn}>
+                                onClick={this.getMatchStream}>
                                 click to update selectedMatchStream
                             </button>
                         </div>
@@ -270,7 +239,7 @@ class App extends React.Component {
                 </div>
             );
         }
-    }
+
 }
 
 ReactDOM.render(<Router><App /></Router>, document.getElementById('root'));

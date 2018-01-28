@@ -12,7 +12,7 @@ export const MatchList = (props) => {
                         <Table.Row>
                             <Table.HeaderCell></Table.HeaderCell>
                             <Table.HeaderCell>Played Date</Table.HeaderCell>
-                            <Table.HeaderCell>ID</Table.HeaderCell>
+                            <Table.HeaderCell>Match ID</Table.HeaderCell>
 
                         </Table.Row>
                     </Table.Header>
