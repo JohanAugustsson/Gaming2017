@@ -6,9 +6,8 @@ export const MatchResultService = {
 
     getMatchResults(typ, serie)  {
         return rootRef.child(`matchResults/${typ}/${serie}`).once('value').then(snap => {
-
             return snap.val();
-        });
+        })
     },
 
     getPlayerList()  {
@@ -18,23 +17,12 @@ export const MatchResultService = {
         });
     },
 
-    getMatchResultsStream()  {
-        return rootRef.child('matchResults').on('value', snap => {
-            return snap.val();
-        })
-    },
-
-    getSelectedMatchStream(match)  {
-        return rootRef.child(`matchResults/${match.typ}/${match.serie}/${match.id}`).once('value').then(snap => {
-            return snap.val();
-        });
+    getMatchResultsStream(typ, serie)  {
+        return rootRef.child(`matchResults/${typ}/${serie}`);
     },
 
     getMatchStream(match)  {
-      //  rootRef.child(`matchResults/${match.typ}/${match.serie}/${match.id}`).on('value', (snapshot) => {
-        //   return snapshot.val();
-       // });
-        return  rootRef.child(`matchResults/${match.typ}/${match.serie}/${match.id}`);
+        return rootRef.child(`matchResults/${match.typ}/${match.serie}/${match.id}`);
     },
 
     //setMatchResults({serie="innebandy2018",isOvertime=false,isPenaltyShootout=false,players="0"){
@@ -44,7 +32,7 @@ export const MatchResultService = {
         return rootRef.child(`matchResults/${typ}/${serie}/${matchId}/`).set({
             typ: typ,
             serie: serie,
-            players: players,
+            players: players != null ? players : [],
             isOvertime: false,
             isPenaltyShootout: false
         });

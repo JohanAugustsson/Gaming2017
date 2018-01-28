@@ -1,12 +1,13 @@
 import React from "react";
 import "semantic-ui-css/semantic.min.css";
 import "../../index.css";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import {ScoreBoard,SelectPlayersInTeams,CreateMatch} from '../../components/'
+import {CreateMatch, ScoreBoard, SelectPlayersInTeams} from "../../components/";
 import {MatchResultService} from "../../services/match-results-service";
 import {getAvailablePlayers, switchTeam} from "../../lib/teamHelper";
 import {sortByKeyName} from "../../lib/utils";
+import {MatchList} from "../../components/match-list/match-list";
 
 
 let gametypes = [{key: "innebandy", value: "innebandy", text: "innebandy"}, {key: "nhl", value: "nhl", text: "nhl"}];
@@ -20,185 +21,161 @@ export class Games extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
             matchResults: [],         // Alla matcher som är spelade
             selectedMatchStream: {},  //
             playerList: {},           // Lista med alla spelare med från firebase.
-            //scoreOfPlayer: {},        // Lista med spelare och poäng.. används i Statstable.
-            newMatch: {},
             currentMatch: {id: null, typ: null, serie: null},
-
         };
         this.saveMatchResults = this.saveMatchResults.bind(this);
-        this.setScoreOfPlayers = this.setScoreOfPlayers.bind(this);
-        this.getSelectedMatchStreamOn = this.getSelectedMatchStreamOn.bind(this);
         this.changeTeam = this.changeTeam.bind(this);
         this.removePlayerFromTeam = this.removePlayerFromTeam.bind(this);
-        this.getAvailablePlayersAndPlayersInMatch = this.getAvailablePlayersAndPlayersInMatch.bind(this);
         this.onChangeSerie = this.onChangeSerie.bind(this);
         this.onChangeGameType = this.onChangeGameType.bind(this);
-        this.newGame = this.newGame.bind(this);
+        this.createMatch = this.createMatch.bind(this);
         this.getPlayersInCurrentMatch = this.getPlayersInCurrentMatch.bind(this);
+        this.onChangeMatch = this.onChangeMatch.bind(this);
 
     }
 
     static contextTypes = {
-      route: PropTypes.string
+        route: PropTypes.string
     } //kommer nu åt vald sida med hjälp av this.context.route
 
     componentDidMount() {
-
-        MatchResultService.getMatchResults("nhl", "nhl2018").then(response => {
-            this.setState({
-                matchResults: response
-            });
-        });
         MatchResultService.getPlayerList().then(response => {
             this.setState({
                 playerList: response,
-                scoreOfPlayer: response
             });
         });
-        this.getSelectedMatchStreamOn();
-
-    }
-
-
-    saveMatchResults(playersList, serie, matchId,typ) {
-        MatchResultService.setMatchResults(typ, serie, matchId, playersList);
-
     }
 
     /**
-     * Hämtar specifik match från db och sätter en lyssnare p
+     * Sparar resultaten för en match.
+     * @param playersList
+     * @param serie
+     * @param matchId
+     * @param typ
      */
-    getSelectedMatchStreamOn() {
-        let matchObj = {};
-
-        MatchResultService.getMatchStream(this.state.currentMatch).on('value', (snapshot) => {
-            matchObj[this.state.currentMatch.id] = snapshot.val();
-
-            this.setState({
-                selectedMatchStream: matchObj,
-                loading: false,
-            })
-        });
+    saveMatchResults(playersList, serie, matchId, typ) {
+        MatchResultService.setMatchResults(typ, serie, matchId, playersList);
     }
 
-
-    setScoreOfPlayers(scoreOfPlayer) {
-
-        MatchResultService.getPlayerList().then(response => {  // Nollställer playerList
+    /**
+     * Hämtar och lyssnar efter ändringar för en serie.
+     */
+    getMatchStream() {
+        MatchResultService.getMatchResultsStream(this.state.currentMatch.typ, this.state.currentMatch.serie).on('value', (snapshot) => {
             this.setState({
-                playerList: response
+                matchResults: snapshot.val() != null ? snapshot.val() : {}
             });
         });
-        MatchResultService.getMatchResults("nhl", "nhl2018").then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
-            this.setState({
-                matchResults: response
-            });
-        });
-
-
-        this.setState({
-            scoreOfPlayer: scoreOfPlayer
-        })
     }
 
 
     changeTeam(player) {
-
-        this.setState({selectedMatchStream: switchTeam(this.state.selectedMatchStream, player.player, player.isHomeTeam)},
+        let changedMatch = switchTeam({[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}, player.player, player.isHomeTeam);
+        this.setState({matchResults: {...this.state.matchResults, ...changedMatch}},
             function () {
-                MatchResultService.setMatchResults(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, this.state.selectedMatchStream[this.state.currentMatch.id].players)
+                MatchResultService.setMatchResults(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, this.state.matchResults[this.state.currentMatch.id].players)
             });
     }
 
     /**
      * Tar bort spelare från match
-     * Todo: skicka in parametrar för match och event.
-     * @param player player att ta bort
+     * @param player spelare att ta bort
      */
     removePlayerFromTeam(player) {
-        MatchResultService.removePlayerFromMatch(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, player.name).then(
-            this.getSelectedMatchStreamOn()
-        );
+        MatchResultService.removePlayerFromMatch(this.state.currentMatch.typ, this.state.currentMatch.serie, this.state.currentMatch.id, player.name);
     }
 
-    getAvailablePlayersAndPlayersInMatch(playersInMatch, availablePlayers) {
-        return sortByKeyName(getAvailablePlayers(playersInMatch, availablePlayers))
-    };
-
+    /**
+     * Hämtar tillgängliga spelare för en match och sorterar dem i bokstavsordning.
+     * @returns {{}}
+     */
     getPlayersInCurrentMatch() {
-        if (this.state.selectedMatchStream[this.state.currentMatch.id] != null) {
-            return this.getAvailablePlayersAndPlayersInMatch(this.state.selectedMatchStream[this.state.currentMatch.id].players, this.state.playerList)
+        if (this.state.matchResults[this.state.currentMatch.id] != null) {
+            let availablePlayers = getAvailablePlayers(this.state.matchResults[this.state.currentMatch.id].players, this.state.playerList)
+            return sortByKeyName(availablePlayers);
         } else return {};
     }
 
-    newGame(event) {
-        MatchResultService.createMatch(this.state.newMatch.typ, this.state.newMatch.serie).then(response => {
+    createMatch(event) {
+        MatchResultService.createMatch(this.state.currentMatch.typ, this.state.currentMatch.serie).then(response => {
             this.setState({
-                newMatch: {...this.state.newMatch, ...{matchId: response.key}},
                 currentMatch: {
                     ...this.state.currentMatch, ...{
                         id: response.key,
-                        typ: this.state.newMatch.typ,
-                        serie: this.state.newMatch.serie
+                        typ: this.state.currentMatch.typ,
+                        serie: this.state.currentMatch.serie
                     }
                 }
             }, function () {
-                this.getSelectedMatchStreamOn();
+                this.getMatchStream();
             });
         });
     }
 
     onChangeGameType(data) {
         this.setState({
-            newMatch: {...this.state.newMatch, ...{typ: data.value}}
+            matchResults: {},
+            currentMatch: {...this.state.currentMatch, ...{typ: data.value, serie: "", id: ""}}
         })
     }
 
     onChangeSerie(data) {
         this.setState({
-            newMatch: {...this.state.newMatch, ...{serie: data.value}}
+            currentMatch: {
+                ...this.state.currentMatch, ...{serie: data.value}
+            }
+        }, function () {
+            this.getMatchStream();
+        })
+    }
+
+    onChangeMatch(match) {
+        this.setState({
+            currentMatch: {
+                ...this.state.currentMatch, ...{
+                    id: match.key,
+                    typ: match.typ,
+                    serie: match.serie
+                }
+            }
         });
     }
 
-
     render() {
 
-        if (this.state.loading) {
-            return (<div>loading</div>)
-
-        } else {
-
-          return (
-              <div>
+        return (
+            <div>
                 <CreateMatch
-                  gametypes={gametypes}
-                  serie={serie}
-                  newGame={this.newGame}
-                  onChangeGameType={this.onChangeGameType}
-                  onChangeSerie={this.onChangeSerie} />
+                    gametypes={gametypes}
+                    serie={serie}
+                    currentVal={this.state.currentMatch.serie}
+                    newGame={this.createMatch}
+                    onChangeGameType={this.onChangeGameType}
+                    onChangeSerie={this.onChangeSerie}/>
 
-                  <SelectPlayersInTeams
-                      players={this.getPlayersInCurrentMatch()}
-                      changeTeam={this.changeTeam}
-                      removePlayerFromTeam={this.removePlayerFromTeam} />
+                <MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>
 
-                  <ScoreBoard
-                      match={this.state.selectedMatchStream}
-                      saveMatch={this.saveMatchResults}
-                      resetMatch={this.resetPlayerForMatch}
-                      serie={this.state.currentMatch.serie} />
+                <SelectPlayersInTeams
+                    players={this.getPlayersInCurrentMatch()}
+                    changeTeam={this.changeTeam}
+                    removePlayerFromTeam={this.removePlayerFromTeam}/>
+
+                <ScoreBoard
+                    match={{[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}}
+                    saveMatch={this.saveMatchResults}
+                    resetMatch={this.resetPlayerForMatch}
+                    serie={this.state.currentMatch.serie}/>
 
 
-                  <button
-                    onClick={this.getSelectedMatchStreamOn}>
+                <button
+                    onClick={this.getMatchStream}>
                     click to update selectedMatchStream
-                  </button>
-              </div>
-            );
-        }
+                </button>
+            </div>
+        );
     }
+
 }
