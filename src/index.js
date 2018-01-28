@@ -2,14 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "semantic-ui-css/semantic.min.css";
 import "./index.css";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import {StatsTable,ScoreBoard,StatsPlayerScore,SelectPlayersInTeams,CreateMatch,
-  Footer, Router} from './components/'
+import {
+    CreateMatch,
+    Footer,
+    Router,
+    ScoreBoard,
+    SelectPlayersInTeams,
+    StatsPlayerScore,
+    StatsTable
+} from "./components/";
 import registerServiceWorker from "./registerServiceWorker";
 import {MatchResultService} from "./services/match-results-service";
 import {getAvailablePlayers, switchTeam} from "./lib/teamHelper";
 import {sortByKeyName} from "./lib/utils";
+import {MatchList} from "./components/match-list/match-list";
 
 
 let gametypes = [{key: "innebandy", value: "innebandy", text: "innebandy"}, {key: "nhl", value: "nhl", text: "nhl"}];
@@ -42,11 +50,12 @@ class App extends React.Component {
         this.onChangeGameType = this.onChangeGameType.bind(this);
         this.newGame = this.newGame.bind(this);
         this.getPlayersInCurrentMatch = this.getPlayersInCurrentMatch.bind(this);
+        this.onChangeMatch = this.onChangeMatch.bind(this);
 
     }
 
     static contextTypes = {
-      route: PropTypes.string
+        route: PropTypes.string
     } //kommer nu åt vald sida med hjälp av this.context.route
 
     componentDidMount() {
@@ -67,7 +76,7 @@ class App extends React.Component {
     }
 
 
-    saveMatchResults(playersList, serie, matchId,typ) {
+    saveMatchResults(playersList, serie, matchId, typ) {
         MatchResultService.setMatchResults(typ, serie, matchId, playersList);
 
     }
@@ -163,7 +172,27 @@ class App extends React.Component {
 
     onChangeSerie(data) {
         this.setState({
-            newMatch: {...this.state.newMatch, ...{serie: data.value}}
+            newMatch: {
+                ...this.state.newMatch, ...{serie: data.value}
+            }
+        })
+    }
+
+    onChangeMatch(match) {
+        this.setCurrentMatch(match);
+    }
+
+    setCurrentMatch(match) {
+        this.setState({
+            currentMatch: {
+                ...this.state.currentMatch, ...{
+                    id: match.key,
+                    typ: match.typ,
+                    serie: match.serie
+                }
+            }
+        }, function () {
+            this.getSelectedMatchStreamOn();
         });
     }
 
@@ -175,61 +204,63 @@ class App extends React.Component {
 
         } else {
 
-          //let page = this.state.currentPage;
-          let page = this.context.route;
+            //let page = this.state.currentPage;
+            let page = this.context.route;
 
-          let show = "";
+            let show = "";
 
-          switch(page){
-            case "/Score" :
-            show= (
-              <div>
-                <StatsTable
-                   players={this.state.scoreOfPlayer} />
+            switch (page) {
+                case "/Score" :
+                    show = (
+                        <div>
+                            <StatsTable
+                                players={this.state.scoreOfPlayer}/>
 
-               <StatsPlayerScore
-                   match={this.state.matchResults}
-                   playerScore={this.state.playerList}
-                   setScore={this.setScoreOfPlayers} />
-              </div>
+                            <StatsPlayerScore
+                                match={this.state.matchResults}
+                                playerScore={this.state.playerList}
+                                setScore={this.setScoreOfPlayers}/>
+                        </div>
 
-             );
-              break;
-            case "/Games" :
-              show = (
-                <div>
-                  <CreateMatch
-                    gametypes={gametypes}
-                    serie={serie}
-                    newGame={this.newGame}
-                    onChangeGameType={this.onChangeGameType}
-                    onChangeSerie={this.onChangeSerie} />
+                    );
+                    break;
+                case "/Games" :
+                    show = (
+                        <div>
+                            <CreateMatch
+                                gametypes={gametypes}
+                                serie={serie}
+                                newGame={this.newGame}
+                                onChangeGameType={this.onChangeGameType}
+                                onChangeSerie={this.onChangeSerie}/>
 
-                    <SelectPlayersInTeams
-                        players={this.getPlayersInCurrentMatch()}
-                        changeTeam={this.changeTeam}
-                        removePlayerFromTeam={this.removePlayerFromTeam} />
+                            <MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>
 
-                    <ScoreBoard
-                        match={this.state.selectedMatchStream}
-                        saveMatch={this.saveMatchResults}
-                        resetMatch={this.resetPlayerForMatch}
-                        serie={this.state.currentMatch.serie} />
+                            <SelectPlayersInTeams
+                                players={this.getPlayersInCurrentMatch()}
+                                changeTeam={this.changeTeam}
+                                removePlayerFromTeam={this.removePlayerFromTeam}/>
+
+                            <ScoreBoard
+                                match={this.state.selectedMatchStream}
+                                saveMatch={this.saveMatchResults}
+                                resetMatch={this.resetPlayerForMatch}
+                                serie={this.state.currentMatch.serie}/>
 
 
-                    <button
-                      onClick={this.getSelectedMatchStreamOn}>
-                      click to update selectedMatchStream
-                    </button>
-                  </div>
-                )
-                break;
-            case "/Info" :
-              //console.log("info");
-              break;
-            default:
-              //console.log("default");
-          }
+                            <button
+                                onClick={this.getSelectedMatchStreamOn}>
+                                click to update selectedMatchStream
+                            </button>
+                        </div>
+                    )
+                    break;
+                case "/Info" :
+                    //console.log("info");
+                    break;
+                default:
+                //console.log("default");
+            }
             return (
                 <div>
                     {show}
@@ -246,7 +277,6 @@ ReactDOM.render(<Router><App /></Router>, document.getElementById('root'));
 registerServiceWorker();
 
 
-
 /*
-  <MenuAtBott changePage={this.changePage} currentPage={this.state.currentPage} />
+ <MenuAtBott changePage={this.changePage} currentPage={this.state.currentPage} />
  */
