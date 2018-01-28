@@ -8,10 +8,7 @@ body {
 
 }
 
-.Footer a{
-  padding-left: 2px;
-  padding-right: 2px;
-}
-.Footer a.active{
-  font-weight: bold;
+#root{
+  background-color: #263039;
+  color: white;
 }
