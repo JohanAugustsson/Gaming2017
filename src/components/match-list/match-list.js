@@ -7,7 +7,7 @@ export const MatchList = (props) => {
     if (props.matches) {
         return (
             <div>
-                <Table celled inverted selectable size="large" >
+                <Table celled inverted selectable >
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell></Table.HeaderCell>

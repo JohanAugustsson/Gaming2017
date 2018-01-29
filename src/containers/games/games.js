@@ -8,6 +8,8 @@ import {MatchResultService} from "../../services/match-results-service";
 import {getAvailablePlayers, switchTeam} from "../../lib/teamHelper";
 import {sortByKeyName} from "../../lib/utils";
 import {MatchList} from "../../components/match-list/match-list";
+import Menu from "semantic-ui-react/dist/es/collections/Menu/Menu";
+import Grid from "semantic-ui-react/dist/es/collections/Grid/Grid";
 
 
 let gametypes = [{key: "innebandy", value: "innebandy", text: "innebandy"}, {key: "nhl", value: "nhl", text: "nhl"}];
@@ -25,6 +27,7 @@ export class Games extends React.Component {
             selectedMatchStream: {},  //
             playerList: {},           // Lista med alla spelare med från firebase.
             currentMatch: {id: null, typ: null, serie: null},
+            activeItem: 'Start game'
         };
         this.saveMatchResults = this.saveMatchResults.bind(this);
         this.changeTeam = this.changeTeam.bind(this);
@@ -108,7 +111,8 @@ export class Games extends React.Component {
                         typ: this.state.currentMatch.typ,
                         serie: this.state.currentMatch.serie
                     }
-                }
+                },
+                activeItem: "Select player in teams"
             }, function () {
                 this.getMatchStream();
             });
@@ -140,42 +144,67 @@ export class Games extends React.Component {
                     typ: match.typ,
                     serie: match.serie
                 }
-            }
+            },
+            activeItem: "Select player in teams"
         });
     }
 
-    render() {
-
-        return (
-            <div>
-                <CreateMatch
+    stepPages() {
+        switch (this.state.activeItem) {
+            case ('Start game'):
+                return <div><CreateMatch
                     gametypes={gametypes}
                     serie={serie}
                     currentVal={this.state.currentMatch.serie}
-                    newGame={this.createMatch}
+                    createMatch={this.createMatch}
                     onChangeGameType={this.onChangeGameType}
                     onChangeSerie={this.onChangeSerie}/>
-
-                <MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>
-
-                <SelectPlayersInTeams
+                    <MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>
+                </div>;
+            case ("Select player in teams"):
+                return <SelectPlayersInTeams
                     players={this.getPlayersInCurrentMatch()}
                     changeTeam={this.changeTeam}
-                    removePlayerFromTeam={this.removePlayerFromTeam}/>
-
-                <ScoreBoard
+                    removePlayerFromTeam={this.removePlayerFromTeam}/>;
+            case ("Score"):
+                return <div><ScoreBoard
                     match={{[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}}
                     saveMatch={this.saveMatchResults}
                     resetMatch={this.resetPlayerForMatch}
                     serie={this.state.currentMatch.serie}/>
+                </div>;
+            default: return <div/>
+        }
+    }
 
 
-                <button
-                    onClick={this.getMatchStream}>
-                    click to update selectedMatchStream
-                </button>
+    handleItemClick = (e, {name}) => this.setState({activeItem: name});
+
+    render() {
+
+        let viewPage = this.stepPages();
+        return (
+
+            <div>
+                <Menu inverted pointing secondary fluid>
+                    <Menu.Item name='Start game' active={this.state.activeItem === 'Start game'}
+                               onClick={this.handleItemClick}/>
+                    <Menu.Item name='Select player in teams'
+                               active={this.state.activeItem === 'Select player in teams'}
+                               onClick={this.handleItemClick}/>
+                    <Menu.Item name='Score' active={this.state.activeItem === 'Score'}
+                               onClick={this.handleItemClick}/>
+                </Menu>
+                <Grid verticalAlign='middle' >
+                    <Grid.Row>
+                        <Grid.Column>
+                            {viewPage}
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </div>
         );
     }
+
 
 }
