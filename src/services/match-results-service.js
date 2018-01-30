@@ -64,5 +64,12 @@ export const MatchResultService = {
             serie: serie,
             typ: typ
         });
+    },
+
+    createPlayer(player){
+        console.log(player);
+        return rootRef.child(`players/${player.name}/`).set(player);
     }
+
+
 };
