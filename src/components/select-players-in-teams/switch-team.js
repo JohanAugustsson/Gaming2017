@@ -1,46 +1,47 @@
 import React from "react";
-import "../counter/counter.css";
-import List from "semantic-ui-react/dist/es/elements/List/List";
 import Button from "semantic-ui-react/dist/es/elements/Button/Button";
+import Grid from "semantic-ui-react/dist/es/collections/Grid/Grid";
 
 export const SwitchTeam = (props) => {
     return (
         <div>
-            <div className="teams">
-                <List divided verticalAlign='middle'>
-                    <List.Item>
-                        <List.Content >
-                            <span className="nameStyle">
-                              {props.player.name}
-                            </span>
-                            <Button.Group size='small'>
+            <Grid>
+                <Grid.Row centered>
+                    <Grid.Column  mobile="0" table="7" computer="5">
 
-                                <Button active={props.player.isHomeTeam === true}
-                                        className="btn-score"
-                                        onClick={(event) => props.changeTeam({
-                                            player: props.player,
-                                            isHomeTeam: {isHomeTeam: true, id: "isHomeTeam"}
-                                        })}>Home
-                                </Button>
+                    </Grid.Column>
+                    <Grid.Column mobile="16" table="7" computer="2">
+                        {props.player.name}
+                    </Grid.Column>
 
-                                <Button active={props.player.isHomeTeam === null}
-                                        onClick={(event) => props.removePlayerFromTeam({
-                                            name: props.player.name
-                                        })}>Not Participating
-                                </Button>
+                        <Grid.Column mobile="9" table="9" computer="9">
+                        <Button.Group size='small'>
 
-                                <Button active={props.player.isHomeTeam === false}
-                                        onClick={(event) => props.changeTeam({
-                                            player: props.player,
-                                            isHomeTeam: {isHomeTeam: false, id: "isHomeTeam"}
-                                        })}>Away
-                                </Button>
+                            <Button inverted active={props.player.isHomeTeam === true}
+                                    onClick={(event) => props.changeTeam({
+                                        player: props.player,
+                                        isHomeTeam: {isHomeTeam: true, id: "isHomeTeam"}
+                                    })}>Home
+                            </Button>
 
-                            </Button.Group>
-                        </List.Content>
-                    </List.Item>
-                </List>
-            </div>
+                            <Button inverted
+                                    active={props.player.isHomeTeam !== true && props.player.isHomeTeam !== false}
+                                    onClick={(event) => props.removePlayerFromTeam({
+                                        name: props.player.name
+                                    })}>Benched
+                            </Button>
+
+                            <Button inverted active={props.player.isHomeTeam === false}
+                                    onClick={(event) => props.changeTeam({
+                                        player: props.player,
+                                        isHomeTeam: {isHomeTeam: false, id: "isHomeTeam"}
+                                    })}>Away
+                            </Button>
+
+                        </Button.Group>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </div>
     )
 };

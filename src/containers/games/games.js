@@ -158,7 +158,7 @@ export class Games extends React.Component {
                     currentVal={this.state.currentMatch.serie}
                     createMatch={this.createMatch}
                     onChangeGameType={this.onChangeGameType}
-                    onChangeSerie={this.onChangeSerie}/>
+                    onChangeSerie={this.onChangeSerie}/><br/><br/>
                     <MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>
                 </div>;
             case ("Select player in teams"):
@@ -173,7 +173,8 @@ export class Games extends React.Component {
                     resetMatch={this.resetPlayerForMatch}
                     serie={this.state.currentMatch.serie}/>
                 </div>;
-            default: return <div/>
+            default:
+                return <div/>
         }
     }
 
@@ -186,18 +187,21 @@ export class Games extends React.Component {
         return (
 
             <div>
-                <Menu inverted pointing secondary fluid>
-                    <Menu.Item name='Start game' active={this.state.activeItem === 'Start game'}
-                               onClick={this.handleItemClick}/>
-                    <Menu.Item name='Select player in teams'
-                               active={this.state.activeItem === 'Select player in teams'}
-                               onClick={this.handleItemClick}/>
-                    <Menu.Item name='Score' active={this.state.activeItem === 'Score'}
-                               onClick={this.handleItemClick}/>
-                </Menu>
-                <Grid verticalAlign='middle' >
+                <Grid>
+                    <Grid.Column  mobile="16" table="5" computer="16">
+                        <Menu inverted pointing secondary widths="3">
+                            <Menu.Item name='Start game' active={this.state.activeItem === 'Start game'}
+                                       onClick={this.handleItemClick}/>
+                            <Menu.Item name='Select player in teams'
+                                       active={this.state.activeItem === 'Select player in teams'}
+                                       onClick={this.handleItemClick}/>
+                            <Menu.Item name='Score' active={this.state.activeItem === 'Score'}
+                                       onClick={this.handleItemClick}/>
+                        </Menu></Grid.Column>
+                </Grid>
+                <Grid verticalAlign='middle'>
                     <Grid.Row>
-                        <Grid.Column>
+                        <Grid.Column mobile="16" table="16" computer="16">
                             {viewPage}
                         </Grid.Column>
                     </Grid.Row>

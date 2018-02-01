@@ -6,9 +6,16 @@ export const CreateMatch = (props) => {
     return (
         <div>
             <Form onSubmit={(event => props.createMatch())}>
-                <Form.Dropdown placeholder='Typ' onChange={(event, data) => props.onChangeGameType(data)} search selection options={props.gametypes}/>
-                <Form.Dropdown placeholder='Serie' value={props.currentVal} onChange={(event, data) => props.onChangeSerie(data)}  search selection options={props.serie}/>
-                <Form.Button content="New Game"/>
+                <label for="type">Typ</label>
+                <Form.Dropdown name="type" placeholder='Select type of game'
+                               onChange={(event, data) => props.onChangeGameType(data)} basic
+                               options={props.gametypes}/>
+                <br />
+                <label>League</label>
+                <Form.Dropdown placeholder='Select league' value={props.currentVal}
+                               onChange={(event, data) => props.onChangeSerie(data)} basic options={props.serie}/>
+                <br/>
+                <Form.Button inverted content="New Game"/>
             </Form>
         </div>
     )
