@@ -6,3 +6,4 @@ export {CreateMatch} from "./create-match/create-match";
 export {Footer} from './Footer/Footer'
 export {Router} from './router'
 export { CreatePlayer } from './create-player/create-player.js'
+export { PlayerList } from './player-list/player-list.js'

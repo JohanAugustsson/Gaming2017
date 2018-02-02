@@ -29,8 +29,11 @@ export class App extends React.Component {
                     {page==="/Games"? <div><Games /></div> : ""}
                     {page==="/Info"? <div><Info /></div> : ""}
                     {page==="/Home"? <div>Home</div> : ""}
+                    <div className="empty">
+                    </div>
+                      <Footer active={this.context.route}/>
 
-                    <Footer active={this.context.route}/>
+
 
                 </div>
             );
