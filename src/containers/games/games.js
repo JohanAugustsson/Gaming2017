@@ -167,40 +167,6 @@ export class Games extends React.Component {
         });
     }
 
-    stepPages() {
-        switch (this.state.activeItem) {
-            case ('Start game'):
-                return <div>
-                    {/*<CreateMatch*/}
-                    {/*gametypes={gametypes}*/}
-                    {/*serie={serie}*/}
-                    {/*currentVal={this.state.currentMatch.serie}*/}
-                    {/*createMatch={this.createMatch}*/}
-                    {/*onChangeGameType={this.onChangeGameType}*/}
-                    {/*onChangeSerie={this.onChangeSerie}/><br/><br/>*/}
-                    {/*<MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>*/}
-                </div>;
-            case ("Select player in teams"):
-                return <div>
-                    {/*<SelectPlayersInTeams*/}
-                    {/*players={this.getPlayersInCurrentMatch()}*/}
-                    {/*changeTeam={this.changeTeam}*/}
-                    {/*removePlayerFromTeam={this.removePlayerFromTeam}/>*/}
-                </div>;
-
-            case ("Score"):
-                return <div>
-                    {/*<ScoreBoard*/}
-                    {/*match={{[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}}*/}
-                    {/*saveMatch={this.saveMatchResults}*/}
-                    {/*resetMatch={this.resetPlayerForMatch}*/}
-                    {/*serie={this.state.currentMatch.serie}/>*/}
-                </div>;
-            default:
-                return <div/>
-        }
-    }
-
     handleChange = (event, value) => {
         this.setState({
             activeItemIndex: value,
@@ -230,11 +196,10 @@ export class Games extends React.Component {
     handleItemClick = (e, {name}) => this.setState({activeItemIndex: this.getNumberFromString(name)});
 
     render() {
-        let viewPage = this.stepPages();
         return (
 
             <div>
-                <Grid id="griden">
+                <Grid id="tab-in-grid">
                     <Grid.Column mobile="16" table="5" computer="16">
                         <Menu inverted pointing secondary widths="3">
                             <Menu.Item name='Start game' active={this.state.activeItemIndex === 0}
@@ -247,6 +212,7 @@ export class Games extends React.Component {
                         </Menu></Grid.Column>
                 </Grid>
                 <SwipeableViews enableMouseEvents index={this.state.activeItemIndex} onChangeIndex={this.handleChangeIndex}>
+
                     <div style={Object.assign({}, styles.slide, styles.slide1)}>
                         <div className="fullheight">
                             <CreateMatch
@@ -259,6 +225,7 @@ export class Games extends React.Component {
                             <MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>
                         </div>
                     </div>
+
                     <div style={Object.assign({}, styles.slide, styles.slide2)}>
                         <div className="fullheight">
                             <SelectPlayersInTeams
@@ -267,6 +234,7 @@ export class Games extends React.Component {
                                 removePlayerFromTeam={this.removePlayerFromTeam}/>
                         </div>
                     </div>
+
                     <div style={Object.assign({}, styles.slide, styles.slide3)}>
                         <div className="fullheight">
                             <ScoreBoard
@@ -276,16 +244,8 @@ export class Games extends React.Component {
                                 serie={this.state.currentMatch.serie}/>
                         </div>
                     </div>
+
                 </SwipeableViews>
-
-
-                <Grid id="griden" verticalAlign='middle'>
-                    <Grid.Row>
-                        <Grid.Column mobile="16" table="16" computer="16">
-                            {viewPage}
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
 
             </div>
         );
