@@ -9,8 +9,13 @@ body {
 }
 
 #root{
+  margin-top: 5px;
   background-color: #263039;
   color: white;
+}
+
+.empty{
+  height: 200px;
 }
 
 

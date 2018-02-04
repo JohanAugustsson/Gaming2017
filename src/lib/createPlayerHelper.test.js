@@ -1,5 +1,19 @@
 import {createPlayer} from './createPlayerHelper'
 
+import {MatchResultService} from '../services/match-results-service.js';
+//E:\Webb Utveckling\Gaming2017\src\services\match-results-service.js
+
+export const createPlayer = (newPlayer)=>{
+  let a="";
+  MatchResultService.getPlayerList().then(response=>{
+    a = response;
+
+  });
+  return a;
+}
+
+
+
 test('create a new player add it to current list', ()=> {
 
   const startCreate = [
