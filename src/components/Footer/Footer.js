@@ -35,7 +35,7 @@ export const Footer = (props) =>{
         <Link to="/Profile">
           <Menu.Item>
             <Icon name="user" className={props.active==="/Profile" ? "active":""} />
-            User
+            {props.signedIn? "Signed In": "not Signed in"}
           </Menu.Item>
         </Link>
 

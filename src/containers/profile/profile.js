@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import "semantic-ui-css/semantic.min.css";
+import { Button, Icon } from 'semantic-ui-react'
 import "../../index.css";
 
 import { userService } from "../../services/user-login-service";
 
 export class Profile extends Component{
-  handelClick(){
-    console.log("hej");
-    userService.signIn();
+
+  handelClick(event,providerIs){
+    console.log(event.target);
+    console.log(providerIs);
+    userService.signIn(providerIs);
   }
   handelClickLogout(){
-    console.log("då");
     userService.signOut();
   }
 
@@ -25,9 +27,20 @@ export class Profile extends Component{
       <div>
 
         <h1>{userInfo}</h1>
-        <button onClick={this.handelClick}>Login</button>
-        <button onClick={this.handelClickLogout}>Logout</button>
 
+
+
+      <Button color='facebook' onClick={(e)=> this.handelClick(e,"facebook")} >
+        <Icon name='facebook' /> Facebook
+      </Button>
+      <br/>
+      <br/>
+      <Button color='google plus' onClick={(e)=> this.handelClick(e,"google")}>
+        <Icon name='google' /> Google
+      </Button>
+
+        <br/>  <br/>
+      <Button negative onClick={this.handelClickLogout}>Logout</Button>
       </div>
 
 

@@ -14,7 +14,7 @@ export class App extends React.Component {
         this.state = {
             loading: true,
             user: {},
-            signdIn : false
+            signedIn : false
         };
       this.handelClickStatus =  this.handelClickStatus.bind(this)
       this.signInStatus =  this.signInStatus.bind(this)
@@ -39,9 +39,9 @@ export class App extends React.Component {
           console.log("inloggad" , user);
           // User is signed in.
 
-          this.setState({user: user, signdIn: true})
+          this.setState({user: user, signedIn: true})
         } else {
-          this.setState({user: null, signdIn: false})
+          this.setState({user: null, signedIn: false})
           console.log("ej inloggad");
           // User is signed out.
 
@@ -68,11 +68,15 @@ export class App extends React.Component {
         // Handle Errors here.
         console.log("Inlogging misslyckades", error);
         var errorCode = error.code;
+        console.log(errorCode);
         var errorMessage = error.message;
+        console.log(errorMessage);
         // The email of the user's account used.
         var email = error.email;
+        console.log(email);
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
+        console.log(credential);
         // ...
       });
 
@@ -90,6 +94,9 @@ export class App extends React.Component {
 
     render() {
           let page = this.context.route;
+          if(page===""){
+            page="/Home"
+          }
 
             return (
                 <div>
@@ -97,11 +104,11 @@ export class App extends React.Component {
                     {page==="/Games"? <div><Games /></div> : ""}
                     {page==="/Info"? <div><Info /></div> : ""}
                     {page==="/Home"? <div>Home</div> : ""}
-                    {page==="/Profile"? <div><Profile user={this.state.user} signdIn={this.state.signdIn} /></div> : ""}
+                    {page==="/Profile"? <div><Profile user={this.state.user} signdIn={this.state.signedIn} /></div> : ""}
 
                     <div className="empty">
                     </div>
-                      <Footer active={this.context.route}/>
+                      <Footer active={this.context.route} signedIn={this.state.signedIn}/>
 
 
 

@@ -2,7 +2,7 @@ import firebase from 'firebase'
 
 export const userService = {
 
-
+  /*
   test(){
     return new Promise((resolve,reject)=>{
       setTimeout(()=>{
@@ -46,10 +46,18 @@ export const userService = {
     });
 
   },
+  */
 
+  signIn(providerIs){
+    let provider =""
+    if(providerIs==="facebook"){
+      provider = new firebase.auth.FacebookAuthProvider();
+    }else if(providerIs==="google"){
+      provider = new firebase.auth.GoogleAuthProvider();
+    }else{
+      console.log("fel providerIs inskickad till sign in");
+    }
 
-  signIn(){
-    var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
 
 
