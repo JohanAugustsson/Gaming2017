@@ -81,7 +81,7 @@ export class ScoreBoard extends React.Component {
         }
 
         return (
-          <div>
+          <div id="scoreboard">
             <div>
               MatchId: {matchId}
             </div>

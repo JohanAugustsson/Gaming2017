@@ -13,17 +13,9 @@ export class CreatePlayer extends Component{
   currentPlayer = (event) =>{
     let name = this.state.playerName;
     this.props.addPlayer(name)
-    /*
-    MatchResultService.getPlayerList().then(response=>{
-      let playerList = response;
-      let id = (Object.keys(playerList).length)+ 1;
-      let newPlayer ={}
-      newPlayer = new Player(name,id);
-
-      MatchResultService.createPlayer(newPlayer);
-
-    });
-    */
+    this.setState({
+      playerName: ''
+    })
   }
 
   handleChange = (event) => {

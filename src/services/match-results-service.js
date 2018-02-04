@@ -67,9 +67,13 @@ export const MatchResultService = {
     },
 
     createPlayer(player){
-        console.log(player);
-        return rootRef.child(`players/${player.name}/`).set(player);
+      return rootRef.child(`players/${player.name}/`).set(player);
+    },
+
+    removePlayer(player){
+      rootRef.child('players/' + player).remove();
     }
+
 
 
 };

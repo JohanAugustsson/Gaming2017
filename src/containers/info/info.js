@@ -10,6 +10,7 @@ export class Info extends Component {
       playerList : ''
     }
     this.addPlayer = this.addPlayer.bind(this);
+    this.removePlayer = this.removePlayer.bind(this);
   }
   componentWillMount(){
 
@@ -33,12 +34,24 @@ export class Info extends Component {
     });
   }
 
+  removePlayer(event){
+    //console.log(event.target,name);
+    let name= (event.target.name);
+    MatchResultService.removePlayer(name);
+    
+    MatchResultService.getPlayerList().then(response => {
+        this.setState({
+            playerList: response,
+        });
+    });
+  }
+
   render(){
 
     return(
       <div>
         <CreatePlayer addPlayer={this.addPlayer}/>
-        {this.state.playerList!=="" ? <PlayerList players={this.state.playerList}/>:""}
+        {this.state.playerList!=="" ? <PlayerList players={this.state.playerList} removePlayer={this.removePlayer}/>:""}
       </div>
 
     )
