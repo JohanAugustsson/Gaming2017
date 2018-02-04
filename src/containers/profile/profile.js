@@ -18,8 +18,12 @@ export class Profile extends Component{
 
   render(){
     let userInfo = ""
-    if(this.props.signdIn){
-      userInfo = `Welcome ${this.props.user.displayName}`
+    if(this.props.user){
+      if(this.props.user.name === undefined){
+        userInfo = 'Loading...'
+      }else{
+        userInfo = `Welcome ${this.props.user.name}`
+      }
     }else{
       userInfo = `Please sign in before use the app`
     }

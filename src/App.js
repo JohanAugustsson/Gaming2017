@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import firebase from 'firebase';
 
 import {Footer} from './components/'
-import { userService } from "./services/user-login-service";
+//import { userService } from "./services/user-login-service";
 import { Games, Scores, Info, Profile} from './containers/'
 
 export class App extends React.Component {
@@ -13,13 +13,11 @@ export class App extends React.Component {
         super(props);
         this.state = {
             loading: true,
-            user: {},
-            signedIn : false
+            user: {}
+
         };
-      this.handelClickStatus =  this.handelClickStatus.bind(this)
       this.signInStatus =  this.signInStatus.bind(this)
       this.getInfoFromRedirect =  this.getInfoFromRedirect.bind(this)
-
     }
 
     static contextTypes = {
@@ -33,23 +31,25 @@ export class App extends React.Component {
     }
 
     signInStatus(){
-
       firebase.auth().onAuthStateChanged((user)=> {
         if (user) {
-          console.log("inloggad" , user);
+          //console.log("inloggad" , user);
           // User is signed in.
+          let userInfo = {
+            name: user.displayName,
+            email: user.email,
+            uid : user.uid,
+            emialVerified : user.emailVerified,
+            isAnonymous : user.isAnonymous
+          }
 
-          this.setState({user: user, signedIn: true})
+          this.setState({user: userInfo})
         } else {
-          this.setState({user: null, signedIn: false})
-          console.log("ej inloggad");
+          this.setState({user: null})
+          //console.log("ej inloggad");
           // User is signed out.
-
         }
-
       });
-
-
     }
 
 
@@ -58,15 +58,15 @@ export class App extends React.Component {
       firebase.auth().getRedirectResult().then(function(result) {
         if (result.credential) {
           // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = result.credential.accessToken;
+          //var token = result.credential.accessToken;
           // ...
         }
         // The signed-in user info.
-        var user = result.user;
-        console.log("Inloggning lyckad!" , user);
+        //var user = result.user;
+        //console.log("Inloggning lyckad!" , user);
       }).catch(function(error) {
         // Handle Errors here.
-        console.log("Inlogging misslyckades", error);
+        //console.log("Inlogging misslyckades", error);
         var errorCode = error.code;
         console.log(errorCode);
         var errorMessage = error.message;
@@ -82,15 +82,6 @@ export class App extends React.Component {
 
     }
 
-    handelClickStatus(){
-      userService.signInStatus();
-
-      userService.signInStatus2().then((success)=>{
-        console.log(success.signIn);
-
-
-      });
-    }
 
     render() {
           let page = this.context.route;
@@ -104,14 +95,11 @@ export class App extends React.Component {
                     {page==="/Games"? <div><Games /></div> : ""}
                     {page==="/Info"? <div><Info /></div> : ""}
                     {page==="/Home"? <div>Home</div> : ""}
-                    {page==="/Profile"? <div><Profile user={this.state.user} signdIn={this.state.signedIn} /></div> : ""}
+                    {page==="/Profile"? <div><Profile user={this.state.user} /></div> : ""}
 
                     <div className="empty">
                     </div>
-                      <Footer active={this.context.route} signedIn={this.state.signedIn}/>
-
-
-
+                      <Footer active={this.context.route} user={this.state.user}/>
                 </div>
             );
         }
