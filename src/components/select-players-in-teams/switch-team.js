@@ -5,9 +5,9 @@ import Grid from "semantic-ui-react/dist/es/collections/Grid/Grid";
 export const SwitchTeam = (props) => {
     return (
         <div>
-            <Grid>
+            <Grid id="griden">
                 <Grid.Row centered>
-                    <Grid.Column  mobile="0" table="7" computer="5">
+                    <Grid.Column  mobile="1" table="7" computer="5">
 
                     </Grid.Column>
                     <Grid.Column mobile="16" table="7" computer="2">

@@ -12,3 +12,12 @@ body {
   background-color: #263039;
   color: white;
 }
+
+
+.fullheight{
+  min-height: 100vh;
+}
+
+#griden{
+  margin:0;
+}

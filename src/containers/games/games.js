@@ -10,6 +10,7 @@ import {sortByKeyName} from "../../lib/utils";
 import {MatchList} from "../../components/match-list/match-list";
 import Menu from "semantic-ui-react/dist/es/collections/Menu/Menu";
 import Grid from "semantic-ui-react/dist/es/collections/Grid/Grid";
+import SwipeableViews from 'react-swipeable-views';
 
 
 let gametypes = [{key: "innebandy", value: "innebandy", text: "innebandy"}, {key: "nhl", value: "nhl", text: "nhl"}];
@@ -19,6 +20,19 @@ let serie = [{key: "innebandy2018", value: "innebandy2018", text: "innebandy2018
     text: "nhl2018"
 }];
 
+const styles = {
+    slide: {
+        padding: 0,
+        minHeight: 100,
+    },
+    slide1: {
+    },
+    slide2: {
+    },
+    slide3: {
+    },
+};
+
 export class Games extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +41,8 @@ export class Games extends React.Component {
             selectedMatchStream: {},  //
             playerList: {},           // Lista med alla spelare med från firebase.
             currentMatch: {id: null, typ: null, serie: null},
-            activeItem: 'Start game'
+            activeItem: 'Start game',
+            activeItemIndex: 0
         };
         this.saveMatchResults = this.saveMatchResults.bind(this);
         this.changeTeam = this.changeTeam.bind(this);
@@ -37,6 +52,9 @@ export class Games extends React.Component {
         this.createMatch = this.createMatch.bind(this);
         this.getPlayersInCurrentMatch = this.getPlayersInCurrentMatch.bind(this);
         this.onChangeMatch = this.onChangeMatch.bind(this);
+        this.getNumberFromString = this.getNumberFromString.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeIndex = this.handleChangeIndex.bind(this);
 
     }
 
@@ -145,67 +163,130 @@ export class Games extends React.Component {
                     serie: match.serie
                 }
             },
-            activeItem: "Select player in teams"
+            activeItemIndex: 1
         });
     }
 
     stepPages() {
         switch (this.state.activeItem) {
             case ('Start game'):
-                return <div><CreateMatch
-                    gametypes={gametypes}
-                    serie={serie}
-                    currentVal={this.state.currentMatch.serie}
-                    createMatch={this.createMatch}
-                    onChangeGameType={this.onChangeGameType}
-                    onChangeSerie={this.onChangeSerie}/><br/><br/>
-                    <MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>
+                return <div>
+                    {/*<CreateMatch*/}
+                    {/*gametypes={gametypes}*/}
+                    {/*serie={serie}*/}
+                    {/*currentVal={this.state.currentMatch.serie}*/}
+                    {/*createMatch={this.createMatch}*/}
+                    {/*onChangeGameType={this.onChangeGameType}*/}
+                    {/*onChangeSerie={this.onChangeSerie}/><br/><br/>*/}
+                    {/*<MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>*/}
                 </div>;
             case ("Select player in teams"):
-                return <SelectPlayersInTeams
-                    players={this.getPlayersInCurrentMatch()}
-                    changeTeam={this.changeTeam}
-                    removePlayerFromTeam={this.removePlayerFromTeam}/>;
+                return <div>
+                    {/*<SelectPlayersInTeams*/}
+                    {/*players={this.getPlayersInCurrentMatch()}*/}
+                    {/*changeTeam={this.changeTeam}*/}
+                    {/*removePlayerFromTeam={this.removePlayerFromTeam}/>*/}
+                </div>;
+
             case ("Score"):
-                return <div><ScoreBoard
-                    match={{[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}}
-                    saveMatch={this.saveMatchResults}
-                    resetMatch={this.resetPlayerForMatch}
-                    serie={this.state.currentMatch.serie}/>
+                return <div>
+                    {/*<ScoreBoard*/}
+                    {/*match={{[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}}*/}
+                    {/*saveMatch={this.saveMatchResults}*/}
+                    {/*resetMatch={this.resetPlayerForMatch}*/}
+                    {/*serie={this.state.currentMatch.serie}/>*/}
                 </div>;
             default:
                 return <div/>
         }
     }
 
+    handleChange = (event, value) => {
+        this.setState({
+            activeItemIndex: value,
+        }, function () {
+            console.log(this.state.activeItemIndex);
+        });
+    };
 
-    handleItemClick = (e, {name}) => this.setState({activeItem: name});
+    handleChangeIndex = index => {
+        this.setState({
+            activeItemIndex: index
+        });
+    };
+
+    getNumberFromString(name) {
+
+        if (name === 'Start game') {
+            return 0;
+        } else if (name === 'Select player in teams') {
+
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    handleItemClick = (e, {name}) => this.setState({activeItemIndex: this.getNumberFromString(name)});
 
     render() {
-
         let viewPage = this.stepPages();
         return (
 
             <div>
-                <Grid>
-                    <Grid.Column  mobile="16" table="5" computer="16">
+                <Grid id="griden">
+                    <Grid.Column mobile="16" table="5" computer="16">
                         <Menu inverted pointing secondary widths="3">
-                            <Menu.Item name='Start game' active={this.state.activeItem === 'Start game'}
+                            <Menu.Item name='Start game' active={this.state.activeItemIndex === 0}
                                        onClick={this.handleItemClick}/>
                             <Menu.Item name='Select player in teams'
-                                       active={this.state.activeItem === 'Select player in teams'}
+                                       active={this.state.activeItemIndex === 1}
                                        onClick={this.handleItemClick}/>
-                            <Menu.Item name='Score' active={this.state.activeItem === 'Score'}
+                            <Menu.Item name='Score' active={this.state.activeItemIndex === 2}
                                        onClick={this.handleItemClick}/>
                         </Menu></Grid.Column>
                 </Grid>
-                <Grid verticalAlign='middle'>
+                <SwipeableViews enableMouseEvents index={this.state.activeItemIndex} onChangeIndex={this.handleChangeIndex}>
+                    <div style={Object.assign({}, styles.slide, styles.slide1)}>
+                        <div className="fullheight">
+                            <CreateMatch
+                                gametypes={gametypes}
+                                serie={serie}
+                                currentVal={this.state.currentMatch.serie}
+                                createMatch={this.createMatch}
+                                onChangeGameType={this.onChangeGameType}
+                                onChangeSerie={this.onChangeSerie}/><br/><br/>
+                            <MatchList matches={this.state.matchResults} onChangeMatch={this.onChangeMatch}/>
+                        </div>
+                    </div>
+                    <div style={Object.assign({}, styles.slide, styles.slide2)}>
+                        <div className="fullheight">
+                            <SelectPlayersInTeams
+                                players={this.getPlayersInCurrentMatch()}
+                                changeTeam={this.changeTeam}
+                                removePlayerFromTeam={this.removePlayerFromTeam}/>
+                        </div>
+                    </div>
+                    <div style={Object.assign({}, styles.slide, styles.slide3)}>
+                        <div className="fullheight">
+                            <ScoreBoard
+                                match={{[this.state.currentMatch.id]: this.state.matchResults[this.state.currentMatch.id]}}
+                                saveMatch={this.saveMatchResults}
+                                resetMatch={this.resetPlayerForMatch}
+                                serie={this.state.currentMatch.serie}/>
+                        </div>
+                    </div>
+                </SwipeableViews>
+
+
+                <Grid id="griden" verticalAlign='middle'>
                     <Grid.Row>
                         <Grid.Column mobile="16" table="16" computer="16">
                             {viewPage}
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
+
             </div>
         );
     }

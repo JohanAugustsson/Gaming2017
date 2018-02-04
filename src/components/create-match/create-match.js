@@ -6,7 +6,7 @@ export const CreateMatch = (props) => {
     return (
         <div>
             <Form onSubmit={(event => props.createMatch())}>
-                <label for="type">Typ</label>
+                <label>Typ</label>
                 <Form.Dropdown name="type" placeholder='Select type of game'
                                onChange={(event, data) => props.onChangeGameType(data)} basic
                                options={props.gametypes}/>
