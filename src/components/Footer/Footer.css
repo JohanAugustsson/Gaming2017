@@ -3,8 +3,13 @@
   padding-left: 2px;
   padding-right: 2px;
 }
-.active{
+
+.Footer .active{
   font-weight: bold;
   color: red;
 
+}
+
+.Footer > .ui.menu{
+  font-size: 0.8rem;
 }
