@@ -1,35 +1,37 @@
 import React from "react";
-import "../counter/counter.css";
-import List from "semantic-ui-react/dist/es/elements/List/List";
 import Button from "semantic-ui-react/dist/es/elements/Button/Button";
+import Grid from "semantic-ui-react/dist/es/collections/Grid/Grid";
 
 export const SwitchTeam = (props) => {
     return (
         <div>
-            <div className="teams">
-                <List divided verticalAlign='middle'>
-                    <List.Item>
-                        <List.Content >
-                            <span className="nameStyle">
-                              {props.player.name}
-                            </span>
+            <Grid id="griden">
+                <Grid.Row centered>
+                    <Grid.Column mobile="1" table="7" computer="1">
+
+                    </Grid.Column>
+                    <Grid.Column mobile="16" table="7" computer="1">
+                        {props.player.name}
+                    </Grid.Column>
+                    <div>
+                        <Grid.Column mobile="9" table="9" computer="14">
                             <Button.Group size='small'>
 
-                                <Button active={props.player.isHomeTeam === true}
-                                        className="btn-score"
+                                <Button inverted active={props.player.isHomeTeam === true}
                                         onClick={(event) => props.changeTeam({
                                             player: props.player,
                                             isHomeTeam: {isHomeTeam: true, id: "isHomeTeam"}
                                         })}>Home
                                 </Button>
 
-                                <Button active={props.player.isHomeTeam === null}
+                                <Button inverted
+                                        active={props.player.isHomeTeam !== true && props.player.isHomeTeam !== false}
                                         onClick={(event) => props.removePlayerFromTeam({
                                             name: props.player.name
-                                        })}>Not Participating
+                                        })}>Benched
                                 </Button>
 
-                                <Button active={props.player.isHomeTeam === false}
+                                <Button inverted active={props.player.isHomeTeam === false}
                                         onClick={(event) => props.changeTeam({
                                             player: props.player,
                                             isHomeTeam: {isHomeTeam: false, id: "isHomeTeam"}
@@ -37,10 +39,10 @@ export const SwitchTeam = (props) => {
                                 </Button>
 
                             </Button.Group>
-                        </List.Content>
-                    </List.Item>
-                </List>
-            </div>
+                        </Grid.Column>
+                    </div>
+                </Grid.Row>
+            </Grid>
         </div>
     )
 };

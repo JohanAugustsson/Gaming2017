@@ -1,7 +1,6 @@
 import React from "react";
-
-import { List, Button } from 'semantic-ui-react';
-import './counter.css'
+import {Button} from "semantic-ui-react";
+import Grid from "semantic-ui-react/dist/es/collections/Grid/Grid";
 
 export class Counter extends React.Component {
     constructor(props) {
@@ -30,26 +29,24 @@ export class Counter extends React.Component {
     render() {
         return (
           <div>
-            <div className="teams">
+              <Grid id="griden">
+                  <Grid.Row centered>
+                      <Grid.Column  mobile="1" table="7" computer="5">
 
+                      </Grid.Column>
+                      <Grid.Column mobile="16" table="7" computer="2">
+                          {this.props.player.name}
+                      </Grid.Column>
 
-
-            <List divided verticalAlign='middle'>
-                <List.Item>
-                  <List.Content >
-                    <span className="nameStyle">
-                      {this.props.player.name}
-                    </span>
-
-                      <Button.Group size='small' >
-                        <Button className="btn-score" onClick={this.decrementScore}>-</Button>
-                        <Button>{this.props.player.goalTotal}</Button>
-                        <Button onClick={this.incrementScore}>+</Button>
+                      <Grid.Column mobile="9" table="9" computer="9">
+                      <Button.Group>
+                        <Button secondary onClick={this.decrementScore}>-</Button>
+                        <Button inverted>{this.props.player.goalTotal}</Button>
+                        <Button secondary onClick={this.incrementScore}>+</Button>
                       </Button.Group>
-                  </List.Content>
-                </List.Item>
-            </List>
-          </div>
+                      </Grid.Column>
+                  </Grid.Row>
+              </Grid>
 
           </div>
         );

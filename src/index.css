@@ -4,7 +4,7 @@ body {
   font-family: sans-serif;
   background-color: #263039;
   color: white;
-
+  margin-bottom: 250px;
 
 }
 
@@ -16,4 +16,17 @@ body {
 
 .empty{
   height: 200px;
+}
+
+
+.fullheight{
+  min-height: 100vh;
+}
+
+#griden{
+  margin:0;
+}
+
+#tab-in-grid{
+  margin:-1rem 0 0 0;
 }

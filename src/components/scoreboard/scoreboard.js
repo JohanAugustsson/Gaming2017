@@ -88,11 +88,13 @@ export class ScoreBoard extends React.Component {
             <div className="score">
                 {goalHome} - {goalAway}
             </div>
-            <Menu pointing>
+            <div>
+              <Menu pointing>
               <Menu.Item name='Home' active={this.state.activeItem==="Home"} onClick={this.handleClickHome} />
               <Menu.Item name='Away' active={this.state.activeItem === 'Away'} onClick={this.handleClickHome} />
 
             </Menu>
+            </div>
               {whichTeam}
 
 
