@@ -32,6 +32,12 @@ export const Footer = (props) =>{
             Scores
           </Menu.Item>
         </Link>
+        <Link to="/Profile">
+          <Menu.Item>
+            <Icon name="user" className={props.active==="/Profile" ? "active":""} />
+            User
+          </Menu.Item>
+        </Link>
 
         <Link to="/Info">
           <Menu.Item>
