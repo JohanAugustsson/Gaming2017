@@ -6,12 +6,12 @@
     color: white;
 }
 
-/*.header {
+.header {
     height: 50px;
     text-align: center;
     line-height: 50px;
     background-color: black;
-}*/
+}
 
 #scoreboard >.teamAway, #scoreboard >.teamHome {
     height: auto;
