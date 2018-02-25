@@ -7,5 +7,5 @@ import {Router} from "./components/";
 import "./index.css";
 
 
-ReactDOM.render(<Router><App /></Router>, document.getElementById('root'));
+ReactDOM.render(<Router basename={process.env.PUBLIC_URL}><App /></Router>, document.getElementById('root'));
 registerServiceWorker();
