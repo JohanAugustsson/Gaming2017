@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 
 const getCurrentPath = () =>{
   let path = document.location.pathname
+  console.log("path is : "+ path);
+  /*
   if(path.slice(-1)=="/"){
     console.log("Yes ended with /");
     path = path.substring(0,path.length-1);
     return path.substring(path.lastIndexOf('/'))
   }else {
     console.log("No did not end with /");
-    return path.substring(path.lastIndexOf('/'))
+    return "Gaming2017" +path.substring(path.lastIndexOf('/'))
   }
+  */
+  return path.substring(path.lastIndexOf('/'))
 }
 
 export class Router extends Component {
