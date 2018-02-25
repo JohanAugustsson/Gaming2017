@@ -2,6 +2,7 @@
 .Footer .active{
   font-weight: bold;
   color: #FF165D;
+
 }
 
 .Footer #menu{
@@ -19,4 +20,8 @@
   min-height: 50px;
   text-align: center;
   line-height: 50px;
+  color: white;
+}
+.Footer #menu a:focus{
+  outline: none;
 }
