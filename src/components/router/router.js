@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 const getCurrentPath = () =>{
   let path = document.location.pathname
+  console.log("path is : "+ path);
   if(path.slice(-1)=="/"){
     console.log("Yes ended with /");
     path = path.substring(0,path.length-1);
