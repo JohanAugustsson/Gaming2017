@@ -1,6 +1,6 @@
 import React from "react";
-import {Button} from "semantic-ui-react";
 import Grid from "semantic-ui-react/dist/es/collections/Grid/Grid";
+import Button from "../atoms/button/button";
 
 export class Counter extends React.Component {
     constructor(props) {
@@ -39,11 +39,11 @@ export class Counter extends React.Component {
                       </Grid.Column>
 
                       <Grid.Column mobile="9" table="9" computer="9">
-                      <Button.Group>
-                        <Button secondary onClick={this.decrementScore}>-</Button>
-                        <Button inverted>{this.props.player.goalTotal}</Button>
-                        <Button secondary onClick={this.incrementScore}>+</Button>
-                      </Button.Group>
+
+                        <Button basic secondary onClick={this.decrementScore}>-</Button>
+                        <Button basic inverted>{this.props.player.goalTotal}</Button>
+                        <Button basic secondary onClick={this.incrementScore}>+</Button>
+
                       </Grid.Column>
                   </Grid.Row>
               </Grid>

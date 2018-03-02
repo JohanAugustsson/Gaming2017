@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from '../router';
-import { Icon, Menu} from 'semantic-ui-react';
 import './Footer.css';
 
 export const Footer = (props) =>{

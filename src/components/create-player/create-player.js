@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 // import {MatchResultService} from '../../services/match-results-service.js';
-import "semantic-ui-css/semantic.min.css";
 import { Button, Form, Segment } from 'semantic-ui-react'
 //import { Player } from '../../modules/player.js';
 
