@@ -1,8 +1,4 @@
 import React, {Component} from 'react';
-// import {MatchResultService} from '../../services/match-results-service.js';
-import "semantic-ui-css/semantic.min.css";
-import { Button, Form, Segment } from 'semantic-ui-react'
-//import { Player } from '../../modules/player.js';
 
 
 export class CreatePlayer extends Component{
@@ -27,19 +23,15 @@ export class CreatePlayer extends Component{
   render(){
 
     return(
-      <Segment>
-        <Form >
-          <Form.Group widths='equal'>
-            <Form.Input
+      <div>
+          <input
               value={this.state.playerName}
               onChange={this.handleChange}
-              fluid label='Player Name'
-              placeholder='Player Name' />
+              placeholder='Player Name'
+          />
+          <button onClick={this.currentPlayer}> Create Player</button>
 
-          </Form.Group>
-          <Button onClick={this.currentPlayer}> Create Player</Button>
-        </Form>
-      </Segment>
+      </div>
 
 
     )
