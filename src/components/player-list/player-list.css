@@ -1,0 +1,13 @@
+.listOfPlayers{
+  list-style-type: none;
+  width: 80%;
+  margin: 10px;
+}
+.listOfPlayers li button{
+
+  float: right;
+
+}
+.listOfPlayers li{
+  margin: 10px;
+}
