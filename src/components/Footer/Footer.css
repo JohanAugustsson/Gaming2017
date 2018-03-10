@@ -1,15 +1,27 @@
 
-.Footer a,div{
-  padding-left: 2px;
-  padding-right: 2px;
-}
-
 .Footer .active{
   font-weight: bold;
-  color: red;
+  color: #FF165D;
 
 }
 
-.Footer > .ui.menu{
-  font-size: 0.8rem;
+.Footer #menu{
+  display: flex;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.13);
+}
+.Footer #menu a{
+  flex: 1 1 auto;
+  min-height: 50px;
+  text-align: center;
+  line-height: 50px;
+  color: white;
+}
+.Footer #menu a:focus{
+  outline: none;
 }

@@ -10,13 +10,13 @@
     height: 50px;
     text-align: center;
     line-height: 50px;
-    background-color: black;
+
 }
 
 #scoreboard >.teamAway, #scoreboard >.teamHome {
     height: auto;
-    background-color: #313841;
     width: 100%;
+
 }
 
 #scoreboard > .score {
@@ -33,7 +33,7 @@
     line-height: 100px;
     text-align: center;
     font-size: 2em;
-    color: #B2CB5B;
+    color: #830909;
 }
 
 #scoreboard > .playerName {

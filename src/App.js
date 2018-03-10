@@ -85,9 +85,9 @@ export class App extends React.Component {
 
     render() {
           let page = this.context.route;
-          //if(page===""){
-          //  page="/Home"
-          //}
+          if(page===""){
+            page="/Home"
+          }
           console.log("render " + page);
             return (
                 <div>
