@@ -1,5 +1,52 @@
 import React from 'react';
 
+console.log("hejsan");
+export class StatsPlayerScore extends React.Component{
+  constructor(props){
+    super(props);
+    this.handelClickUpdateScore = this.handelClickUpdateScore.bind(this)
+  }
+
+
+  calculateScores(match){                               // Väljer match för match  - STEG 1
+
+    if(match){                                                          //kontrollerar så att det någon match att räkna på
+      let matchKeys = Object.keys(match);
+      matchKeys.forEach(selectedMatch =>{
+
+      })
+
+    }
+  }
+
+
+  handelClickUpdateScore(){
+    console.log(this.props.games);
+  
+  }
+
+    render(){
+
+
+      return(
+        <div>
+          <button onClick={this.handelClickUpdateScore}>Update scoreTable</button>
+        </div>
+      );
+  }
+
+
+
+}
+
+
+
+
+
+
+/*  Tidigare variant av stats-Player-score....
+import React from 'react';
+
 
 export class StatsPlayerScore extends React.Component{
   constructor(props){
@@ -134,3 +181,5 @@ export class StatsPlayerScore extends React.Component{
 
 
 }
+
+ */

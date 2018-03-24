@@ -35,10 +35,9 @@ export class Info extends Component {
   }
 
   removePlayer(event){
-    //console.log(event.target,name);
     let name= (event.target.name);
     MatchResultService.removePlayer(name);
-    
+
     MatchResultService.getPlayerList().then(response => {
         this.setState({
             playerList: response,
