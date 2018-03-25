@@ -59,7 +59,7 @@ export class StatsTable extends React.Component{
             {player.goalAgainst}
           </td>
           <td className="historyTable">
-            {player.goalFor - player.goalAgainst}
+            {player.goalFor + player.goalAgainst}
           </td>
 
         </tr>

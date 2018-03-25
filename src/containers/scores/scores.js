@@ -21,9 +21,10 @@ export class Scores extends React.Component {
             eventMembers: {}, //ny
             gameMembers: {}, //ny
             gameLoggs: {}, //ny
+            eventGames: {} //ny
         };
-          this.setScoreOfPlayers = this.setScoreOfPlayers.bind(this);
           this.getMemberInGames = this.getMemberInGames.bind(this);
+          this.updateScore = this.updateScore.bind(this);
     }
 
     static contextTypes = {
@@ -51,9 +52,9 @@ export class Scores extends React.Component {
 
 
           MatchResultService.getSelectedEventMembers(selectedEvent.id).then(response=>{ // Hämtar Event medlemar
-            let members = Object.keys(response).map(member=> allUsers[member]) // Hämtar info om varje medlem
             let memberObj = {};
-            members = members.map(member=> memberObj[member.id] = new Player(member));                 // lägger till classen "Player" på varje meddlem
+            let members = Object.keys(response).map(member=> allUsers[member]) // Hämtar info om varje medlem
+            members.map(member=> memberObj[member.id] = new Player(member));                 // lägger till classen "Player" på varje meddlem
 
             this.setState({
               eventMembers : memberObj
@@ -123,7 +124,7 @@ export class Scores extends React.Component {
 
       let games = this.state.eventGames;
       let gameLoggs = this.state.gameLoggs;
-      let eventMembers = this.state.eventMembers;
+      let eventMembers = JSON.parse(JSON.stringify(this.state.eventMembers));  // Kopierar objectet utan att ha kvar referens
       let gameMembers = this.state.gameMembers;
 
       games.map(game=>{
@@ -131,47 +132,17 @@ export class Scores extends React.Component {
         selectGame.game = game;
         selectGame.member = gameMembers[game];
         selectGame.logg = gameLoggs[game];
-
-        for(let item in (selectGame.logg)){
-          let update = selectGame.logg[item];
-          if(update.type=="goal"){
-            console.log("add goal", update.userid);
-            eventMembers[update.userid].goal=+1;
-
-          }
-        }
-
-        console.log(selectGame);
-        console.log(eventMembers);
-
+        selectGame.homeGoal = 0;
+        selectGame.awayGoal = 0;
+        handleGameLogg(selectGame,eventMembers);
+        return game;
       })
 
+      this.setState({
+        eventMembers: eventMembers
+      })
 
     }
-
-
-
-    setScoreOfPlayers(scoreOfPlayer) {
-
-        MatchResultService.getPlayerList().then(response => {  // Nollställer playerList
-            this.setState({
-                playerList: response
-            });
-        });
-        MatchResultService.getMatchResults("nhl", "nhl2018").then(response => { //köras för att hämta uppdaterad match o visas i StatsTable
-            this.setState({
-                matchResults: response
-            });
-        });
-
-
-        this.setState({
-            scoreOfPlayer: scoreOfPlayer
-        })
-    }
-
-
-
 
     render() {
 
@@ -180,7 +151,6 @@ export class Scores extends React.Component {
             return (<div>loading</div>)
         } else {
 
-          this.updateScore();
 
             return (
               <div>
@@ -189,9 +159,7 @@ export class Scores extends React.Component {
                    players={this.state.eventMembers} />
 
                <StatsPlayerScore
-                   games={this.state.eventGames}
-                   members={this.state.eventMembers}
-                   setScore={this.setScoreOfPlayers} />
+                  updateScore={this.updateScore} />
               </div>
             );
         }
@@ -200,8 +168,9 @@ export class Scores extends React.Component {
 
 
 
-class Player{
+class Player {
   constructor(member){
+
     this.assist = 0;
     this.goalAgainst = 0;
     this.goalAway = 0;
@@ -219,4 +188,85 @@ class Player{
     this.place = member.place;
     this.date = member.date;
   }
+  goal(){
+    console.log("funka mål mål mål");
+  }
 }
+
+
+//----------------------------   Update User Scores -------------------------->>
+
+let handleGameLogg = (selectGame,eventMembers)=>{
+  for(let item in (selectGame.logg)){             // plockar ut varje logg för sig
+    let update = selectGame.logg[item];
+
+    if(update.type==="goal"){                     // sätter mål till respektive lag.
+      (update.team==="home")? selectGame.homeGoal+=1 : selectGame.awayGoal+=1;
+    }
+
+    for(let playerid in (selectGame.member)){     // hanterar var spelare för sig
+      let playerObj= {
+        userid: playerid,
+        team : selectGame.member[playerid]
+      }
+      setPlayerStat(update,playerObj,eventMembers);
+    }
+  }
+
+  for(let playerid in (selectGame.member)){  // Funktion för att sätta vinst respektive förlust på spelare.
+    let player = eventMembers[playerid];
+    let playerTeam= selectGame.member[playerid];
+
+    player.matchesPlayed+=1;
+    (playerTeam==="home") ? player.matchesHome+=1 : player.matchesAway+=1;
+
+
+    if(selectGame.homeGoal>selectGame.awayGoal){          //Hemma laget vann
+      (playerTeam==="home") ? player.matchesWins+=1:"";
+
+    }else if(selectGame.homeGoal<selectGame.awayGoal){    // Borta laget vann
+      (playerTeam==="away") ? player.matchesWins+=1:"";
+
+    }else{                                                // Oavgjort
+      player.matchesDraw+=1;
+    }
+  }
+
+};
+
+
+//---------------------------  Update User scores fortsättning  -------------->>
+
+let setPlayerStat=(update,playerObj,eventMembers)=>{
+  let isThisPlayer = false;
+  let isTeamMate = false;
+  let isHome= false;
+  let player = eventMembers[playerObj.userid];
+
+  if(update.userid===playerObj.userid){
+    isThisPlayer=true;
+  }
+
+  if(playerObj.team==="home"){
+    isHome=true;
+  }
+
+  switch (update.type){
+    case "goal":
+      if(isThisPlayer){
+        (isHome) ? player.goalHome+=1 : player.goalAway+=1;
+        player.goalTotal+=1;
+        player.goalFor+=1;
+      }else {
+        (isTeamMate) ? player.goalFor+=1 : player.goalAgainst+=1;
+      }
+      break;
+
+    default:
+      console.log("okänd logg händelse");
+  }
+
+}
+
+
+//------------------------ END ----------------------------------------------->>
