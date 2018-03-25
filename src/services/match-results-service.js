@@ -1,7 +1,7 @@
 import firebase from "./fire";
 
 const rootRef = firebase.database().ref();
-const firebaseDb= firebase.database();
+
 
 export const MatchResultService = {
 
@@ -188,4 +188,4 @@ MatchResultService.getEvents().then(function(va){  // Hämtar alla Event som ska
 
 //MatchResultService.addMemberInGame({gameid:"-L7nS7slhOBXModFBbOn",userid:"-L7nS7soGu-sH2kGlrZy",team:"home"});
 //MatchResultService.addMemberInEvent({userid:"-L7nS7soGu-sH2kGlrZy",eventid:"-L7nSR3BtV-9Tc6soPJx"});
-//MatchResultService.addGameLogg({type:"assist",gameid:"-L7nS7slhOBXModFBbOn",userid:"-L7nSR3CYTxCtgLbaG_B",team:"home"});
+//MatchResultService.addGameLogg({type:"goal",gameid:"-L7nS7slhOBXModFBbOn",userid:"-L7nS7soGu-sH2kGlrZy",team:"away"});
