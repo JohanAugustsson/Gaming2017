@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import "semantic-ui-css/semantic.min.css";
 import "../../index.css";
 
 import {StatsTable,StatsPlayerScore} from '../../components/'
@@ -50,10 +49,9 @@ export class Scores extends React.Component {
           return selectedEvent
         }).then((selectedEvent)=>{
 
-
-          MatchResultService.getSelectedEventMembers(selectedEvent.id).then(response=>{ // Hämtar Event medlemar
+          MatchResultService.getSelectedEventMembers(selectedEvent.id).then(response=>{        // Hämtar Event medlemar
             let memberObj = {};
-            let members = Object.keys(response).map(member=> allUsers[member]) // Hämtar info om varje medlem
+            let members = Object.keys(response).map(member=> allUsers[member])                // Hämtar info om varje medlem
             members.map(member=> memberObj[member.id] = new Player(member));                 // lägger till classen "Player" på varje meddlem
 
             this.setState({
@@ -145,21 +143,17 @@ export class Scores extends React.Component {
     }
 
     render() {
-
-
         if (this.state.loading) {
             return (<div>loading</div>)
         } else {
-
-
             return (
               <div>
                 <StatsTable
-                   //players={this.state.scoreOfPlayer} />
-                   players={this.state.eventMembers} />
-
+                  players={this.state.eventMembers}
+                 />
                <StatsPlayerScore
-                  updateScore={this.updateScore} />
+                  updateScore={this.updateScore}
+                />
               </div>
             );
         }

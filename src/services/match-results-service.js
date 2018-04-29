@@ -80,12 +80,12 @@ export const MatchResultService = {
 
     // ny variant 2018-03-10 --------------------------------------------------
 
-    createNewEvent(){
+    createNewEvent(newEvent){
       var newPostKey = rootRef.child('events').push().key;
       let obj = {
         id: newPostKey,
-        type: "NHL",
-        serie: "Vår2018",
+        type: newEvent.type,
+        serie: newEvent.name,
         date: Date.now()
       }
       rootRef.child(`events/${newPostKey}`).set(obj);
@@ -118,6 +118,9 @@ export const MatchResultService = {
           return snap.val();
       });
     },
+    getUsersStream(){
+      return rootRef.child(`users`);
+    },
 
     getGames(){
       return rootRef.child(`games`).once('value').then(snap => {
@@ -126,10 +129,14 @@ export const MatchResultService = {
     },
 
     getEvents(){
-      return rootRef.child(`event`).once('value').then(snap => {
+      return rootRef.child(`events`).once('value').then(snap => {
           return snap.val();
       })
     },
+    getEventsStream(){
+      return rootRef.child(`events`);
+    },
+
 
     getSelectedEvent(eventid){
       return rootRef.child(`events/${eventid}`).once('value').then(snap=>{
@@ -147,10 +154,19 @@ export const MatchResultService = {
         return snap.val();
       })
     },
+
+    getGameLoggStream(gameId){
+      return rootRef.child(`loggOfGame/${gameId}`)
+
+    },
+
     getGameMembers(){
       return rootRef.child(`memberInGame/`).once('value').then(snap=>{
         return snap.val();
       })
+    },
+    getGameMembersStream(gameId){
+      return rootRef.child(`memberInGame/${gameId}`)
     },
 
     addMemberInGame({gameid,userid,team}){
@@ -163,6 +179,9 @@ export const MatchResultService = {
       var newPostKey = rootRef.child(`games/${gameid}/logg`).push().key;
       rootRef.child(`loggOfGame/${gameid}/${newPostKey}`).set({type,userid,id:newPostKey,team,time:Date.now()})
     }
+
+    // Fortsättning 2018-04-29
+
 
 
 };
