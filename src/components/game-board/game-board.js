@@ -4,59 +4,22 @@ import { MatchResultService } from "../../services/match-results-service";
 
 
 export class GameBoard extends React.Component {
-  constructor(props){
+  constructor(props){ // körs endast första gången som komponenten blir skapad.
     super(props);
     this.state = {
-      gameLogg : [],
-      gameMembers : "",
-      allUsers : "",
-      loading: 3
+      selectedGameId: props.selectedGame.id
     }
   }
 
-  componentDidMount(){
-    let gameId = this.props.selectedGame.id
-
-    MatchResultService.getGameLoggStream(gameId).on('child_added', snapp =>{
-      let logg = snapp.val()
-      let gameLogg = this.state.gameLogg;
-      gameLogg.push(logg)
-      this.setState({gameLogg : gameLogg})
-      this.loadingFinished();
-    })
-
-    MatchResultService.getUsersStream().on('value', snapp =>{
-      let users = snapp.val()
-      this.setState({allUsers : users})
-      this.loadingFinished();
-    })
-
-    MatchResultService.getGameMembersStream(gameId).on('value', snapp =>{
-      let members = snapp.val()
-      this.setState({gameMembers : members})
-      this.loadingFinished();
-    })
-
-
-  } // C.didMount End
-
-
-  loadingFinished =()=>{
-    console.log("ladd en till");
-    this.setState({
-      loading: this.state.loading - 1
-    })
-
-  }
 
   getLogg = ()=>{  // Skapar en lista med alla loggar
-    let allUsers = this.state.allUsers;
-    console.log(allUsers);
-    let newList = this.state.gameLogg.map( logg =>{
-      console.log(allUsers[logg.userid]);
+    let allUsers = this.props.allUsers;
+
+    let newList = this.props.gameLogg.map( logg =>{
+      let name = allUsers[logg.userid].name;
       return(
         <li key={ logg.id }>
-          <p>Team: { logg.team } : { logg.type } by { logg.userid}</p>
+          <p>Team: { logg.team } : { logg.type } by { name }</p>
         </li>
       )
     })
@@ -64,8 +27,8 @@ export class GameBoard extends React.Component {
   }
 
   getMembers=()=>{
-    let allUsers = this.state.allUsers;
-    let gameMember = this.state.gameMembers;
+    let allUsers = this.props.allUsers;
+    let gameMember = this.props.gameMembers;
     let newListOfMembers = [];
 
     for(let memb in gameMember){
@@ -85,22 +48,33 @@ export class GameBoard extends React.Component {
     return  (<ul>{newListOfMembers}</ul>)
   }
 
+
   render(){
+    let gameLogg = this.props.gameLogg;
+    let gameMembers = this.props.GameMembers;
+    let allUsers = this.props.allUsers;
+
     let loggList = "Loading!!"
     let memberList = "Loading!!"
-    if(this.state.loading == 0){
-      console.log("inne i if");
+
+
+    if( gameLogg && gameMembers!== null && allUsers!== null ){
+      console.log("nu körs renderingen i gameboard!!!");
       loggList = this.getLogg();
       memberList = this.getMembers();
     }
-      return(
-        <div>
-          GameBoard!!
-          { loggList }
-          { memberList }
 
-        </div>
-      )
+    console.log("Props är: " , this.props);
+    return(
+      <div className="ruta">
+        { this.props.selectedGameId} <br/>
+
+        LoggList:
+        { loggList }
+        GameMembers:
+        { memberList }
+      </div>
+    )
 
   }
 }

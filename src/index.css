@@ -1,4 +1,7 @@
-
+.ruta{
+  border: 1px solid red;
+  margin: 10px;
+}
 
 body{
   margin: 0;

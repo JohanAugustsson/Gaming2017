@@ -1,0 +1,53 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+
+PATH: 
+  C:\Users\zingo\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\zingo\bin;C:\Program Files (x86)\Intel\iCLS Client;C:\Program Files\Intel\iCLS Client;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\zingo\AppData\Local\Microsoft\WindowsApps;C:\Users\zingo\AppData\Local\atom\bin;C:\Users\zingo\AppData\Local\Microsoft\WindowsApps;C:\Users\zingo\AppData\Roaming\npm;C:\Users\zingo\AppData\Local\Yarn\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  8.11.1
+
+Platform: 
+  win32 x64
+
+npm manifest: 
+  {
+    "name": "my-gaming",
+    "version": "0.1.0",
+    "private": true,
+    "homepage": "https://johanaugustsson.github.io/Gaming2017/",
+    "dependencies": {
+      "firebase": "^4.8.1",
+      "gh-pages": "^1.1.0",
+      "prop-types": "^15.6.0",
+      "react": "^16.2.0",
+      "react-dom": "^16.2.0",
+      "react-scripts": "1.0.17",
+      "react-swipeable-views": "^0.12.12",
+      "semantic-ui-css": "^2.2.12",
+      "semantic-ui-react": "^0.77.2"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test --env=jsdom",
+      "eject": "react-scripts eject",
+      "predeploy": "npm run build",
+      "deploy": "gh-pages -d build"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: connect ETIMEDOUT 104.16.59.173:443
+      at Object._errnoException (util.js:1022:11)
+      at _exceptionWithHostPort (util.js:1044:20)
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)

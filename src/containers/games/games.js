@@ -49,14 +49,15 @@ export class Games extends React.Component{
 
   render(){
     let evenstArray = [];
+    let allEvents = this.state.events
     if(!this.state.loading){    // visar alla events
-      for(let myEvent in this.state.events){
-        evenstArray.push(<li key={myEvent}> { myEvent } <button onClick= { ()=> this.testMe(myEvent) }>Show Games in Event</button></li>)
+      for(let myEvent in allEvents){
+        evenstArray.push(<li key={myEvent}> { allEvents[myEvent].id } <button onClick= { ()=> this.testMe(myEvent) }>Show Games in Event</button></li>)
       }
     }
 
     return(
-      <div>
+      <div className="ruta">
         <CreateEvent />
         <ul>
           { evenstArray }
